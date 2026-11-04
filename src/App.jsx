@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import leccion from './data/leccion.json'
+import lecciones from './data/lecciones.json'
 import './App.css'
 
 function guardarResultado(resultado) {
@@ -11,7 +11,8 @@ function guardarResultado(resultado) {
 export default function App() {
   const [alias, setAlias] = useState(localStorage.getItem('alias') || '')
   const [escrito, setEscrito] = useState('')
-  const [pantalla, setPantalla] = useState(alias ? 'leccion' : 'inicio')
+  const [pantalla, setPantalla] = useState(alias ? 'menu' : 'inicio')
+  const [leccion, setLeccion] = useState(null)
   const [actual, setActual] = useState(0)
   const [puntos, setPuntos] = useState(0)
   const [online, setOnline] = useState(navigator.onLine)
@@ -31,6 +32,13 @@ export default function App() {
     if (escrito.trim() === '') return
     localStorage.setItem('alias', escrito.trim())
     setAlias(escrito.trim())
+    setPantalla('menu')
+  }
+
+  function elegir(l) {
+    setLeccion(l)
+    setActual(0)
+    setPuntos(0)
     setPantalla('leccion')
   }
 
@@ -75,12 +83,25 @@ export default function App() {
         </div>
       )}
 
+      {pantalla === 'menu' && (
+        <div>
+          <h1>Hola, {alias}</h1>
+          <p>¿Qué quieres aprender hoy?</p>
+          {lecciones.map((l) => (
+            <button key={l.id} onClick={() => elegir(l)}>
+              {l.asignatura}: {l.titulo}
+            </button>
+          ))}
+        </div>
+      )}
+
       {pantalla === 'leccion' && (
         <div>
+          <p>{leccion.asignatura}</p>
           <h1>{leccion.titulo}</h1>
-          <p>Hola, {alias}</p>
           <p>{leccion.texto}</p>
           <button onClick={() => setPantalla('quiz')}>Empezar el quiz</button>
+          <button className="secundario" onClick={() => setPantalla('menu')}>Volver al menú</button>
         </div>
       )}
 
@@ -100,6 +121,7 @@ export default function App() {
           <p>Has acertado {puntos} de {leccion.preguntas.length}</p>
           <p>Resultados pendientes de enviar al docente: {pendientes}</p>
           <button onClick={repetir}>Repetir</button>
+          <button className="secundario" onClick={() => setPantalla('menu')}>Volver al menú</button>
         </div>
       )}
     </div>

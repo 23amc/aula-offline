@@ -1,0 +1,54 @@
+[
+  {
+    "id": "mates-1",
+    "asignatura": "Matemáticas",
+    "titulo": "Sumas y restas",
+    "texto": "Sumar es juntar cantidades. Si tienes 3 manzanas y te dan 2 más, ahora tienes 5. Restar es quitar. Si tienes 5 manzanas y te comes 2, te quedan 3.",
+    "preguntas": [
+      { "pregunta": "¿Cuánto es 3 + 2?", "opciones": ["4", "5", "6"], "correcta": 1 },
+      { "pregunta": "¿Cuánto es 5 - 2?", "opciones": ["3", "2", "7"], "correcta": 0 },
+      { "pregunta": "Tienes 4 lápices y te dan 3. ¿Cuántos tienes?", "opciones": ["1", "6", "7"], "correcta": 2 },
+      { "pregunta": "¿Cuánto es 10 - 5?", "opciones": ["5", "15", "4"], "correcta": 0 },
+      { "pregunta": "¿Cuánto es 6 + 3?", "opciones": ["8", "9", "10"], "correcta": 1 }
+    ]
+  },
+  {
+    "id": "lengua-1",
+    "asignatura": "Literatura",
+    "titulo": "La tortuga y el río",
+    "texto": "Una fábula es un cuento corto con animales que hablan y que deja una enseñanza, llamada moraleja. Lee esta: Una tortuga quería cruzar el río para ver a su familia. Todos los animales le decían que era imposible porque era muy lenta. Ella no discutió. Cada día avanzaba un poco, sin prisa y sin parar. Al cabo de una semana llegó a la otra orilla. Moraleja: con paciencia y constancia se llega lejos.",
+    "preguntas": [
+      { "pregunta": "¿Qué es una fábula?", "opciones": ["Un cuento corto con animales que deja una enseñanza", "Una carta a un amigo", "Una receta de cocina"], "correcta": 0 },
+      { "pregunta": "¿Para qué quería la tortuga cruzar el río?", "opciones": ["Para buscar comida", "Para ver a su familia", "Para jugar"], "correcta": 1 },
+      { "pregunta": "¿Qué le decían los demás animales?", "opciones": ["Que la ayudarían", "Que el río estaba seco", "Que era imposible porque era lenta"], "correcta": 2 },
+      { "pregunta": "¿Cómo logró cruzar el río?", "opciones": ["Corriendo muy rápido", "Avanzando un poco cada día sin parar", "Pidiendo un barco"], "correcta": 1 },
+      { "pregunta": "¿Cuál es la moraleja?", "opciones": ["Hay que correr siempre", "Con paciencia y constancia se llega lejos", "No hay que viajar"], "correcta": 1 }
+    ]
+  },
+  {
+    "id": "quimica-1",
+    "asignatura": "Química",
+    "titulo": "Los estados del agua",
+    "texto": "La materia puede estar en tres estados: sólido, líquido y gas. El agua es un buen ejemplo. El hielo es agua sólida, el agua del grifo es líquida y el vapor es agua en forma de gas. Cuando el agua se calienta mucho, hierve y se convierte en vapor. Cuando se enfría mucho, se congela y se convierte en hielo.",
+    "preguntas": [
+      { "pregunta": "¿Cuáles son los tres estados de la materia?", "opciones": ["Sólido, líquido y gas", "Frío, tibio y caliente", "Hielo, nieve y lluvia"], "correcta": 0 },
+      { "pregunta": "¿Cómo se llama el agua en estado sólido?", "opciones": ["Vapor", "Hielo", "Niebla"], "correcta": 1 },
+      { "pregunta": "¿En qué estado está el vapor de agua?", "opciones": ["Sólido", "Líquido", "Gas"], "correcta": 2 },
+      { "pregunta": "¿Qué le pasa al agua cuando se calienta mucho?", "opciones": ["Se convierte en vapor", "Se convierte en hielo", "Desaparece"], "correcta": 0 },
+      { "pregunta": "¿Qué ocurre cuando el agua se enfría mucho?", "opciones": ["Hierve", "Se congela", "Se vuelve gas"], "correcta": 1 }
+    ]
+  },
+  {
+    "id": "fisica-1",
+    "asignatura": "Física",
+    "titulo": "La gravedad",
+    "texto": "La gravedad es la fuerza que atrae los objetos hacia el centro de la Tierra. Por eso, si sueltas una pelota, cae al suelo. La gravedad también mantiene a la Luna girando alrededor de la Tierra. En la Luna la gravedad es menor que en la Tierra, por eso los astronautas dan saltos muy largos.",
+    "preguntas": [
+      { "pregunta": "¿Qué es la gravedad?", "opciones": ["Una fuerza que atrae los objetos hacia el centro de la Tierra", "Un tipo de viento", "Un animal"], "correcta": 0 },
+      { "pregunta": "¿Qué pasa si sueltas una pelota en el aire?", "opciones": ["Sube", "Cae al suelo", "Se queda quieta"], "correcta": 1 },
+      { "pregunta": "¿Qué mantiene a la Luna girando alrededor de la Tierra?", "opciones": ["El viento", "El agua", "La gravedad"], "correcta": 2 },
+      { "pregunta": "¿Por qué los astronautas dan saltos largos en la Luna?", "opciones": ["Porque llevan zapatos especiales", "Porque allí la gravedad es menor", "Porque no pesan nada en ningún sitio"], "correcta": 1 },
+      { "pregunta": "Si lanzas una piedra hacia arriba, ¿qué ocurre después?", "opciones": ["Se queda flotando", "Sigue subiendo siempre", "Vuelve a caer"], "correcta": 2 }
+    ]
+  }
+]
