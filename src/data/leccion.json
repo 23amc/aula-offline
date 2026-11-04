@@ -1,0 +1,12 @@
+{
+  "id": "mates-1",
+  "titulo": "Sumas y restas",
+  "texto": "Sumar es juntar cantidades. Si tienes 3 manzanas y te dan 2 más, ahora tienes 5. Restar es quitar. Si tienes 5 manzanas y te comes 2, te quedan 3.",
+  "preguntas": [
+    { "pregunta": "¿Cuánto es 3 + 2?", "opciones": ["4", "5", "6"], "correcta": 1 },
+    { "pregunta": "¿Cuánto es 5 - 2?", "opciones": ["3", "2", "7"], "correcta": 0 },
+    { "pregunta": "Tienes 4 lápices y te dan 3. ¿Cuántos tienes?", "opciones": ["1", "6", "7"], "correcta": 2 },
+    { "pregunta": "¿Cuánto es 10 - 5?", "opciones": ["5", "15", "4"], "correcta": 0 },
+    { "pregunta": "¿Cuánto es 6 + 3?", "opciones": ["8", "9", "10"], "correcta": 1 }
+  ]
+}
