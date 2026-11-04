@@ -1,5 +1,8 @@
 {
   "appId": "com.aulaoffline.app",
   "appName": "Aula Offline",
-  "webDir": "dist"
+  "webDir": "dist",
+  "ios": {
+    "contentInset": "always"
+  }
 }
