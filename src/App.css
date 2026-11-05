@@ -5,3 +5,20 @@
 button { display: block; width: 100%; padding: 14px; margin: 8px 0; font-size: 18px; border-radius: 8px; border: none; background: #2563eb; color: white; }
 input { width: 100%; padding: 12px; font-size: 18px; box-sizing: border-box; margin-bottom: 8px; }
 button.secundario { background: #e5e7eb; color: #111827; }
+button:disabled { opacity: 0.6; }
+label { display: block; margin-bottom: 8px; font-size: 14px; color: #374151; }
+label input, label select, label textarea { margin-top: 4px; }
+select, textarea { width: 100%; padding: 12px; font-size: 18px; box-sizing: border-box; font-family: inherit; }
+.pestanas { display: flex; gap: 8px; margin-bottom: 8px; }
+.pestanas button { margin: 0 0 8px; padding: 12px 4px; font-size: 16px; }
+.error { color: #b91c1c; }
+.aviso { color: #166534; }
+.ayuda { font-size: 14px; color: #4b5563; }
+.conflicto { padding: 8px 12px; margin-bottom: 16px; border: 1px solid #b91c1c; border-radius: 8px; }
+.notas { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px; }
+.notas th, .notas td { padding: 8px 4px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+.tarea { margin: 0 0 16px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; }
+.opcion { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.opcion input { margin: 0; }
+.opcion input[type='radio'] { width: 24px; height: 24px; flex: none; }
+button.quitar { width: 44px; flex: none; margin: 0; padding: 10px 0; }

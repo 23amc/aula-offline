@@ -1,38 +1,81 @@
-import { useState, useEffect } from 'react'
-import lecciones from './data/lecciones.json'
+import { useCallback, useEffect, useState } from 'react'
+import Acceso from './Acceso'
+import PanelDocente from './PanelDocente'
+import {
+  cambiarAlias,
+  cerrarSesion,
+  contarPendientes,
+  cuentaActual,
+  guardarResultado,
+  leerLecciones,
+  sincronizar,
+} from './datos'
 import './App.css'
 
-function guardarResultado(resultado) {
-  const lista = JSON.parse(localStorage.getItem('resultados') || '[]')
-  lista.push(resultado)
-  localStorage.setItem('resultados', JSON.stringify(lista))
-}
-
 export default function App() {
-  const [alias, setAlias] = useState(localStorage.getItem('alias') || '')
-  const [escrito, setEscrito] = useState('')
-  const [pantalla, setPantalla] = useState(alias ? 'menu' : 'inicio')
+  const [cuenta, setCuenta] = useState(cuentaActual)
+  const [pinDocente, setPinDocente] = useState(null)
+  const [pantalla, setPantalla] = useState(cuenta ? 'menu' : 'acceso')
+  const [lecciones, setLecciones] = useState(leerLecciones)
   const [leccion, setLeccion] = useState(null)
   const [actual, setActual] = useState(0)
   const [puntos, setPuntos] = useState(0)
   const [online, setOnline] = useState(navigator.onLine)
+  const [nuevoAlias, setNuevoAlias] = useState('')
+  const [errorAlias, setErrorAlias] = useState('')
+
+  const refrescar = useCallback(() => {
+    setLecciones(leerLecciones())
+    setCuenta(cuentaActual())
+  }, [])
+
+  const sincronizarYRefrescar = () => sincronizar().then(refrescar)
 
   useEffect(() => {
-    const conectar = () => setOnline(true)
+    const conectar = () => {
+      setOnline(true)
+      sincronizar().then(refrescar)
+    }
     const desconectar = () => setOnline(false)
     window.addEventListener('online', conectar)
     window.addEventListener('offline', desconectar)
+    sincronizar().then(refrescar)
     return () => {
       window.removeEventListener('online', conectar)
       window.removeEventListener('offline', desconectar)
     }
-  }, [])
+  }, [refrescar])
 
-  function entrar() {
-    if (escrito.trim() === '') return
-    localStorage.setItem('alias', escrito.trim())
-    setAlias(escrito.trim())
+  function entrarComoAlumno(c) {
+    setCuenta(c)
     setPantalla('menu')
+    sincronizarYRefrescar()
+  }
+
+  function entrarComoDocente(pin) {
+    setPinDocente(pin)
+    setPantalla('docente')
+  }
+
+  function salirDocente() {
+    setPinDocente(null)
+    setPantalla('acceso')
+  }
+
+  function salirAlumno() {
+    cerrarSesion()
+    setCuenta(null)
+    setPantalla('acceso')
+  }
+
+  function guardarNuevoAlias() {
+    const r = cambiarAlias(cuenta, nuevoAlias)
+    setErrorAlias(r.error ?? '')
+    if (r.cuenta) {
+      setCuenta(r.cuenta)
+      setNuevoAlias('')
+      sincronizarYRefrescar()
+    }
   }
 
   function elegir(l) {
@@ -49,14 +92,14 @@ export default function App() {
       setActual(actual + 1)
     } else {
       guardarResultado({
-        alias: alias,
+        alias: cuenta.alias,
         leccion: leccion.id,
         puntos: nuevosPuntos,
         total: leccion.preguntas.length,
         fecha: new Date().toISOString(),
-        enviado: false,
       })
       setPantalla('fin')
+      sincronizarYRefrescar()
     }
   }
 
@@ -66,7 +109,7 @@ export default function App() {
     setPantalla('leccion')
   }
 
-  const pendientes = JSON.parse(localStorage.getItem('resultados') || '[]').filter((r) => !r.enviado).length
+  const pendientes = cuenta ? contarPendientes(cuenta.alias) : 0
 
   return (
     <div className="app">
@@ -74,24 +117,37 @@ export default function App() {
         {online ? 'Con conexión' : 'Sin conexión: todo se guarda en tu móvil'}
       </div>
 
-      {pantalla === 'inicio' && (
-        <div>
-          <h1>Aula Offline</h1>
-          <p>Elige un alias (no uses tu nombre real):</p>
-          <input value={escrito} onChange={(e) => setEscrito(e.target.value)} placeholder="Ej: Estrella-42" />
-          <button onClick={entrar}>Entrar</button>
-        </div>
+      {pantalla === 'acceso' && <Acceso onAlumno={entrarComoAlumno} onDocente={entrarComoDocente} />}
+
+      {pantalla === 'docente' && (
+        <PanelDocente
+          pin={pinDocente}
+          online={online}
+          onSalir={salirDocente}
+          onLeccionesCambiadas={() => setLecciones(leerLecciones())}
+        />
       )}
 
       {pantalla === 'menu' && (
         <div>
-          <h1>Hola, {alias}</h1>
+          <h1>Hola, {cuenta.alias}</h1>
+          {cuenta.conflicto && (
+            <div className="conflicto">
+              <p className="error" role="alert">
+                Ya existe otra cuenta con este alias, así que tus notas no pueden enviarse. Elige otro alias; no perderás tus notas.
+              </p>
+              <input aria-label="Nuevo alias" value={nuevoAlias} maxLength={30} onChange={(e) => setNuevoAlias(e.target.value)} />
+              {errorAlias && <p className="error" role="alert">{errorAlias}</p>}
+              <button onClick={guardarNuevoAlias}>Cambiar alias</button>
+            </div>
+          )}
           <p>¿Qué quieres aprender hoy?</p>
           {lecciones.map((l) => (
             <button key={l.id} onClick={() => elegir(l)}>
               {l.asignatura}: {l.titulo}
             </button>
           ))}
+          <button className="secundario" onClick={salirAlumno}>Cerrar sesión</button>
         </div>
       )}
 
