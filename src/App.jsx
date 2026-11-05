@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import Acceso from './Acceso'
 import { claveTarea } from './actividades'
 import Actividad from './Actividad'
+import Asistente from './Asistente'
 import Ilustracion from './Ilustracion'
 import Mascota from './Mascota'
 import MenuAlumno from './MenuAlumno'
@@ -42,6 +43,7 @@ export default function App() {
   const [pantalla, setPantalla] = useState(cuenta ? 'menu' : 'acceso')
   const [pasoAcceso, setPasoAcceso] = useState('inicio')
   const [seccion, setSeccion] = useState('lecciones')
+  const [panel, setPanel] = useState(null)
   const [lecciones, setLecciones] = useState(leerLecciones)
   const [tests, setTests] = useState(leerTests)
   const [leccion, setLeccion] = useState(null)
@@ -119,6 +121,7 @@ export default function App() {
 
   function salirDocente() {
     setPinDocente(null)
+    setPanel(null)
     setPasoAcceso('inicio')
     setPantalla('acceso')
   }
@@ -126,6 +129,7 @@ export default function App() {
   function salirAlumno() {
     cerrarSesion()
     setCuenta(null)
+    setPanel(null)
     setPasoAcceso('inicio')
     setPantalla('acceso')
   }
@@ -189,6 +193,15 @@ export default function App() {
     }
   }
 
+  function alternarPanel(nombre) {
+    setPanel(panel === nombre ? null : nombre)
+  }
+
+  const enActividad = pantalla === 'leccion' || pantalla === 'quiz' || pantalla === 'fin'
+  const enTest = pantalla === 'quiz' && tests.some((t) => t.id === leccion?.id)
+  // Solo una lección real da contexto: los tests y el refuerzo no tienen texto que explicar.
+  const leccionAbierta = enActividad && lecciones.some((l) => l.id === leccion?.id) ? leccion : null
+
   const pendientes = cuenta ? contarPendientes(cuenta.alias) : 0
 
   if (portada) {
@@ -210,7 +223,18 @@ export default function App() {
       </div>
 
       {/* Fuera de las pantallas para mantener el dibujo al navegar; al cerrar sesión se borra. */}
-      {pantalla !== 'acceso' && <Pizarra />}
+      {pantalla !== 'acceso' && (
+        <>
+          <Pizarra abierta={panel === 'pizarra'} onAlternar={() => alternarPanel('pizarra')} />
+          <Asistente
+            abierta={panel === 'ia'}
+            onAlternar={() => alternarPanel('ia')}
+            lecciones={lecciones}
+            leccionActual={leccionAbierta}
+            enTest={enTest}
+          />
+        </>
+      )}
 
       {pantalla === 'acceso' && (
         <Acceso paso={pasoAcceso} onCambiarPaso={setPasoAcceso} onAlumno={entrarComoAlumno} onDocente={entrarComoDocente} />

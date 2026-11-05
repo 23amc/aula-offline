@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import PanelLateral from './PanelLateral'
 
 // Resolución fija: el dibujo no se pierde al plegar la pizarra ni al girar el móvil.
 const ANCHO = 1200
@@ -16,8 +17,7 @@ const COLORES = [
   { nombre: 'Morado', valor: '#9333ea' },
 ]
 
-export default function Pizarra() {
-  const [abierta, setAbierta] = useState(false)
+export default function Pizarra({ abierta, onAlternar }) {
   const [color, setColor] = useState(COLORES[0].valor)
   const lienzo = useRef(null)
   const punteroActivo = useRef(null)
@@ -67,12 +67,7 @@ export default function Pizarra() {
   }
 
   return (
-    <aside className={abierta ? 'pizarra abierta' : 'pizarra'}>
-      <button className="pizarra-pestana" aria-expanded={abierta} onClick={() => setAbierta(!abierta)}>
-        {abierta ? 'Cerrar' : 'Pizarra'}
-      </button>
-      {/* Se oculta en lugar de desmontarse para conservar el dibujo. */}
-      <div className="pizarra-contenido" inert={!abierta}>
+    <PanelLateral nombre="Pizarra" posicion="arriba" abierto={abierta} onAlternar={onAlternar}>
         <div className="pizarra-colores">
           {COLORES.map((c) => (
             <button
@@ -85,6 +80,7 @@ export default function Pizarra() {
             />
           ))}
           <button className="pizarra-goma secundario" aria-pressed={color === BLANCO} onClick={() => setColor(BLANCO)}>Goma</button>
+          <button className="pizarra-borrar" onClick={borrarTodo}>Borrar todo</button>
         </div>
         <canvas
           ref={lienzo}
@@ -97,8 +93,6 @@ export default function Pizarra() {
           onPointerUp={terminar}
           onPointerCancel={terminar}
         />
-        <button className="secundario" onClick={borrarTodo}>Borrar todo</button>
-      </div>
-    </aside>
+    </PanelLateral>
   )
 }

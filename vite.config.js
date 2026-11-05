@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  worker: { format: 'es' },
   plugins: [
     react(),
     VitePWA({
@@ -23,6 +24,15 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,json}'],
+        // El motor de IA pesa varios MB: solo lo descarga quien activa la IA avanzada.
+        globIgnores: ['**/motorIA-*.js', '**/ia.worker-*.js'],
+        runtimeCaching: [
+          {
+            urlPattern: /\/assets\/(motorIA|ia\.worker)-[^/]+\.js$/,
+            handler: 'CacheFirst',
+            options: { cacheName: 'motor-ia', expiration: { maxEntries: 4 } },
+          },
+        ],
       },
     }),
   ],
