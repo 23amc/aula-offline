@@ -245,7 +245,7 @@ function EditorLeccion({ pin, inicial, esTest, onGuardada, onCancelar }) {
 
   return (
     <div>
-      <h2>{leccion.id ? 'Modificar' : 'Nuevo'}{esTest ? ' test' : leccion.id ? ' lección' : 'a lección'}</h2>
+      <h2>{esTest ? (leccion.id ? 'Modificar test' : 'Nuevo test') : (leccion.id ? 'Modificar lección' : 'Nueva lección')}</h2>
       <label>Asignatura<input value={leccion.asignatura} onChange={(e) => setLeccion({ ...leccion, asignatura: e.target.value })} /></label>
       <label>Título<input value={leccion.titulo} onChange={(e) => setLeccion({ ...leccion, titulo: e.target.value })} /></label>
       {!esTest && (

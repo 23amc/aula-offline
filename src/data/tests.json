@@ -7,44 +7,64 @@
       { "imagen": "manzanas:7+2", "pregunta": "¿Cuánto es 7 + 2?", "opciones": ["8", "9", "10"], "correcta": 1 },
       { "imagen": "manzanas:8-3", "pregunta": "¿Cuánto es 8 - 3?", "opciones": ["5", "6", "11"], "correcta": 0 },
       { "imagen": "lapices:6-2", "pregunta": "Tienes 6 lápices y regalas 2. ¿Cuántos te quedan?", "opciones": ["8", "3", "4"], "correcta": 2 },
+      { "imagen": "manzanas:9+1", "pregunta": "¿Cuánto es 9 + 1?", "opciones": ["10", "8", "11"], "correcta": 0 },
+      { "imagen": "manzanas:7-4", "pregunta": "¿Cuánto es 7 - 4?", "opciones": ["11", "3", "4"], "correcta": 1 },
+      { "imagen": "manzanas:2+6", "pregunta": "Tienes 2 manzanas y compras 6 más. ¿Cuántas tienes?", "opciones": ["4", "7", "8"], "correcta": 2 },
+      { "imagen": "lapices:9-5", "pregunta": "Tienes 9 lápices y pierdes 5. ¿Cuántos te quedan?", "opciones": ["4", "5", "14"], "correcta": 0 },
       { "tipo": "huecos", "pregunta": "Escribe los resultados de estas cuentas:", "frase": "5 + 5 = ___ y 10 - 4 = ___", "respuestas": ["10", "6"] },
-      { "tipo": "unir", "pregunta": "Une cada suma con su resultado:", "pares": [{ "izquierda": "2 + 2", "derecha": "4" }, { "izquierda": "3 + 3", "derecha": "6" }, { "izquierda": "4 + 1", "derecha": "5" }] }
+      { "tipo": "unir", "pregunta": "Une cada suma con su resultado:", "pares": [{ "izquierda": "2 + 2", "derecha": "4" }, { "izquierda": "3 + 3", "derecha": "6" }, { "izquierda": "4 + 1", "derecha": "5" }] },
+      { "tipo": "ordenar", "pregunta": "Ordena los números de menor a mayor:", "pasos": ["2", "5", "7", "9"] }
     ]
   },
   {
     "id": "test-lengua-1",
     "asignatura": "Literatura",
-    "titulo": "Test de la tortuga y el río",
+    "titulo": "Test de lectura y cuentos",
     "preguntas": [
-      { "imagen": "tortuga-rio", "pregunta": "¿Qué animal es el protagonista de la fábula?", "opciones": ["Un conejo", "Una tortuga", "Un pez"], "correcta": 1 },
+      { "imagen": "tortuga-rio", "pregunta": "¿Qué animal es el protagonista de la fábula que has leído?", "opciones": ["Un conejo", "Una tortuga", "Un pez"], "correcta": 1 },
       { "imagen": "animales-dudan", "pregunta": "¿Cómo reaccionó la tortuga ante lo que le decían?", "opciones": ["No discutió", "Se enfadó mucho", "Volvió a casa"], "correcta": 0 },
-      { "imagen": "tortuga-pasos", "pregunta": "¿Cuánto tardó la tortuga en cruzar?", "opciones": ["Un día", "Un año", "Una semana"], "correcta": 2 },
-      { "tipo": "huecos", "pregunta": "Completa con la palabra que falta:", "frase": "La enseñanza que deja una fábula se llama ___.", "respuestas": ["moraleja"] },
-      { "tipo": "emparejar", "pregunta": "Une cada palabra con su significado:", "pares": [{ "izquierda": "Fábula", "derecha": "Cuento con animales" }, { "izquierda": "Moraleja", "derecha": "Enseñanza" }, { "izquierda": "Orilla", "derecha": "Borde del río" }] }
+      { "imagen": "tortuga-pasos", "pregunta": "¿Cuánto tardó la tortuga en llegar a la otra orilla?", "opciones": ["Un día", "Un año", "Una semana"], "correcta": 2 },
+      { "pregunta": "¿Qué tenía que atravesar la tortuga?", "opciones": ["Un río", "Una montaña", "Un bosque"], "correcta": 0 },
+      { "imagen": "fabula", "pregunta": "¿Cómo se llama la persona que escribe un libro?", "opciones": ["Lector", "Autor", "Librero"], "correcta": 1 },
+      { "pregunta": "¿Qué es el título de un cuento?", "opciones": ["Su última página", "Su dibujo", "Su nombre"], "correcta": 2 },
+      { "pregunta": "¿Cómo se llaman los seres que aparecen en un cuento?", "opciones": ["Personajes", "Capítulos", "Versos"], "correcta": 0 },
+      { "tipo": "huecos", "pregunta": "Completa con la palabra que falta:", "frase": "El lugar donde se prestan libros para leer se llama ___.", "respuestas": ["biblioteca"] },
+      { "tipo": "emparejar", "pregunta": "Une cada tipo de texto con lo que es:", "pares": [{ "izquierda": "Poema", "derecha": "Texto en verso" }, { "izquierda": "Receta", "derecha": "Pasos para cocinar" }, { "izquierda": "Carta", "derecha": "Mensaje para alguien" }] },
+      { "tipo": "ordenar", "pregunta": "Ordena las partes de un cuento:", "pasos": ["Inicio", "Nudo", "Desenlace"] }
     ]
   },
   {
     "id": "test-quimica-1",
     "asignatura": "Química",
-    "titulo": "Test de los estados del agua",
+    "titulo": "Test de la materia y el agua",
     "preguntas": [
       { "pregunta": "¿En qué estado está el agua de la lluvia?", "opciones": ["Sólido", "Líquido", "Gas"], "correcta": 1 },
       { "imagen": "congelar", "pregunta": "¿En qué estado está la nieve?", "opciones": ["Sólido", "Líquido", "Gas"], "correcta": 0 },
-      { "imagen": "olla-hirviendo", "pregunta": "¿Qué sale de una olla con agua hirviendo?", "opciones": ["Hielo", "Arena", "Vapor"], "correcta": 2 },
-      { "tipo": "ordenar", "pregunta": "Ordena lo que le pasa a un cubito de hielo que se calienta mucho:", "pasos": ["Es hielo sólido", "Se derrite y es agua líquida", "Hierve y se convierte en vapor"] },
-      { "tipo": "unir", "pregunta": "Une cada cosa con su estado:", "pares": [{ "izquierda": "Una piedra", "derecha": "Sólido" }, { "izquierda": "La leche", "derecha": "Líquido" }, { "izquierda": "El aire", "derecha": "Gas" }] }
+      { "imagen": "hielo", "pregunta": "¿Qué le pasa a un cubito de hielo fuera del congelador?", "opciones": ["Se hace más grande", "No cambia", "Se derrite"], "correcta": 2 },
+      { "imagen": "olla-hirviendo", "pregunta": "¿A cuántos grados hierve el agua a nivel del mar?", "opciones": ["100 °C", "10 °C", "0 °C"], "correcta": 0 },
+      { "pregunta": "¿A cuántos grados se congela el agua?", "opciones": ["50 °C", "0 °C", "100 °C"], "correcta": 1 },
+      { "pregunta": "¿Por qué se seca la ropa mojada al sol?", "opciones": ["El agua se congela", "La tela se bebe el agua", "El agua se evapora"], "correcta": 2 },
+      { "imagen": "vapor", "pregunta": "¿Qué pasa cuando el vapor toca un cristal frío?", "opciones": ["Forma gotitas de agua", "Rompe el cristal", "Se convierte en nieve"], "correcta": 0 },
+      { "pregunta": "¿Qué estado de la materia tiene forma propia y no se derrama?", "opciones": ["Gas", "Sólido", "Líquido"], "correcta": 1 },
+      { "tipo": "ordenar", "pregunta": "Ordena lo que le pasa a un cubito de hielo que se calienta mucho:", "pasos": ["Es hielo sólido", "Se derrite y es agua líquida", "Hierve y es vapor"] },
+      { "tipo": "unir", "pregunta": "Une cada cosa con su estado:", "pares": [{ "izquierda": "Un libro", "derecha": "Sólido" }, { "izquierda": "La leche", "derecha": "Líquido" }, { "izquierda": "El aire", "derecha": "Gas" }] }
     ]
   },
   {
     "id": "test-fisica-1",
     "asignatura": "Física",
-    "titulo": "Test de la gravedad",
+    "titulo": "Test de fuerzas y peso",
     "preguntas": [
-      { "imagen": "pelota-cae", "pregunta": "¿Hacia dónde cae una manzana cuando se suelta del árbol?", "opciones": ["Hacia el cielo", "Hacia el suelo", "Hacia un lado"], "correcta": 1 },
-      { "imagen": "astronauta-salto", "pregunta": "¿Dónde es menor la gravedad?", "opciones": ["En la Luna", "En la Tierra", "Es igual en las dos"], "correcta": 0 },
-      { "imagen": "tierra-gravedad", "pregunta": "¿Qué fuerza hace que la lluvia caiga al suelo?", "opciones": ["El calor", "La luz", "La gravedad"], "correcta": 2 },
-      { "tipo": "huecos", "pregunta": "Completa con la palabra que falta:", "frase": "La Luna gira alrededor de la ___.", "respuestas": ["Tierra"] },
-      { "tipo": "ordenar", "pregunta": "Ordena lo que pasa al lanzar una pelota hacia arriba:", "pasos": ["La lanzas hacia arriba", "Sube cada vez más despacio", "Se para un instante", "Cae al suelo"] }
+      { "imagen": "tierra-gravedad", "pregunta": "¿Qué científico es famoso por estudiar la gravedad?", "opciones": ["Miguel de Cervantes", "Isaac Newton", "Pablo Picasso"], "correcta": 1 },
+      { "pregunta": "En bici y sin pedalear, ¿dónde es más fácil avanzar?", "opciones": ["Cuesta abajo", "Cuesta arriba", "Es igual"], "correcta": 0 },
+      { "pregunta": "¿Por qué los ríos bajan de las montañas hacia el mar?", "opciones": ["Por el viento", "Por los peces", "Porque la gravedad tira del agua"], "correcta": 2 },
+      { "pregunta": "¿Qué instrumento sirve para saber cuánto pesa algo?", "opciones": ["Una báscula", "Un termómetro", "Un reloj"], "correcta": 0 },
+      { "pregunta": "¿En qué unidad compramos normalmente la fruta en la tienda?", "opciones": ["Litros", "Kilos", "Metros"], "correcta": 1 },
+      { "pregunta": "¿Qué hacen los astronautas dentro de una estación espacial?", "opciones": ["Caminan como en casa", "Se quedan pegados al suelo", "Flotan"], "correcta": 2 },
+      { "imagen": "luna-orbita", "pregunta": "¿Qué es más grande?", "opciones": ["La Tierra", "La Luna", "Son iguales"], "correcta": 0 },
+      { "pregunta": "¿Para qué sirve un paracaídas?", "opciones": ["Para subir más alto", "Para caer más despacio", "Para nadar"], "correcta": 1 },
+      { "tipo": "huecos", "pregunta": "Completa con la palabra que falta:", "frase": "Un objeto que cae desde muy alto va cada vez más ___.", "respuestas": ["rápido"] },
+      { "tipo": "ordenar", "pregunta": "Ordena lo que pasa al tirarte por un tobogán:", "pasos": ["Subes las escaleras", "Te sientas arriba", "Bajas deslizándote", "Llegas al suelo"] }
     ]
   }
 ]
