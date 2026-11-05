@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { docenteEntrar, entrarAlumno, registrarAlumno } from './datos'
+import logo from './assets/logo.png'
 
-export default function Acceso({ onAlumno, onDocente }) {
-  const [paso, setPaso] = useState('inicio')
+export default function Acceso({ paso, onCambiarPaso, onAlumno, onDocente }) {
   const [rol, setRol] = useState('alumno')
   const [alias, setAlias] = useState(localStorage.getItem('alias') || '')
   const [pin, setPin] = useState('')
@@ -22,7 +22,7 @@ export default function Acceso({ onAlumno, onDocente }) {
   function abrir(nuevoPaso) {
     limpiar()
     setRol('alumno')
-    setPaso(nuevoPaso)
+    onCambiarPaso(nuevoPaso)
   }
 
   function cambiarRol(nuevoRol) {
@@ -53,8 +53,8 @@ export default function Acceso({ onAlumno, onDocente }) {
 
   if (paso === 'inicio') {
     return (
-      <div>
-        <h1>EduGo</h1>
+      <div className="inicio">
+        <img src={logo} alt="EduGo" />
         <button onClick={() => abrir('registro')}>Registrarse</button>
         <button className="secundario" onClick={() => abrir('sesion')}>Inicio de sesión</button>
       </div>
@@ -95,7 +95,7 @@ export default function Acceso({ onAlumno, onDocente }) {
         {error && <p className="error" role="alert">{error}</p>}
         <button type="submit" disabled={ocupado}>{ocupado ? 'Un momento…' : textoEnviar}</button>
       </form>
-      <button className="secundario" onClick={() => setPaso('inicio')}>Volver</button>
+      <button className="secundario" onClick={() => onCambiarPaso('inicio')}>Volver</button>
     </div>
   )
 }

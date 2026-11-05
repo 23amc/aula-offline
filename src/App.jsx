@@ -20,6 +20,7 @@ export default function App() {
   const [cuenta, setCuenta] = useState(cuentaActual)
   const [pinDocente, setPinDocente] = useState(null)
   const [pantalla, setPantalla] = useState(cuenta ? 'menu' : 'acceso')
+  const [pasoAcceso, setPasoAcceso] = useState('inicio')
   const [lecciones, setLecciones] = useState(leerLecciones)
   const [leccion, setLeccion] = useState(null)
   const [actual, setActual] = useState(0)
@@ -68,12 +69,14 @@ export default function App() {
 
   function salirDocente() {
     setPinDocente(null)
+    setPasoAcceso('inicio')
     setPantalla('acceso')
   }
 
   function salirAlumno() {
     cerrarSesion()
     setCuenta(null)
+    setPasoAcceso('inicio')
     setPantalla('acceso')
   }
 
@@ -132,13 +135,15 @@ export default function App() {
   return (
     <div className="app">
       <div className="barra">
-        <img className="logo-mini" src={logo} alt="EduGo" />
+        {!(pantalla === 'acceso' && pasoAcceso === 'inicio') && <img className="logo-mini" src={logo} alt="EduGo" />}
         <div className={online ? 'estado conectado' : 'estado sin-conexion'}>
           {online ? 'Con conexión' : 'Sin conexión: todo se guarda en tu móvil'}
         </div>
       </div>
 
-      {pantalla === 'acceso' && <Acceso onAlumno={entrarComoAlumno} onDocente={entrarComoDocente} />}
+      {pantalla === 'acceso' && (
+        <Acceso paso={pasoAcceso} onCambiarPaso={setPasoAcceso} onAlumno={entrarComoAlumno} onDocente={entrarComoDocente} />
+      )}
 
       {pantalla === 'docente' && (
         <PanelDocente
