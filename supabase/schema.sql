@@ -171,6 +171,48 @@ begin
 end;
 $$;
 
+-- Comprueba una tarea según su tipo: opciones (por defecto), emparejar, ordenar o huecos.
+create or replace function privado.tarea_valida(p jsonb)
+returns boolean language plpgsql set search_path = '' as $$
+declare
+  v_tipo text := coalesce(p->>'tipo', 'opciones');
+begin
+  if jsonb_typeof(p) is distinct from 'object' or coalesce(btrim(p->>'pregunta'), '') = '' then
+    return false;
+  end if;
+
+  if v_tipo = 'opciones' then
+    if jsonb_typeof(p->'opciones') is distinct from 'array' or jsonb_array_length(p->'opciones') < 2
+       or jsonb_typeof(p->'correcta') is distinct from 'number' or (p->>'correcta') !~ '^[0-9]+$'
+       or (p->>'correcta')::int >= jsonb_array_length(p->'opciones') then
+      return false;
+    end if;
+    return not exists (select 1 from jsonb_array_elements(p->'opciones') e where coalesce(btrim(e #>> '{}'), '') = '');
+  elsif v_tipo = 'emparejar' then
+    if jsonb_typeof(p->'pares') is distinct from 'array' or jsonb_array_length(p->'pares') < 2 then
+      return false;
+    end if;
+    return not exists (
+      select 1 from jsonb_array_elements(p->'pares') e
+      where coalesce(btrim(e->>'izquierda'), '') = '' or coalesce(btrim(e->>'derecha'), '') = ''
+    );
+  elsif v_tipo = 'ordenar' then
+    if jsonb_typeof(p->'pasos') is distinct from 'array' or jsonb_array_length(p->'pasos') < 2 then
+      return false;
+    end if;
+    return not exists (select 1 from jsonb_array_elements(p->'pasos') e where coalesce(btrim(e #>> '{}'), '') = '');
+  elsif v_tipo = 'huecos' then
+    if jsonb_typeof(p->'frase') is distinct from 'string' or jsonb_typeof(p->'respuestas') is distinct from 'array'
+       or jsonb_array_length(p->'respuestas') < 1
+       or array_length(regexp_split_to_array(p->>'frase', '_{3,}'), 1) - 1 <> jsonb_array_length(p->'respuestas') then
+      return false;
+    end if;
+    return not exists (select 1 from jsonb_array_elements(p->'respuestas') e where coalesce(btrim(e #>> '{}'), '') = '');
+  end if;
+  return false;
+end;
+$$;
+
 -- Crea la lección si el id es nuevo o la modifica (texto y tareas) si ya existe.
 create or replace function public.docente_guardar_leccion(p_pin text, p_leccion jsonb)
 returns jsonb language plpgsql security definer set search_path = '' as $$
@@ -190,12 +232,7 @@ begin
   end if;
 
   for v_pregunta in select * from jsonb_array_elements(p_leccion->'preguntas') loop
-    if coalesce(btrim(v_pregunta->>'pregunta'), '') = ''
-       or jsonb_typeof(v_pregunta->'opciones') is distinct from 'array'
-       or jsonb_array_length(v_pregunta->'opciones') < 2
-       or jsonb_typeof(v_pregunta->'correcta') is distinct from 'number'
-       or (v_pregunta->>'correcta') !~ '^[0-9]+$'
-       or (v_pregunta->>'correcta')::int >= jsonb_array_length(v_pregunta->'opciones') then
+    if not privado.tarea_valida(v_pregunta) then
       return jsonb_build_object('ok', false, 'motivo', 'leccion_invalida');
     end if;
   end loop;

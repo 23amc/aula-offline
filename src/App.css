@@ -12,6 +12,40 @@ button { display: block; width: 100%; padding: 14px; margin: 8px 0; font-size: 1
 input { width: 100%; padding: 12px; font-size: 18px; box-sizing: border-box; margin-bottom: 8px; }
 button.secundario { background: #e5e7eb; color: #111827; }
 button:disabled { opacity: 0.6; }
+button.correcta, button.correcta:disabled { background: #16a34a; color: white; opacity: 1; animation: acierto 0.35s ease-out; }
+button.incorrecta, button.incorrecta:disabled { background: #dc2626; color: white; opacity: 1; animation: fallo 0.35s ease-in-out; }
+button.activa { background: white; color: #111827; outline: 3px solid #2563eb; outline-offset: -3px; }
+button.siguiente { margin-top: 16px; }
+.mascota { display: block; width: 110px; height: auto; margin: 0 auto; transform-origin: 50% 90%; }
+.mascota-normal { animation: flotar 3s ease-in-out infinite; }
+.mascota-contenta { animation: saltar 0.7s ease-out; }
+.mascota-contenta .mascota-rayos { animation: brillar 0.7s ease-out; transform-origin: 60px 30px; }
+.mascota-animando { animation: balancear 0.8s ease-in-out; }
+.mensaje-mascota { min-height: 1.4em; margin: 8px 0; text-align: center; font-weight: bold; }
+.fila-pareja { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: center; }
+.fila-pareja button { margin: 4px 0; }
+.banco { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.banco button { width: auto; margin: 0; padding: 12px 16px; }
+.lista-orden { padding: 0; margin: 0 0 8px; list-style: none; }
+.lista-orden li { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 8px; margin-bottom: 8px; border: 2px solid #d1d5db; border-radius: 8px; }
+.lista-orden li.bien { border-color: #16a34a; background: #dcfce7; }
+.lista-orden li.mal { border-color: #dc2626; background: #fee2e2; }
+.flechas { display: flex; gap: 4px; flex: none; }
+.flechas button { width: 44px; margin: 0; padding: 10px 0; }
+.frase { font-size: 18px; line-height: 2.4; }
+input.hueco { display: inline-block; width: 6em; margin: 0 4px; padding: 6px 8px; vertical-align: baseline; }
+input.hueco.bien { border: 2px solid #16a34a; background: #dcfce7; }
+input.hueco.mal { border: 2px solid #dc2626; background: #fee2e2; }
+.solucion { padding: 8px 12px; border-radius: 8px; background: #f3f4f6; }
+@keyframes acierto { 50% { transform: scale(1.04); } }
+@keyframes fallo { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes flotar { 50% { transform: translateY(-4px); } }
+@keyframes saltar { 30% { transform: translateY(-18px) scale(1.05); } 60% { transform: translateY(0) scale(0.97); } }
+@keyframes brillar { 40% { transform: scale(1.25); } }
+@keyframes balancear { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+@media (prefers-reduced-motion: reduce) {
+  button.correcta, button.incorrecta, .mascota, .mascota-rayos { animation: none !important; }
+}
 label { display: block; margin-bottom: 8px; font-size: 14px; color: #374151; }
 label input, label select, label textarea { margin-top: 4px; }
 select, textarea { width: 100%; padding: 12px; font-size: 18px; box-sizing: border-box; font-family: inherit; }

@@ -9,7 +9,8 @@
       { "pregunta": "¿Cuánto es 5 - 2?", "opciones": ["3", "2", "7"], "correcta": 0 },
       { "pregunta": "Tienes 4 lápices y te dan 3. ¿Cuántos tienes?", "opciones": ["1", "6", "7"], "correcta": 2 },
       { "pregunta": "¿Cuánto es 10 - 5?", "opciones": ["5", "15", "4"], "correcta": 0 },
-      { "pregunta": "¿Cuánto es 6 + 3?", "opciones": ["8", "9", "10"], "correcta": 1 }
+      { "pregunta": "¿Cuánto es 6 + 3?", "opciones": ["8", "9", "10"], "correcta": 1 },
+      { "tipo": "huecos", "pregunta": "Escribe los resultados:", "frase": "4 + 4 = ___ y 9 - 3 = ___", "respuestas": ["8", "6"] }
     ]
   },
   {
@@ -22,7 +23,8 @@
       { "pregunta": "¿Para qué quería la tortuga cruzar el río?", "opciones": ["Para buscar comida", "Para ver a su familia", "Para jugar"], "correcta": 1 },
       { "pregunta": "¿Qué le decían los demás animales?", "opciones": ["Que la ayudarían", "Que el río estaba seco", "Que era imposible porque era lenta"], "correcta": 2 },
       { "pregunta": "¿Cómo logró cruzar el río?", "opciones": ["Corriendo muy rápido", "Avanzando un poco cada día sin parar", "Pidiendo un barco"], "correcta": 1 },
-      { "pregunta": "¿Cuál es la moraleja?", "opciones": ["Hay que correr siempre", "Con paciencia y constancia se llega lejos", "No hay que viajar"], "correcta": 1 }
+      { "pregunta": "¿Cuál es la moraleja?", "opciones": ["Hay que correr siempre", "Con paciencia y constancia se llega lejos", "No hay que viajar"], "correcta": 1 },
+      { "tipo": "ordenar", "pregunta": "Ordena lo que pasa en la fábula:", "pasos": ["La tortuga quiere cruzar el río", "Los animales le dicen que es imposible", "Avanza un poco cada día", "Llega a la otra orilla"] }
     ]
   },
   {
@@ -35,7 +37,8 @@
       { "pregunta": "¿Cómo se llama el agua en estado sólido?", "opciones": ["Vapor", "Hielo", "Niebla"], "correcta": 1 },
       { "pregunta": "¿En qué estado está el vapor de agua?", "opciones": ["Sólido", "Líquido", "Gas"], "correcta": 2 },
       { "pregunta": "¿Qué le pasa al agua cuando se calienta mucho?", "opciones": ["Se convierte en vapor", "Se convierte en hielo", "Desaparece"], "correcta": 0 },
-      { "pregunta": "¿Qué ocurre cuando el agua se enfría mucho?", "opciones": ["Hierve", "Se congela", "Se vuelve gas"], "correcta": 1 }
+      { "pregunta": "¿Qué ocurre cuando el agua se enfría mucho?", "opciones": ["Hierve", "Se congela", "Se vuelve gas"], "correcta": 1 },
+      { "tipo": "emparejar", "pregunta": "Une cada ejemplo con su estado:", "pares": [{ "izquierda": "Hielo", "derecha": "Sólido" }, { "izquierda": "Agua del grifo", "derecha": "Líquido" }, { "izquierda": "Vapor", "derecha": "Gas" }] }
     ]
   },
   {
@@ -48,7 +51,8 @@
       { "pregunta": "¿Qué pasa si sueltas una pelota en el aire?", "opciones": ["Sube", "Cae al suelo", "Se queda quieta"], "correcta": 1 },
       { "pregunta": "¿Qué mantiene a la Luna girando alrededor de la Tierra?", "opciones": ["El viento", "El agua", "La gravedad"], "correcta": 2 },
       { "pregunta": "¿Por qué los astronautas dan saltos largos en la Luna?", "opciones": ["Porque llevan zapatos especiales", "Porque allí la gravedad es menor", "Porque no pesan nada en ningún sitio"], "correcta": 1 },
-      { "pregunta": "Si lanzas una piedra hacia arriba, ¿qué ocurre después?", "opciones": ["Se queda flotando", "Sigue subiendo siempre", "Vuelve a caer"], "correcta": 2 }
+      { "pregunta": "Si lanzas una piedra hacia arriba, ¿qué ocurre después?", "opciones": ["Se queda flotando", "Sigue subiendo siempre", "Vuelve a caer"], "correcta": 2 },
+      { "tipo": "huecos", "pregunta": "Completa la frase:", "frase": "La fuerza que atrae los objetos hacia la Tierra se llama ___.", "respuestas": ["gravedad"] }
     ]
   }
 ]

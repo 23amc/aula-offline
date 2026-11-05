@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import Acceso from './Acceso'
+import Actividad from './Actividad'
+import Mascota from './Mascota'
 import PanelDocente from './PanelDocente'
 import {
   cambiarAlias,
@@ -25,6 +27,7 @@ export default function App() {
   const [leccion, setLeccion] = useState(null)
   const [actual, setActual] = useState(0)
   const [puntos, setPuntos] = useState(0)
+  const [acierto, setAcierto] = useState(null)
   const [online, setOnline] = useState(navigator.onLine)
   const [nuevoAlias, setNuevoAlias] = useState('')
   const [errorAlias, setErrorAlias] = useState('')
@@ -90,35 +93,38 @@ export default function App() {
     }
   }
 
-  function elegir(l) {
-    setLeccion(l)
+  function empezar() {
     setActual(0)
     setPuntos(0)
+    setAcierto(null)
     setPantalla('leccion')
   }
 
-  function responder(opcion) {
-    const nuevosPuntos = opcion === leccion.preguntas[actual].correcta ? puntos + 1 : puntos
-    setPuntos(nuevosPuntos)
+  function elegir(l) {
+    setLeccion(l)
+    empezar()
+  }
+
+  function responder(correcta) {
+    setAcierto(correcta)
+    if (correcta) setPuntos(puntos + 1)
+  }
+
+  function siguiente() {
+    setAcierto(null)
     if (actual + 1 < leccion.preguntas.length) {
       setActual(actual + 1)
     } else {
       guardarResultado({
         alias: cuenta.alias,
         leccion: leccion.id,
-        puntos: nuevosPuntos,
+        puntos,
         total: leccion.preguntas.length,
         fecha: new Date().toISOString(),
       })
       setPantalla('fin')
       sincronizarYRefrescar()
     }
-  }
-
-  function repetir() {
-    setActual(0)
-    setPuntos(0)
-    setPantalla('leccion')
   }
 
   const pendientes = cuenta ? contarPendientes(cuenta.alias) : 0
@@ -189,20 +195,29 @@ export default function App() {
 
       {pantalla === 'quiz' && (
         <div>
+          <Mascota estado={acierto === null ? 'normal' : acierto ? 'contenta' : 'animando'} />
+          <p className="mensaje-mascota" role="status">
+            {acierto === true && '¡Muy bien!'}
+            {acierto === false && '¡Casi! Mira la respuesta y sigue adelante.'}
+          </p>
           <p>Pregunta {actual + 1} de {leccion.preguntas.length}</p>
           <h2>{leccion.preguntas[actual].pregunta}</h2>
-          {leccion.preguntas[actual].opciones.map((texto, i) => (
-            <button key={i} onClick={() => responder(i)}>{texto}</button>
-          ))}
+          <Actividad key={actual} tarea={leccion.preguntas[actual]} onResponder={responder} />
+          {acierto !== null && (
+            <button className="siguiente" onClick={siguiente}>
+              {actual + 1 < leccion.preguntas.length ? 'Siguiente' : 'Ver resultado'}
+            </button>
+          )}
         </div>
       )}
 
       {pantalla === 'fin' && (
         <div>
+          <Mascota estado={puntos * 2 >= leccion.preguntas.length ? 'contenta' : 'animando'} />
           <h1>¡Terminaste!</h1>
           <p>Has acertado {puntos} de {leccion.preguntas.length}</p>
           <p>Resultados pendientes de enviar al docente: {pendientes}</p>
-          <button onClick={repetir}>Repetir</button>
+          <button onClick={empezar}>Repetir</button>
           <button className="secundario" onClick={() => setPantalla('menu')}>Volver al menú</button>
         </div>
       )}

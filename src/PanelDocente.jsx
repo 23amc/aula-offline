@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
+import { contarHuecos, limpiarTarea, TIPOS, tareaVacia, tipoDe, validarTarea } from './actividades'
 import { docenteGuardarLeccion, docenteResultados, leerLecciones } from './datos'
-
-const preguntaVacia = () => ({ pregunta: '', opciones: ['', '', ''], correcta: 0 })
 
 function Notas({ pin, lecciones }) {
   const [resultados, setResultados] = useState(null)
@@ -64,12 +63,138 @@ function validar(leccion) {
   }
   if (leccion.preguntas.length === 0) return 'Añade al menos una tarea.'
   for (const [i, p] of leccion.preguntas.entries()) {
-    if (!p.pregunta.trim()) return `Escribe el enunciado de la tarea ${i + 1}.`
-    if (p.opciones.length < 2 || p.opciones.some((o) => !o.trim())) {
-      return `La tarea ${i + 1} necesita al menos 2 opciones, todas con texto.`
-    }
+    const problema = validarTarea(p, i + 1)
+    if (problema) return problema
   }
   return null
+}
+
+function ListaEditable({ elementos, min, textoAnadir, onAnadir, onQuitar, renderizar }) {
+  return (
+    <>
+      {elementos.map((e, k) => (
+        <div key={k} className="opcion">
+          {renderizar(e, k)}
+          <button
+            type="button"
+            className="secundario quitar"
+            aria-label={`Quitar ${k + 1}`}
+            disabled={elementos.length <= min}
+            onClick={() => onQuitar(k)}
+          >×</button>
+        </div>
+      ))}
+      <button type="button" className="secundario" onClick={onAnadir}>{textoAnadir}</button>
+    </>
+  )
+}
+
+function EditorTarea({ tarea, numero, onCambiar, onQuitar }) {
+  const tipo = tipoDe(tarea)
+  const sustituir = (lista, k, valor) => lista.map((x, y) => (y === k ? valor : x))
+  const sin = (lista, k) => lista.filter((_, y) => y !== k)
+
+  function quitarOpcion(k) {
+    const correcta = k === tarea.correcta ? 0 : k < tarea.correcta ? tarea.correcta - 1 : tarea.correcta
+    onCambiar({ opciones: sin(tarea.opciones, k), correcta })
+  }
+
+  return (
+    <fieldset className="tarea">
+      <legend>Tarea {numero}</legend>
+      <label>
+        Tipo de actividad
+        <select value={tipo} onChange={(e) => onCambiar(tareaVacia(e.target.value, tarea.pregunta), true)}>
+          {TIPOS.map((t) => <option key={t.id} value={t.id}>{t.nombre}</option>)}
+        </select>
+      </label>
+      <label>Enunciado<input value={tarea.pregunta} onChange={(e) => onCambiar({ pregunta: e.target.value })} /></label>
+
+      {tipo === 'opciones' && (
+        <>
+          <p className="ayuda">Opciones (marca la correcta):</p>
+          <ListaEditable
+            elementos={tarea.opciones}
+            min={2}
+            textoAnadir="Añadir opción"
+            onAnadir={() => onCambiar({ opciones: [...tarea.opciones, ''] })}
+            onQuitar={quitarOpcion}
+            renderizar={(o, k) => (
+              <>
+                <input
+                  type="radio"
+                  name={`correcta-${numero}`}
+                  aria-label={`Opción ${k + 1} correcta`}
+                  checked={tarea.correcta === k}
+                  onChange={() => onCambiar({ correcta: k })}
+                />
+                <input aria-label={`Texto de la opción ${k + 1}`} value={o} onChange={(e) => onCambiar({ opciones: sustituir(tarea.opciones, k, e.target.value) })} />
+              </>
+            )}
+          />
+        </>
+      )}
+
+      {tipo === 'emparejar' && (
+        <>
+          <p className="ayuda">Escribe las parejas correctas; al alumno se le mostrarán desordenadas.</p>
+          <ListaEditable
+            elementos={tarea.pares}
+            min={2}
+            textoAnadir="Añadir pareja"
+            onAnadir={() => onCambiar({ pares: [...tarea.pares, { izquierda: '', derecha: '' }] })}
+            onQuitar={(k) => onCambiar({ pares: sin(tarea.pares, k) })}
+            renderizar={(par, k) => (
+              <>
+                <input aria-label={`Pareja ${k + 1}, primer elemento`} value={par.izquierda} onChange={(e) => onCambiar({ pares: sustituir(tarea.pares, k, { ...par, izquierda: e.target.value }) })} />
+                <input aria-label={`Pareja ${k + 1}, segundo elemento`} value={par.derecha} onChange={(e) => onCambiar({ pares: sustituir(tarea.pares, k, { ...par, derecha: e.target.value }) })} />
+              </>
+            )}
+          />
+        </>
+      )}
+
+      {tipo === 'ordenar' && (
+        <>
+          <p className="ayuda">Escribe los pasos en el orden correcto; al alumno se le mostrarán desordenados.</p>
+          <ListaEditable
+            elementos={tarea.pasos}
+            min={2}
+            textoAnadir="Añadir paso"
+            onAnadir={() => onCambiar({ pasos: [...tarea.pasos, ''] })}
+            onQuitar={(k) => onCambiar({ pasos: sin(tarea.pasos, k) })}
+            renderizar={(paso, k) => (
+              <input aria-label={`Paso ${k + 1}`} value={paso} onChange={(e) => onCambiar({ pasos: sustituir(tarea.pasos, k, e.target.value) })} />
+            )}
+          />
+        </>
+      )}
+
+      {tipo === 'huecos' && (
+        <>
+          <label>
+            Frase (escribe ___ en cada hueco)
+            <input value={tarea.frase} onChange={(e) => onCambiar({ frase: e.target.value })} placeholder="El hielo es agua en estado ___" />
+          </label>
+          {Array.from({ length: contarHuecos(tarea.frase) }, (_, k) => (
+            <label key={k}>
+              Respuesta del hueco {k + 1}
+              <input
+                value={tarea.respuestas[k] ?? ''}
+                onChange={(e) => {
+                  const respuestas = Array.from({ length: contarHuecos(tarea.frase) }, (_, y) => tarea.respuestas[y] ?? '')
+                  respuestas[k] = e.target.value
+                  onCambiar({ respuestas })
+                }}
+              />
+            </label>
+          ))}
+        </>
+      )}
+
+      <button type="button" className="secundario" onClick={onQuitar}>Quitar tarea</button>
+    </fieldset>
+  )
 }
 
 function EditorLeccion({ pin, inicial, onGuardada, onCancelar }) {
@@ -77,16 +202,10 @@ function EditorLeccion({ pin, inicial, onGuardada, onCancelar }) {
   const [error, setError] = useState('')
   const [ocupado, setOcupado] = useState(false)
 
-  const cambiarPregunta = (i, cambios) => setLeccion({
+  const cambiarPregunta = (i, cambios, sustituirTodo = false) => setLeccion({
     ...leccion,
-    preguntas: leccion.preguntas.map((p, j) => (j === i ? { ...p, ...cambios } : p)),
+    preguntas: leccion.preguntas.map((p, j) => (j !== i ? p : sustituirTodo ? cambios : { ...p, ...cambios })),
   })
-
-  function quitarOpcion(i, k) {
-    const p = leccion.preguntas[i]
-    const correcta = k === p.correcta ? 0 : k < p.correcta ? p.correcta - 1 : p.correcta
-    cambiarPregunta(i, { opciones: p.opciones.filter((_, x) => x !== k), correcta })
-  }
 
   async function guardar() {
     const problema = validar(leccion)
@@ -96,7 +215,7 @@ function EditorLeccion({ pin, inicial, onGuardada, onCancelar }) {
     }
     setError('')
     setOcupado(true)
-    const r = await docenteGuardarLeccion(pin, leccion)
+    const r = await docenteGuardarLeccion(pin, { ...leccion, preguntas: leccion.preguntas.map(limpiarTarea) })
     setOcupado(false)
     if (r.error) setError(r.error)
     else onGuardada()
@@ -111,42 +230,15 @@ function EditorLeccion({ pin, inicial, onGuardada, onCancelar }) {
 
       <h2>Tareas</h2>
       {leccion.preguntas.map((p, i) => (
-        <fieldset key={i} className="tarea">
-          <legend>Tarea {i + 1}</legend>
-          <label>Enunciado<input value={p.pregunta} onChange={(e) => cambiarPregunta(i, { pregunta: e.target.value })} /></label>
-          <p className="ayuda">Opciones (marca la correcta):</p>
-          {p.opciones.map((o, k) => (
-            <div key={k} className="opcion">
-              <input
-                type="radio"
-                name={`correcta-${i}`}
-                aria-label={`Opción ${k + 1} correcta`}
-                checked={p.correcta === k}
-                onChange={() => cambiarPregunta(i, { correcta: k })}
-              />
-              <input
-                aria-label={`Texto de la opción ${k + 1}`}
-                value={o}
-                onChange={(e) => cambiarPregunta(i, { opciones: p.opciones.map((x, y) => (y === k ? e.target.value : x)) })}
-              />
-              <button
-                type="button"
-                className="secundario quitar"
-                aria-label={`Quitar opción ${k + 1}`}
-                disabled={p.opciones.length <= 2}
-                onClick={() => quitarOpcion(i, k)}
-              >×</button>
-            </div>
-          ))}
-          <button type="button" className="secundario" onClick={() => cambiarPregunta(i, { opciones: [...p.opciones, ''] })}>Añadir opción</button>
-          <button
-            type="button"
-            className="secundario"
-            onClick={() => setLeccion({ ...leccion, preguntas: leccion.preguntas.filter((_, j) => j !== i) })}
-          >Quitar tarea</button>
-        </fieldset>
+        <EditorTarea
+          key={i}
+          tarea={p}
+          numero={i + 1}
+          onCambiar={(cambios, sustituirTodo) => cambiarPregunta(i, cambios, sustituirTodo)}
+          onQuitar={() => setLeccion({ ...leccion, preguntas: leccion.preguntas.filter((_, j) => j !== i) })}
+        />
       ))}
-      <button type="button" className="secundario" onClick={() => setLeccion({ ...leccion, preguntas: [...leccion.preguntas, preguntaVacia()] })}>Añadir tarea</button>
+      <button type="button" className="secundario" onClick={() => setLeccion({ ...leccion, preguntas: [...leccion.preguntas, tareaVacia('opciones')] })}>Añadir tarea</button>
 
       {error && <p className="error" role="alert">{error}</p>}
       <button onClick={guardar} disabled={ocupado}>{ocupado ? 'Guardando…' : 'Guardar'}</button>
@@ -191,7 +283,7 @@ export default function PanelDocente({ pin, online, onSalir, onLeccionesCambiada
       {seccion === 'lecciones' && (
         <div>
           {aviso && <p className="aviso" role="status">{aviso}</p>}
-          <button onClick={() => abrirEditor({ asignatura: '', titulo: '', texto: '', preguntas: [preguntaVacia()] })}>Añadir lección</button>
+          <button onClick={() => abrirEditor({ asignatura: '', titulo: '', texto: '', preguntas: [tareaVacia('opciones')] })}>Añadir lección</button>
           <p className="ayuda">Toca una lección para modificar su texto y sus tareas:</p>
           {lecciones.map((l) => (
             <button key={l.id} className="secundario" onClick={() => abrirEditor(l)}>
