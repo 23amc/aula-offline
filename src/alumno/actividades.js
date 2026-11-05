@@ -40,6 +40,21 @@ export function tareaVacia(tipo, pregunta = '') {
 export const identidadTarea = (tarea) => (tarea.frase ? `${tarea.pregunta}|${tarea.frase}` : tarea.pregunta)
 export const claveTarea = (idLeccion, tarea) => `${idLeccion}|${identidadTarea(tarea)}`
 
+// El enunciado y sus opciones como texto corrido, para leerlos en voz alta. Las lecciones están en español.
+export function textoTarea(tarea) {
+  switch (tipoDe(tarea)) {
+    case 'huecos':
+      return `${tarea.pregunta} ${tarea.frase.replace(/_{3,}/g, ', hueco, ')}`
+    case 'ordenar':
+      return `${tarea.pregunta} ${tarea.pasos.join('. ')}`
+    case 'emparejar':
+    case 'unir':
+      return `${tarea.pregunta} ${tarea.pares.map((p) => p.izquierda).join(', ')}. ${tarea.pares.map((p) => p.derecha).join(', ')}.`
+    default:
+      return `${tarea.pregunta} ${tarea.opciones.join('. ')}`
+  }
+}
+
 const HUECO = /_{3,}/
 
 export const partesDeFrase = (frase) => frase.split(HUECO)

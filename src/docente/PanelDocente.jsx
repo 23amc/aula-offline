@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { contarHuecos, ILUSTRACIONES, limpiarTarea, TIPOS, tareaVacia, tipoDe, validarTarea } from './actividades'
-import { docenteGuardarLeccion, docenteResultados, leerLecciones, leerTests } from './datos'
-import Ilustracion from './Ilustracion'
+import { enfocarTitulo } from '../accesibilidad/accesibilidad'
+import { contarHuecos, ILUSTRACIONES, limpiarTarea, TIPOS, tareaVacia, tipoDe, validarTarea } from '../alumno/actividades'
+import { docenteGuardarLeccion, docenteResultados, leerLecciones, leerTests } from '../datos/almacen'
+import Ilustracion from '../alumno/Ilustracion'
 
 function Notas({ pin, lecciones }) {
   const [resultados, setResultados] = useState(null)
@@ -35,12 +36,13 @@ function Notas({ pin, lecciones }) {
       </label>
       <button className="secundario" onClick={() => setRecarga(recarga + 1)}>Actualizar notas</button>
       {error && <p className="error" role="alert">{error}</p>}
-      {!resultados && !error && <p>Cargando notas…</p>}
+      {!resultados && !error && <p role="status">Cargando notas…</p>}
       {resultados && visibles.length === 0 && <p>Todavía no hay notas.</p>}
       {visibles.length > 0 && (
         <table className="notas">
+          <caption className="sr-only">Notas de los alumnos</caption>
           <thead>
-            <tr><th>Alumno</th><th>Lección</th><th>Nota</th><th>Fecha</th></tr>
+            <tr><th scope="col">Alumno</th><th scope="col">Lección</th><th scope="col">Nota</th><th scope="col">Fecha</th></tr>
           </thead>
           <tbody>
             {visibles.map((r) => (
@@ -245,7 +247,7 @@ function EditorLeccion({ pin, inicial, esTest, onGuardada, onCancelar }) {
 
   return (
     <div>
-      <h2>{esTest ? (leccion.id ? 'Modificar test' : 'Nuevo test') : (leccion.id ? 'Modificar lección' : 'Nueva lección')}</h2>
+      <h1>{esTest ? (leccion.id ? 'Modificar test' : 'Nuevo test') : (leccion.id ? 'Modificar lección' : 'Nueva lección')}</h1>
       <label>Asignatura<input value={leccion.asignatura} onChange={(e) => setLeccion({ ...leccion, asignatura: e.target.value })} /></label>
       <label>Título<input value={leccion.titulo} onChange={(e) => setLeccion({ ...leccion, titulo: e.target.value })} /></label>
       {!esTest && (
@@ -314,6 +316,12 @@ export default function PanelDocente({ pin, online, onSalir, onLeccionesCambiada
     setSeccion(nueva)
   }
 
+  // El editor sustituye a la lista: el foco va a su título.
+  const hayEditor = Boolean(editando)
+  useEffect(() => {
+    enfocarTitulo()
+  }, [hayEditor])
+
   if (editando) {
     // Los tests incluidos en la app no traen campo de texto.
     return <EditorLeccion pin={pin} inicial={{ texto: '', ...editando }} esTest={esTest} onGuardada={guardada} onCancelar={() => setEditando(null)} />
@@ -324,9 +332,9 @@ export default function PanelDocente({ pin, online, onSalir, onLeccionesCambiada
       <h1>Panel del profesor</h1>
       {!online && <p className="error">Sin conexión: el panel necesita internet para ver notas y guardar cambios.</p>}
       <div className="pestanas">
-        <button className={seccion === 'notas' ? '' : 'secundario'} onClick={() => cambiarSeccion('notas')}>Notas</button>
-        <button className={seccion === 'lecciones' ? '' : 'secundario'} onClick={() => cambiarSeccion('lecciones')}>Lecciones</button>
-        <button className={esTest ? '' : 'secundario'} onClick={() => cambiarSeccion('tests')}>Tests</button>
+        <button className={seccion === 'notas' ? '' : 'secundario'} aria-pressed={seccion === 'notas'} onClick={() => cambiarSeccion('notas')}>Notas</button>
+        <button className={seccion === 'lecciones' ? '' : 'secundario'} aria-pressed={seccion === 'lecciones'} onClick={() => cambiarSeccion('lecciones')}>Lecciones</button>
+        <button className={esTest ? '' : 'secundario'} aria-pressed={esTest} onClick={() => cambiarSeccion('tests')}>Tests</button>
       </div>
 
       {seccion === 'notas' && <Notas pin={pin} lecciones={[...lecciones, ...tests]} />}

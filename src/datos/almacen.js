@@ -1,6 +1,7 @@
-import leccionesBase from './data/lecciones.json'
-import testsBase from './data/tests.json'
-import { barajar, claveTarea, identidadTarea } from './actividades'
+import leccionesBase from './contenido/lecciones.json'
+import testsBase from './contenido/tests.json'
+import { barajar, claveTarea, identidadTarea } from '../alumno/actividades'
+import { t } from '../idiomas/i18n'
 import { supabase } from './supabase'
 
 function leer(clave, porDefecto) {
@@ -29,7 +30,7 @@ function nuevoId() {
 const normalizar = (alias) => alias.trim().toLowerCase()
 
 function mensajeMotivo(motivo, credenciales) {
-  if (motivo === 'bloqueado') return 'Demasiados intentos fallidos. Prueba dentro de 15 minutos.'
+  if (motivo === 'bloqueado') return t('errBloqueo')
   return credenciales
 }
 
@@ -39,7 +40,7 @@ const leerCuentas = () => leer('cuentas', {})
 
 function validarAlias(alias) {
   const limpio = alias.trim()
-  if (limpio.length < 1 || limpio.length > 30) return 'El alias debe tener entre 1 y 30 caracteres.'
+  if (limpio.length < 1 || limpio.length > 30) return t('errAliasLongitud')
   return null
 }
 
@@ -64,13 +65,13 @@ export function cerrarSesion() {
 export async function registrarAlumno(alias, pin) {
   const errorAlias = validarAlias(alias)
   if (errorAlias) return { error: errorAlias }
-  if (!/^\d{4,8}$/.test(pin)) return { error: 'El PIN debe tener entre 4 y 8 números.' }
+  if (!/^\d{4,8}$/.test(pin)) return { error: t('errPinLongitud') }
   const limpio = alias.trim()
-  if (leerCuentas()[normalizar(limpio)]) return { error: 'Ese alias ya está registrado en este móvil. Inicia sesión con tu PIN.' }
+  if (leerCuentas()[normalizar(limpio)]) return { error: t('errAliasEnMovil') }
 
   try {
     const r = await llamar('alumno_sincronizar', { p_alias: limpio, p_pin: pin, p_resultados: [], p_crear: true })
-    if (!r.ok) return { error: mensajeMotivo(r.motivo, 'Ese alias ya está en uso. Elige otro.') }
+    if (!r.ok) return { error: mensajeMotivo(r.motivo, t('errAliasEnUso')) }
     return { cuenta: abrirSesion({ alias: r.alias, pin, sincronizada: true }) }
   } catch {
     // Sin servidor: la cuenta se crea en el móvil y se registra al sincronizar.
@@ -81,14 +82,14 @@ export async function registrarAlumno(alias, pin) {
 export async function entrarAlumno(alias, pin) {
   const local = leerCuentas()[normalizar(alias)]
   if (local) {
-    return local.pin === pin ? { cuenta: abrirSesion(local) } : { error: 'Alias o PIN incorrectos.' }
+    return local.pin === pin ? { cuenta: abrirSesion(local) } : { error: t('errAliasPin') }
   }
   try {
     const r = await llamar('alumno_sincronizar', { p_alias: alias.trim(), p_pin: pin, p_resultados: [], p_crear: false })
-    if (!r.ok) return { error: mensajeMotivo(r.motivo, 'Alias o PIN incorrectos.') }
+    if (!r.ok) return { error: mensajeMotivo(r.motivo, t('errAliasPin')) }
     return { cuenta: abrirSesion({ alias: r.alias, pin, sincronizada: true }) }
   } catch {
-    return { error: 'Para iniciar sesión por primera vez en este móvil necesitas conexión.' }
+    return { error: t('errPrimeraVez') }
   }
 }
 
@@ -98,7 +99,7 @@ export function cambiarAlias(cuenta, nuevoAlias) {
   if (errorAlias) return { error: errorAlias }
   const limpio = nuevoAlias.trim()
   const cuentas = leerCuentas()
-  if (cuentas[normalizar(limpio)]) return { error: 'Ese alias ya está registrado en este móvil.' }
+  if (cuentas[normalizar(limpio)]) return { error: t('errAliasRepetido') }
 
   const claveVieja = normalizar(cuenta.alias)
   escribir('resultados', leer('resultados', []).map((r) =>
@@ -264,24 +265,22 @@ export function sincronizar() {
 
 // ---------- Profesor (requiere conexión; el PIN no se guarda en el móvil) ----------
 
-const ERROR_RED = 'No se pudo conectar con el servidor.'
-const ERROR_PIN = 'PIN incorrecto.'
 
 export async function docenteEntrar(pin) {
   try {
     const r = await llamar('docente_entrar', { p_pin: pin })
-    return r.ok ? {} : { error: mensajeMotivo(r.motivo, ERROR_PIN) }
+    return r.ok ? {} : { error: mensajeMotivo(r.motivo, t('errPin')) }
   } catch {
-    return { error: ERROR_RED }
+    return { error: t('errRed') }
   }
 }
 
 export async function docenteResultados(pin) {
   try {
     const r = await llamar('docente_resultados', { p_pin: pin })
-    return r.ok ? { resultados: r.resultados } : { error: mensajeMotivo(r.motivo, ERROR_PIN) }
+    return r.ok ? { resultados: r.resultados } : { error: mensajeMotivo(r.motivo, t('errPin')) }
   } catch {
-    return { error: ERROR_RED }
+    return { error: t('errRed') }
   }
 }
 
@@ -291,11 +290,11 @@ export async function docenteGuardarLeccion(pin, leccion, { test = false } = {})
     const r = await llamar('docente_guardar_leccion', { p_pin: pin, p_leccion: datos })
     if (!r.ok) {
       const invalida = r.motivo === 'leccion_invalida'
-      return { error: invalida ? 'La lección tiene campos sin completar.' : mensajeMotivo(r.motivo, ERROR_PIN) }
+      return { error: invalida ? 'La lección tiene campos sin completar.' : mensajeMotivo(r.motivo, t('errPin')) }
     }
     await actualizarLecciones()
     return {}
   } catch {
-    return { error: ERROR_RED }
+    return { error: t('errRed') }
   }
 }

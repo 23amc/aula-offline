@@ -1,4 +1,4 @@
-import { ILUSTRACIONES } from './actividades'
+import { t } from '../idiomas/i18n'
 
 const N = '#06264d' // Azul oscuro del logo
 const AGUA = '#38bdf8'
@@ -291,7 +291,7 @@ function Lapiz({ x, y }) {
 
 const OBJETOS = { manzanas: Manzana, lapices: Lapiz }
 const CASILLA = 36
-const NOMBRES = { manzanas: 'manzanas', lapices: 'lápices' }
+const CLAVES_CUENTA = { manzanas: 'cuentaManzanas', lapices: 'cuentaLapices' }
 // Grupos grandes en dos filas iguales: 6 son 3 y 3, y 10 son 5 y 5.
 const porFila = (n) => (n > 5 ? Math.ceil(n / 2) : n)
 
@@ -312,7 +312,7 @@ function Cuenta({ objeto, a, signo, b }) {
   })
 
   return (
-    <svg viewBox={`0 0 ${ancho} ${alto}`} className="ilustracion" role="img" aria-label={`${a} ${NOMBRES[objeto]} ${resta ? 'menos' : 'más'} ${b}`}>
+    <svg viewBox={`0 0 ${ancho} ${alto}`} className="ilustracion" role="img" aria-label={t(CLAVES_CUENTA[objeto], { a, b, op: t(resta ? 'menos' : 'mas') })}>
       {Array.from({ length: a }, (_, i) => {
         const { x, y } = posicion(i, a, 0)
         const quitado = resta && i >= a - b
@@ -343,7 +343,7 @@ export default function Ilustracion({ id }) {
   const escena = ESCENAS[id]
   if (!escena) return null
   return (
-    <svg viewBox="0 0 240 140" className="ilustracion" role="img" aria-label={ILUSTRACIONES.find((i) => i.id === id)?.nombre}>
+    <svg viewBox="0 0 240 140" className="ilustracion" role="img" aria-label={t(`img.${id}`)}>
       {escena}
     </svg>
   )

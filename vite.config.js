@@ -12,6 +12,7 @@ export default defineConfig({
       manifest: {
         name: 'EduGo',
         short_name: 'EduGo',
+        lang: 'es',
         description: 'Aprender sin conexión',
         theme_color: '#2563eb',
         background_color: '#ffffff',

@@ -1,31 +1,29 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import BotonEscuchar from '../accesibilidad/BotonEscuchar'
+import PanelLateral from '../herramientas/PanelLateral'
+import { idiomaActual, t } from '../idiomas/i18n'
 import Mascota from './Mascota'
-import PanelLateral from './PanelLateral'
 import { buscarFragmentos, esCuenta, explicarLeccion, responderBasico } from './asistenteBasico'
 
 const CLAVE_ACTIVADA = 'ia_avanzada'
 const TURNOS_DE_MEMORIA = 4
-const SALUDO = '¡Hola! Soy la mascota de EduGo. Pregúntame lo que no entiendas de las lecciones o de cómo usar la app.'
-
-const NO_ENCONTRADO = /^No encuentro/
-const CUENTA_EN_TEST = 'En un test no te doy el resultado. ¡Cuenta con calma, que tú puedes!'
 
 const INSTRUCCIONES = `Eres la mascota de EduGo, un libro simpático que hace de tutor en una app educativa para niños y niñas.
-Responde siempre en español, con frases cortas y sencillas, en 3 frases como máximo.
+Responde con frases cortas y sencillas, en 3 frases como máximo.
 Usa la información de las lecciones si está disponible. Si no sabes algo, dilo y recomienda preguntar al profesor.
 Habla solo de temas adecuados para menores. En los ejercicios, ayuda a pensar en lugar de dar la respuesta sin más.`
 
 function construirInstrucciones(pregunta, lecciones, leccionActual, enTest) {
   const fragmentos = buscarFragmentos(pregunta, lecciones, leccionActual).map((f) => `- ${f.texto}`)
-  const partes = [INSTRUCCIONES]
+  const partes = [INSTRUCCIONES, `Responde siempre en este idioma: ${idiomaActual().nombre}.`]
   if (enTest) partes.push('El alumno está haciendo un test: dale solo pistas y nunca la respuesta.')
   if (leccionActual) partes.push(`El alumno está en la lección «${leccionActual.titulo}»:\n${leccionActual.texto}`)
   if (fragmentos.length > 0) partes.push(`Información útil:\n${fragmentos.join('\n')}`)
   return partes.join('\n\n')
 }
 
-export default function Asistente({ abierta, onAlternar, lecciones, leccionActual, enTest }) {
-  const [mensajes, setMensajes] = useState([{ de: 'asistente', texto: SALUDO }])
+export default function Asistente({ abierta, oculta, onAlternar, lecciones, leccionActual, enTest }) {
+  const [mensajes, setMensajes] = useState([{ de: 'asistente', saludo: true }])
   const [escrito, setEscrito] = useState('')
   const [estadoIA, setEstadoIA] = useState('basica') // basica | descargando | lista
   const [progreso, setProgreso] = useState(0)
@@ -53,9 +51,7 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
       setEstadoIA('lista')
     } catch {
       setEstadoIA('basica')
-      setAviso(navigator.onLine
-        ? 'Este dispositivo no ha podido usar la IA avanzada. Sigues teniendo el modo básico.'
-        : 'Sin conexión no se ha podido cargar la IA avanzada. Sigues teniendo el modo básico.')
+      setAviso(navigator.onLine ? t('errIA') : t('errIASinRed'))
       // Sin conexión puede ser algo pasajero: se reintentará la próxima vez.
       if (navigator.onLine) localStorage.removeItem(CLAVE_ACTIVADA)
     }
@@ -76,7 +72,7 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
     motor.current = null
     const { borrarModelo } = await import('./motorIA')
     await borrarModelo().catch(() => {})
-    setAviso('IA avanzada desactivada y descarga borrada.')
+    setAviso(t('iaDesactivada'))
   }
 
   function anadirRespuesta(texto) {
@@ -86,9 +82,9 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
   async function responderConModelo(pregunta, historial) {
     setRespondiendo(true)
     setMensajes((actuales) => [...actuales, { de: 'asistente', texto: '…' }])
-    const escribir = (texto) => setMensajes((actuales) => [...actuales.slice(0, -1), { de: 'asistente', texto }])
+    const escribir = (texto, delModelo = true) => setMensajes((actuales) => [...actuales.slice(0, -1), { de: 'asistente', texto, delModelo }])
     try {
-      const anteriores = historial.slice(1).slice(-TURNOS_DE_MEMORIA).map((m) => ({
+      const anteriores = historial.filter((m) => !m.saludo).slice(-TURNOS_DE_MEMORIA).map((m) => ({
         role: m.de === 'alumno' ? 'user' : 'assistant',
         content: m.texto,
       }))
@@ -107,9 +103,9 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
         texto += trozo.choices[0]?.delta?.content ?? ''
         if (texto) escribir(texto)
       }
-      if (!texto) escribir(responderBasico(pregunta, lecciones, leccionActual))
+      if (!texto) escribir(responderBasico(pregunta, lecciones, leccionActual), false)
     } catch {
-      escribir(responderBasico(pregunta, lecciones, leccionActual))
+      escribir(responderBasico(pregunta, lecciones, leccionActual), false)
     }
     setRespondiendo(false)
   }
@@ -120,7 +116,7 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
     const historial = mensajes
     setMensajes([...mensajes, { de: 'alumno', texto: limpia }])
     setEscrito('')
-    if (enTest && esCuenta(limpia)) anadirRespuesta(CUENTA_EN_TEST)
+    if (enTest && esCuenta(limpia)) anadirRespuesta(t('cuentaEnTest'))
     // Fuera de los tests, las cuentas se resuelven siempre con exactitud, sin depender del modelo.
     else if (estadoIA === 'lista' && !esCuenta(limpia)) responderConModelo(limpia, historial)
     else anadirRespuesta(responderBasico(limpia, lecciones, leccionActual))
@@ -130,7 +126,7 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
     if (estadoIA === 'lista') {
       enviar(`Explícame con palabras sencillas la lección «${leccionActual.titulo}».`)
     } else if (!respondiendo) {
-      setMensajes([...mensajes, { de: 'alumno', texto: 'Explícame esta lección' }, { de: 'asistente', texto: explicarLeccion(leccionActual) }])
+      setMensajes([...mensajes, { de: 'alumno', texto: t('explicarLeccion') }, { de: 'asistente', texto: explicarLeccion(leccionActual) }])
     }
   }
 
@@ -138,11 +134,12 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
   const preguntando = mensajes.length > 1
   const expresion = respondiendo || estadoIA === 'descargando'
     ? 'pensando'
-    : !preguntando ? 'normal' : NO_ENCONTRADO.test(ultimo.texto) ? 'animando' : 'contenta'
+    : !preguntando ? 'normal' : ultimo.texto === t('respNoEncuentro') ? 'animando' : 'contenta'
 
   return (
     <PanelLateral
-      nombre="IA"
+      nombre={t('ia')}
+      oculto={oculta}
       icono={<Mascota estado="icono" />}
       posicion="abajo"
       abierto={abierta}
@@ -152,38 +149,46 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
           <div className="ia-cabecera">
             {/* La clave repite la animación con cada respuesta. */}
             <Mascota key={mensajes.length} estado={expresion} />
-            <h2>Pregúntame</h2>
+            <h2>{t('preguntame')}</h2>
           </div>
 
           {estadoIA === 'basica' && (
             <div className="ia-tarjeta">
-              Modo básico: busco la respuesta en tus lecciones, sin conexión y sin enviar nada fuera.
+              {t('modoBasico')}
               {hayGPU ? (
-                <button className="secundario" onClick={activar}>Activar IA avanzada (descarga unos 600 MB, usa wifi)</button>
+                <button className="secundario" onClick={activar}>{t('activarIA')}</button>
               ) : (
-                <> Este dispositivo no permite la IA avanzada.</>
+                <> {t('sinIAAvanzada')}</>
               )}
             </div>
           )}
           {estadoIA === 'descargando' && (
-            <div className="ia-tarjeta" role="status">
-              Preparando la IA avanzada… {Math.round(progreso * 100)} %
-              <div className="ia-barra"><div style={{ width: `${progreso * 100}%` }} /></div>
+            <div className="ia-tarjeta">
+              <span role="status">{t('preparandoIA')}</span> {Math.round(progreso * 100)} %
+              <div className="ia-barra" role="progressbar" aria-label={t('progresoIA')} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progreso * 100)}>
+                <div style={{ width: `${progreso * 100}%` }} />
+              </div>
             </div>
           )}
           {estadoIA === 'lista' && (
             <div className="ia-tarjeta">
-              IA avanzada activa: funciona en este dispositivo, sin enviar nada fuera. Puede equivocarse; si dudas, pregunta a tu profesor.
-              <button className="secundario" disabled={respondiendo} onClick={desactivar}>Desactivar y borrar la descarga</button>
+              {t('iaActiva')}
+              <button className="secundario" disabled={respondiendo} onClick={desactivar}>{t('desactivarIA')}</button>
             </div>
           )}
           {aviso && <p className="ayuda" role="status">{aviso}</p>}
 
-          <div className="ia-mensajes" role="log" aria-live="polite">
+          <div className="ia-mensajes" role="log" aria-live="polite" aria-busy={respondiendo}>
             {mensajes.map((m, i) => (
               <div key={i} className={`ia-fila ${m.de}`}>
                 {m.de === 'asistente' && <Mascota estado="icono" />}
-                <div className={`ia-mensaje ${m.de}`}>{m.texto}</div>
+                <div className={`ia-mensaje ${m.de}`}>
+                  <span className="sr-only">{m.de === 'alumno' ? t('tu') : t('mascota')}: </span>
+                  {m.saludo ? t('saludoIA') : m.texto}
+                  {m.de === 'asistente' && !(respondiendo && i === mensajes.length - 1) && (
+                    <BotonEscuchar texto={m.saludo ? t('saludoIA') : m.texto} lengua={m.saludo || m.delModelo ? idiomaActual().voz : 'es-ES'} />
+                  )}
+                </div>
               </div>
             ))}
             <div ref={final} />
@@ -191,16 +196,16 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
 
           {leccionActual && (
             <div className="ia-sugerencias">
-              <button className="secundario" disabled={respondiendo} onClick={explicar}>Explícame esta lección</button>
+              <button className="secundario" disabled={respondiendo} onClick={explicar}>{t('explicarLeccion')}</button>
             </div>
           )}
 
           <form className="ia-enviar" onSubmit={(e) => { e.preventDefault(); enviar(escrito) }}>
-            <input aria-label="Escribe tu pregunta" placeholder="Escribe tu pregunta" value={escrito} autoComplete="off" onChange={(e) => setEscrito(e.target.value)} />
+            <input aria-label={t('escribePregunta')} placeholder={t('escribePregunta')} value={escrito} autoComplete="off" onChange={(e) => setEscrito(e.target.value)} />
             {respondiendo ? (
-              <button type="button" className="secundario" onClick={() => motor.current?.interruptGenerate()}>Parar</button>
+              <button type="button" className="secundario" onClick={() => motor.current?.interruptGenerate()}>{t('parar')}</button>
             ) : (
-              <button type="submit" disabled={!escrito.trim()}>Enviar</button>
+              <button type="submit" disabled={!escrito.trim()}>{t('enviar')}</button>
             )}
           </form>
       </div>

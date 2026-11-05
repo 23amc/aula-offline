@@ -1,4 +1,5 @@
-import ayuda from './data/ayudaIA.json'
+import ayuda from '../datos/contenido/ayudaIA.json'
+import { t } from '../idiomas/i18n'
 
 const VACIAS = new Set(('a al algo como con cual cuales cuando de del donde dos el ella en entre es esa ese esta este esto estos fue ha hace hacer hay la las le lo los me mi muy no o para pero por porque puede puedo que quien se ser si sin sobre son su sus te tiene tu un una uno unos y ya yo ' +
   'dime explica explicame cuentame ayuda ayudame entiendo significa quiere decir saber sabes').split(' '))
@@ -72,15 +73,15 @@ export function buscarFragmentos(pregunta, lecciones, leccionActual, cantidad = 
 }
 
 export function explicarLeccion(leccion) {
-  return `Vamos por partes con «${leccion.titulo}»:\n\n${leccion.texto.split(/(?<=[.!?])\s+/).map((f) => `• ${f}`).join('\n')}`
+  return `${t('respPorPartes', { titulo: leccion.titulo })}\n\n${leccion.texto.split(/(?<=[.!?])\s+/).map((f) => `• ${f}`).join('\n')}`
 }
 
 export function responderBasico(pregunta, lecciones, leccionActual) {
   const texto = normalizar(pregunta).trim()
   if (/^(hola|buenas|buenos dias|hey)\b/.test(texto) && texto.split(/\s+/).length <= 3) {
-    return '¡Hola! Pregúntame sobre tus lecciones o sobre cómo usar EduGo.'
+    return t('respHola')
   }
-  if (/^(gracias|muchas gracias)\b/.test(texto)) return '¡De nada! Sigue así.'
+  if (/^(gracias|muchas gracias)\b/.test(texto)) return t('respGracias')
 
   const resultado = cuenta(pregunta)
   if (resultado) return resultado
@@ -89,7 +90,7 @@ export function responderBasico(pregunta, lecciones, leccionActual) {
 
   const [mejor, segundo] = buscarFragmentos(pregunta, lecciones, leccionActual)
   if (!mejor) {
-    return 'No encuentro eso en tus lecciones. Prueba con otras palabras, o pregúntaselo a tu profesor.'
+    return t('respNoEncuentro')
   }
   let respuesta = mejor.texto
   // Dos frases de la misma lección suelen explicarse mejor juntas, pero una puede contener a la otra.
@@ -97,5 +98,5 @@ export function responderBasico(pregunta, lecciones, leccionActual) {
     if (segundo.texto.includes(mejor.texto)) respuesta = segundo.texto
     else if (!mejor.texto.includes(segundo.texto)) respuesta = `${mejor.texto} ${segundo.texto}`
   }
-  return respuesta + (mejor.origen ? `\n\n(De la lección «${mejor.origen}»)` : '')
+  return respuesta + (mejor.origen ? `\n\n${t('respDeLeccion', { titulo: mejor.origen })}` : '')
 }
