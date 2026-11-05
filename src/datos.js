@@ -1,5 +1,6 @@
 import leccionesBase from './data/lecciones.json'
 import testsBase from './data/tests.json'
+import { barajar, claveTarea, identidadTarea } from './actividades'
 import { supabase } from './supabase'
 
 function leer(clave, porDefecto) {
@@ -111,6 +112,12 @@ export function cambiarAlias(cuenta, nuevoAlias) {
     delete fallos[claveVieja]
     escribir('fallos', fallos)
   }
+  const vistas = leer('preguntas_vistas', {})
+  if (vistas[claveVieja]) {
+    vistas[normalizar(limpio)] = vistas[claveVieja]
+    delete vistas[claveVieja]
+    escribir('preguntas_vistas', vistas)
+  }
   return { cuenta: abrirSesion({ alias: limpio, pin: cuenta.pin, sincronizada: false }) }
 }
 
@@ -142,7 +149,7 @@ export function tareasParaReforzar(alias, lecciones) {
   const delAlumno = leer('fallos', {})[normalizar(alias)] ?? {}
   return lecciones
     .flatMap((l) => l.preguntas.map((p) => {
-      const clave = `${l.id}|${p.pregunta}`
+      const clave = claveTarea(l.id, p)
       return { ...p, clave, asignatura: l.asignatura, saldo: delAlumno[clave] ?? 0 }
     }))
     .filter((t) => t.saldo > 0)
@@ -166,6 +173,28 @@ const esTest = (l) => l.id.startsWith(PREFIJO_TEST)
 
 export const leerLecciones = () => leerContenido().filter((l) => !esTest(l))
 export const leerTests = () => leerContenido().filter(esTest)
+
+export const PREGUNTAS_POR_TEST = 10
+
+// Elige las preguntas de un intento. Cada alumno recorre todo el banco antes de que se repita ninguna.
+export function elegirPreguntasTest(alias, test) {
+  const vistas = leer('preguntas_vistas', {})
+  const delAlumno = vistas[normalizar(alias)] ?? {}
+  const yaVistas = new Set(delAlumno[test.id] ?? [])
+  const nuevas = barajar(test.preguntas.filter((p) => !yaVistas.has(identidadTarea(p))))
+  const repetidas = barajar(test.preguntas.filter((p) => yaVistas.has(identidadTarea(p))))
+
+  const elegidas = nuevas.slice(0, PREGUNTAS_POR_TEST)
+  const faltan = PREGUNTAS_POR_TEST - elegidas.length
+  const completado = faltan > 0
+  elegidas.push(...repetidas.slice(0, faltan))
+
+  // Al agotar el banco empieza otra vuelta, contando solo las de este intento.
+  const textos = elegidas.map(identidadTarea)
+  delAlumno[test.id] = completado ? textos : [...yaVistas, ...textos]
+  escribir('preguntas_vistas', { ...vistas, [normalizar(alias)]: delAlumno })
+  return barajar(elegidas)
+}
 
 async function actualizarLecciones() {
   const { data, error } = await supabase

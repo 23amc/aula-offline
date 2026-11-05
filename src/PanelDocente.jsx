@@ -347,7 +347,7 @@ export default function PanelDocente({ pin, online, onSalir, onLeccionesCambiada
         <ListaContenido
           aviso={aviso}
           textoAnadir="Añadir test"
-          ayuda="Los tests van aparte de las lecciones, con sus propias preguntas:"
+          ayuda="Cada test es un banco de preguntas: en cada intento, al alumno le salen 10 al azar."
           elementos={tests}
           unidad="preguntas"
           onAnadir={() => abrirEditor(vacia())}

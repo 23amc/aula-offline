@@ -1,3 +1,5 @@
+import { PREGUNTAS_POR_TEST } from './datos'
+
 const SECCIONES = [
   { id: 'lecciones', nombre: 'Lecciones' },
   { id: 'tests', nombre: 'Tests' },
@@ -29,9 +31,9 @@ export default function MenuAlumno({ seccion, lecciones, tests, refuerzo, onSecc
 
       {seccion === 'tests' && (
         <>
-          <p>Preguntas nuevas, distintas de las de las lecciones, para ponerte a prueba:</p>
+          <p>Preguntas nuevas, distintas de las de las lecciones. Cada intento trae preguntas diferentes:</p>
           {tests.map((t) => (
-            <button key={t.id} onClick={() => onTest(t)}>{t.titulo} ({t.preguntas.length} preguntas)</button>
+            <button key={t.id} onClick={() => onTest(t)}>{t.titulo} ({Math.min(t.preguntas.length, PREGUNTAS_POR_TEST)} preguntas)</button>
           ))}
         </>
       )}

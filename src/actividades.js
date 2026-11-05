@@ -36,6 +36,10 @@ export function tareaVacia(tipo, pregunta = '') {
   return { pregunta, opciones: ['', '', ''], correcta: 0 }
 }
 
+// Dos huecos pueden compartir enunciado ("Completa la frase") y distinguirse por su frase.
+export const identidadTarea = (tarea) => (tarea.frase ? `${tarea.pregunta}|${tarea.frase}` : tarea.pregunta)
+export const claveTarea = (idLeccion, tarea) => `${idLeccion}|${identidadTarea(tarea)}`
+
 const HUECO = /_{3,}/
 
 export const partesDeFrase = (frase) => frase.split(HUECO)

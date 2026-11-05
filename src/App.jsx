@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import Acceso from './Acceso'
+import { claveTarea } from './actividades'
 import Actividad from './Actividad'
 import Ilustracion from './Ilustracion'
 import Mascota from './Mascota'
@@ -10,6 +11,7 @@ import {
   cambiarAlias,
   cerrarSesion,
   contarPendientes,
+  elegirPreguntasTest,
   cuentaActual,
   guardarResultado,
   leerLecciones,
@@ -146,13 +148,23 @@ export default function App() {
     setPantalla(destino)
   }
 
+  function empezarTest(test) {
+    empezar({ ...test, preguntas: elegirPreguntasTest(cuenta.alias, test) }, 'quiz')
+  }
+
+  function repetir() {
+    const test = tests.find((t) => t.id === leccion.id)
+    if (test) empezarTest(test)
+    else empezar(leccion, 'quiz')
+  }
+
   function empezarRefuerzo() {
     empezar({ id: ID_REFUERZO, preguntas: tareasParaReforzar(cuenta.alias, [...lecciones, ...tests]) }, 'quiz')
   }
 
   function responder(correcta) {
     const tarea = leccion.preguntas[actual]
-    registrarRespuesta(cuenta.alias, tarea.clave ?? `${leccion.id}|${tarea.pregunta}`, correcta)
+    registrarRespuesta(cuenta.alias, tarea.clave ?? claveTarea(leccion.id, tarea), correcta)
     setAcierto(correcta)
     if (correcta) setPuntos(puntos + 1)
   }
@@ -233,7 +245,7 @@ export default function App() {
             refuerzo={tareasParaReforzar(cuenta.alias, [...lecciones, ...tests])}
             onSeccion={setSeccion}
             onLeer={(l) => empezar(l, 'leccion')}
-            onTest={(l) => empezar(l, 'quiz')}
+            onTest={empezarTest}
             onRefuerzo={empezarRefuerzo}
           />
           <button className="secundario" onClick={salirAlumno}>Cerrar sesión</button>
@@ -279,7 +291,7 @@ export default function App() {
           {leccion.id !== ID_REFUERZO && (
             <>
               <p>Resultados pendientes de enviar al docente: {pendientes}</p>
-              <button onClick={() => empezar(leccion, 'quiz')}>Repetir</button>
+              <button onClick={repetir}>Repetir</button>
             </>
           )}
           <button className="secundario" onClick={() => setPantalla('menu')}>Volver al menú</button>
