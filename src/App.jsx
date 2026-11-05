@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import Acceso from './Acceso'
 import Actividad from './Actividad'
+import Ilustracion from './Ilustracion'
 import Mascota from './Mascota'
+import Pizarra from './Pizarra'
 import PanelDocente from './PanelDocente'
 import {
   cambiarAlias,
@@ -16,6 +18,14 @@ import logo from './assets/logo.png'
 import './App.css'
 
 const DURACION_PORTADA = 1500
+
+function BarraProgreso({ completadas, total }) {
+  return (
+    <div className="progreso" role="progressbar" aria-label="Progreso de la lección" aria-valuemin={0} aria-valuemax={total} aria-valuenow={completadas}>
+      <div className="progreso-relleno" style={{ width: `${(completadas / total) * 100}%` }} />
+    </div>
+  )
+}
 
 export default function App() {
   const [portada, setPortada] = useState(true)
@@ -147,6 +157,9 @@ export default function App() {
         </div>
       </div>
 
+      {/* Fuera de las pantallas para mantener el dibujo al navegar; al cerrar sesión se borra. */}
+      {pantalla !== 'acceso' && <Pizarra />}
+
       {pantalla === 'acceso' && (
         <Acceso paso={pasoAcceso} onCambiarPaso={setPasoAcceso} onAlumno={entrarComoAlumno} onDocente={entrarComoDocente} />
       )}
@@ -187,6 +200,7 @@ export default function App() {
         <div>
           <p>{leccion.asignatura}</p>
           <h1>{leccion.titulo}</h1>
+          <Ilustracion id={leccion.preguntas[0]?.imagen} />
           <p>{leccion.texto}</p>
           <button onClick={() => setPantalla('quiz')}>Empezar el quiz</button>
           <button className="secundario" onClick={() => setPantalla('menu')}>Volver al menú</button>
@@ -195,6 +209,7 @@ export default function App() {
 
       {pantalla === 'quiz' && (
         <div>
+          <BarraProgreso completadas={actual + (acierto === null ? 0 : 1)} total={leccion.preguntas.length} />
           <Mascota estado={acierto === null ? 'normal' : acierto ? 'contenta' : 'animando'} />
           <p className="mensaje-mascota" role="status">
             {acierto === true && '¡Muy bien!'}
@@ -202,6 +217,7 @@ export default function App() {
           </p>
           <p>Pregunta {actual + 1} de {leccion.preguntas.length}</p>
           <h2>{leccion.preguntas[actual].pregunta}</h2>
+          <Ilustracion id={leccion.preguntas[actual].imagen} />
           <Actividad key={actual} tarea={leccion.preguntas[actual]} onResponder={responder} />
           {acierto !== null && (
             <button className="siguiente" onClick={siguiente}>

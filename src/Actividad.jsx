@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { barajar, normalizarRespuesta, partesDeFrase, tipoDe } from './actividades'
+import { barajar, barajarSinResolver, normalizarRespuesta, partesDeFrase, tipoDe } from './actividades'
 
 function Opciones({ tarea, onResponder }) {
   const [elegida, setElegida] = useState(null)
@@ -87,17 +87,98 @@ function Emparejar({ tarea, onResponder }) {
   )
 }
 
+function Unir({ tarea, onResponder }) {
+  const { pares } = tarea
+  const [derecha] = useState(() =>
+    barajarSinResolver(pares.map((p) => p.derecha), (lista) => lista.every((texto, i) => texto === pares[i].derecha))
+  )
+  // Para cada elemento de la izquierda, la posición de la derecha a la que apunta.
+  const [uniones, setUniones] = useState(() => pares.map(() => null))
+  const [origen, setOrigen] = useState(0)
+  const [comprobado, setComprobado] = useState(false)
+
+  const completo = uniones.every((u) => u !== null)
+  const unionCorrecta = (i) => derecha[uniones[i]] === pares[i].derecha
+  const altura = (posicion) => `${((posicion + 0.5) / pares.length) * 100}%`
+
+  function tocarIzquierda(i) {
+    setUniones(uniones.map((u, y) => (y === i ? null : u)))
+    setOrigen(i)
+  }
+
+  function tocarDerecha(posicion) {
+    // Una posición ya unida a otro elemento pasa al que se está uniendo ahora.
+    const nuevas = uniones.map((u, y) => (y === origen ? posicion : u === posicion ? null : u))
+    setUniones(nuevas)
+    const siguiente = nuevas.indexOf(null)
+    if (siguiente !== -1) setOrigen(siguiente)
+  }
+
+  function comprobar() {
+    setComprobado(true)
+    onResponder(pares.every((_, i) => unionCorrecta(i)))
+  }
+
+  return (
+    <div>
+      <p className="ayuda">Toca un elemento de la izquierda y después su pareja de la derecha.</p>
+      <div className="unir" style={{ gridTemplateRows: `repeat(${pares.length}, 1fr)` }}>
+        {pares.map((par, i) => {
+          const clase = comprobado ? (unionCorrecta(i) ? 'correcta' : 'incorrecta') : i === origen && !completo ? 'activa' : 'secundario'
+          return (
+            <button
+              key={i}
+              className={clase}
+              style={{ gridColumn: 1, gridRow: i + 1 }}
+              disabled={comprobado}
+              aria-pressed={i === origen && !completo}
+              aria-label={uniones[i] === null ? par.izquierda : `${par.izquierda}, unido con ${derecha[uniones[i]]}`}
+              onClick={() => tocarIzquierda(i)}
+            >{par.izquierda}</button>
+          )
+        })}
+        <div className="unir-flechas" aria-hidden="true">
+          <svg>
+            <defs>
+              {[['azul', '#2563eb'], ['verde', '#16a34a'], ['rojo', '#dc2626']].map(([nombre, color]) => (
+                <marker key={nombre} id={`punta-${nombre}`} markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+                  <path d="M0 0 L12 6 L0 12 z" fill={color} />
+                </marker>
+              ))}
+            </defs>
+            {uniones.map((u, i) => {
+              if (u === null) return null
+              const color = !comprobado ? 'azul' : unionCorrecta(i) ? 'verde' : 'rojo'
+              return <line key={i} className={`flecha flecha-${color}`} x1="0%" y1={altura(i)} x2="100%" y2={altura(u)} markerEnd={`url(#punta-${color})`} />
+            })}
+          </svg>
+        </div>
+        {derecha.map((texto, posicion) => (
+          <button
+            key={posicion}
+            className="secundario"
+            style={{ gridColumn: 3, gridRow: posicion + 1 }}
+            disabled={comprobado}
+            onClick={() => tocarDerecha(posicion)}
+          >{texto}</button>
+        ))}
+      </div>
+      {comprobado ? (
+        pares.some((_, i) => !unionCorrecta(i)) && (
+          <p className="solucion">Correcto: {pares.map((p) => `${p.izquierda} → ${p.derecha}`).join(', ')}</p>
+        )
+      ) : (
+        <button className="comprobar" disabled={!completo} onClick={comprobar}>Comprobar</button>
+      )}
+    </div>
+  )
+}
+
 function Ordenar({ tarea, onResponder }) {
   const { pasos } = tarea
-  const [orden, setOrden] = useState(() => {
-    const indices = pasos.map((_, i) => i)
-    // Se reintenta para no mostrarlo ya resuelto.
-    let barajado = barajar(indices)
-    for (let intento = 0; intento < 10 && barajado.every((p, i) => pasos[p] === pasos[i]); intento++) {
-      barajado = barajar(indices)
-    }
-    return barajado
-  })
+  const [orden, setOrden] = useState(() =>
+    barajarSinResolver(pasos.map((_, i) => i), (lista) => lista.every((p, i) => pasos[p] === pasos[i]))
+  )
   const [comprobado, setComprobado] = useState(false)
 
   const enSuSitio = (posicion) => pasos[orden[posicion]] === pasos[posicion]
@@ -182,7 +263,7 @@ function Huecos({ tarea, onResponder }) {
   )
 }
 
-const COMPONENTES = { opciones: Opciones, emparejar: Emparejar, ordenar: Ordenar, huecos: Huecos }
+const COMPONENTES = { opciones: Opciones, emparejar: Emparejar, unir: Unir, ordenar: Ordenar, huecos: Huecos }
 
 export default function Actividad({ tarea, onResponder }) {
   const Componente = COMPONENTES[tipoDe(tarea)]

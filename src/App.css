@@ -22,6 +22,24 @@ button.siguiente { margin-top: 16px; }
 .mascota-contenta .mascota-rayos { animation: brillar 0.7s ease-out; transform-origin: 60px 30px; }
 .mascota-animando { animation: balancear 0.8s ease-in-out; }
 .mensaje-mascota { min-height: 1.4em; margin: 8px 0; text-align: center; font-weight: bold; }
+.pizarra { margin-bottom: 16px; }
+.pizarra > button { margin-top: 0; }
+.pizarra-colores { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+.pizarra button.pizarra-color { width: 40px; height: 40px; margin: 0; padding: 0; border-radius: 50%; }
+.pizarra button.pizarra-goma { width: auto; margin: 0; padding: 10px 14px; font-size: 16px; }
+.pizarra button[aria-pressed='true'] { outline: 3px solid #111827; outline-offset: 2px; }
+.pizarra-lienzo { display: block; width: 100%; aspect-ratio: 3 / 2; box-sizing: border-box; background: white; border: 2px solid #9ca3af; border-radius: 8px; touch-action: none; cursor: crosshair; }
+.ilustracion { display: block; width: 100%; max-width: 280px; max-height: 170px; margin: 8px auto 12px; }
+.progreso { height: 12px; margin-bottom: 12px; border-radius: 6px; background: #e5e7eb; overflow: hidden; }
+.progreso-relleno { height: 100%; border-radius: 6px; background: #16a34a; transition: width 0.4s ease-out; }
+.unir { display: grid; grid-template-columns: 1fr 56px 1fr; align-items: stretch; margin-bottom: 8px; }
+.unir button { margin: 4px 0; padding: 12px 6px; font-size: 16px; }
+.unir-flechas { grid-column: 2; grid-row: 1 / -1; position: relative; }
+.unir-flechas svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.flecha { stroke-width: 3; stroke-linecap: round; }
+.flecha-azul { stroke: #2563eb; }
+.flecha-verde { stroke: #16a34a; }
+.flecha-rojo { stroke: #dc2626; }
 .fila-pareja { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: center; }
 .fila-pareja button { margin: 4px 0; }
 .banco { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
@@ -45,6 +63,7 @@ input.hueco.mal { border: 2px solid #dc2626; background: #fee2e2; }
 @keyframes balancear { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
 @media (prefers-reduced-motion: reduce) {
   button.correcta, button.incorrecta, .mascota, .mascota-rayos { animation: none !important; }
+  .progreso-relleno { transition: none; }
 }
 label { display: block; margin-bottom: 8px; font-size: 14px; color: #374151; }
 label input, label select, label textarea { margin-top: 4px; }

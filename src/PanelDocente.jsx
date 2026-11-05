@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { contarHuecos, limpiarTarea, TIPOS, tareaVacia, tipoDe, validarTarea } from './actividades'
+import { contarHuecos, ILUSTRACIONES, limpiarTarea, TIPOS, tareaVacia, tipoDe, validarTarea } from './actividades'
 import { docenteGuardarLeccion, docenteResultados, leerLecciones } from './datos'
+import Ilustracion from './Ilustracion'
 
 function Notas({ pin, lecciones }) {
   const [resultados, setResultados] = useState(null)
@@ -69,6 +70,23 @@ function validar(leccion) {
   return null
 }
 
+function SelectorImagen({ valor, onCambiar }) {
+  const predefinida = ILUSTRACIONES.some((i) => i.id === valor)
+  return (
+    <>
+      <label>
+        Imagen (opcional)
+        <select value={valor ?? ''} onChange={(e) => onCambiar(e.target.value || undefined)}>
+          <option value="">Sin imagen</option>
+          {valor && !predefinida && <option value={valor}>Imagen actual</option>}
+          {ILUSTRACIONES.map((i) => <option key={i.id} value={i.id}>{i.nombre}</option>)}
+        </select>
+      </label>
+      <Ilustracion id={valor} />
+    </>
+  )
+}
+
 function ListaEditable({ elementos, min, textoAnadir, onAnadir, onQuitar, renderizar }) {
   return (
     <>
@@ -104,11 +122,12 @@ function EditorTarea({ tarea, numero, onCambiar, onQuitar }) {
       <legend>Tarea {numero}</legend>
       <label>
         Tipo de actividad
-        <select value={tipo} onChange={(e) => onCambiar(tareaVacia(e.target.value, tarea.pregunta), true)}>
+        <select value={tipo} onChange={(e) => onCambiar({ ...tareaVacia(e.target.value, tarea.pregunta), imagen: tarea.imagen }, true)}>
           {TIPOS.map((t) => <option key={t.id} value={t.id}>{t.nombre}</option>)}
         </select>
       </label>
       <label>Enunciado<input value={tarea.pregunta} onChange={(e) => onCambiar({ pregunta: e.target.value })} /></label>
+      <SelectorImagen valor={tarea.imagen} onCambiar={(imagen) => onCambiar({ imagen })} />
 
       {tipo === 'opciones' && (
         <>
@@ -135,7 +154,7 @@ function EditorTarea({ tarea, numero, onCambiar, onQuitar }) {
         </>
       )}
 
-      {tipo === 'emparejar' && (
+      {(tipo === 'emparejar' || tipo === 'unir') && (
         <>
           <p className="ayuda">Escribe las parejas correctas; al alumno se le mostrarán desordenadas.</p>
           <ListaEditable

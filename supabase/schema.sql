@@ -171,7 +171,7 @@ begin
 end;
 $$;
 
--- Comprueba una tarea según su tipo: opciones (por defecto), emparejar, ordenar o huecos.
+-- Comprueba una tarea según su tipo: opciones (por defecto), emparejar, unir, ordenar o huecos.
 create or replace function privado.tarea_valida(p jsonb)
 returns boolean language plpgsql set search_path = '' as $$
 declare
@@ -188,7 +188,7 @@ begin
       return false;
     end if;
     return not exists (select 1 from jsonb_array_elements(p->'opciones') e where coalesce(btrim(e #>> '{}'), '') = '');
-  elsif v_tipo = 'emparejar' then
+  elsif v_tipo in ('emparejar', 'unir') then
     if jsonb_typeof(p->'pares') is distinct from 'array' or jsonb_array_length(p->'pares') < 2 then
       return false;
     end if;

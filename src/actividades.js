@@ -1,15 +1,34 @@
 export const TIPOS = [
   { id: 'opciones', nombre: 'Elegir una opción' },
   { id: 'emparejar', nombre: 'Emparejar' },
+  { id: 'unir', nombre: 'Unir con flechas' },
   { id: 'ordenar', nombre: 'Ordenar' },
   { id: 'huecos', nombre: 'Rellenar huecos' },
+]
+
+export const ILUSTRACIONES = [
+  { id: 'fabula', nombre: 'Libro de cuentos con una tortuga' },
+  { id: 'tortuga-rio', nombre: 'Tortuga ante un río, con su familia en la otra orilla' },
+  { id: 'animales-dudan', nombre: 'Un conejo le dice que no a una tortuga' },
+  { id: 'tortuga-pasos', nombre: 'Tortuga avanzando día tras día' },
+  { id: 'meta-alcanzada', nombre: 'Tortuga llegando a la meta' },
+  { id: 'tres-estados', nombre: 'Hielo, agua líquida y vapor' },
+  { id: 'hielo', nombre: 'Cubitos de hielo' },
+  { id: 'vapor', nombre: 'Tetera echando vapor' },
+  { id: 'olla-hirviendo', nombre: 'Olla de agua hirviendo al fuego' },
+  { id: 'congelar', nombre: 'Termómetro frío, copo de nieve y hielo' },
+  { id: 'tierra-gravedad', nombre: 'Flechas que apuntan hacia el centro de la Tierra' },
+  { id: 'pelota-cae', nombre: 'Una mano suelta una pelota, que cae al suelo' },
+  { id: 'luna-orbita', nombre: 'La Luna girando alrededor de la Tierra' },
+  { id: 'astronauta-salto', nombre: 'Astronauta dando un salto largo en la Luna' },
+  { id: 'piedra-lanzada', nombre: 'Una piedra sube y vuelve a caer' },
 ]
 
 // Las tareas sin campo "tipo" son las preguntas de opciones de siempre.
 export const tipoDe = (tarea) => tarea.tipo ?? 'opciones'
 
 export function tareaVacia(tipo, pregunta = '') {
-  if (tipo === 'emparejar') {
+  if (tipo === 'emparejar' || tipo === 'unir') {
     return { tipo, pregunta, pares: [{ izquierda: '', derecha: '' }, { izquierda: '', derecha: '' }] }
   }
   if (tipo === 'ordenar') return { tipo, pregunta, pasos: ['', '', ''] }
@@ -35,12 +54,20 @@ export function barajar(lista) {
   return copia
 }
 
+// Baraja reintentando para no mostrar la actividad ya resuelta.
+export function barajarSinResolver(lista, estaResuelta) {
+  let barajada = barajar(lista)
+  for (let intento = 0; intento < 10 && estaResuelta(barajada); intento++) barajada = barajar(lista)
+  return barajada
+}
+
 export function validarTarea(tarea, numero) {
   const vacio = (texto) => !texto?.trim()
   if (vacio(tarea.pregunta)) return `Escribe el enunciado de la tarea ${numero}.`
 
   switch (tipoDe(tarea)) {
     case 'emparejar':
+    case 'unir':
       if (tarea.pares.length < 2 || tarea.pares.some((p) => vacio(p.izquierda) || vacio(p.derecha))) {
         return `La tarea ${numero} necesita al menos 2 parejas completas.`
       }
