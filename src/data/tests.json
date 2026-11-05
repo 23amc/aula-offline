@@ -1,0 +1,50 @@
+[
+  {
+    "id": "test-mates-1",
+    "asignatura": "Matemáticas",
+    "titulo": "Test de sumas y restas",
+    "preguntas": [
+      { "imagen": "manzanas:7+2", "pregunta": "¿Cuánto es 7 + 2?", "opciones": ["8", "9", "10"], "correcta": 1 },
+      { "imagen": "manzanas:8-3", "pregunta": "¿Cuánto es 8 - 3?", "opciones": ["5", "6", "11"], "correcta": 0 },
+      { "imagen": "lapices:6-2", "pregunta": "Tienes 6 lápices y regalas 2. ¿Cuántos te quedan?", "opciones": ["8", "3", "4"], "correcta": 2 },
+      { "tipo": "huecos", "pregunta": "Escribe los resultados de estas cuentas:", "frase": "5 + 5 = ___ y 10 - 4 = ___", "respuestas": ["10", "6"] },
+      { "tipo": "unir", "pregunta": "Une cada suma con su resultado:", "pares": [{ "izquierda": "2 + 2", "derecha": "4" }, { "izquierda": "3 + 3", "derecha": "6" }, { "izquierda": "4 + 1", "derecha": "5" }] }
+    ]
+  },
+  {
+    "id": "test-lengua-1",
+    "asignatura": "Literatura",
+    "titulo": "Test de la tortuga y el río",
+    "preguntas": [
+      { "imagen": "tortuga-rio", "pregunta": "¿Qué animal es el protagonista de la fábula?", "opciones": ["Un conejo", "Una tortuga", "Un pez"], "correcta": 1 },
+      { "imagen": "animales-dudan", "pregunta": "¿Cómo reaccionó la tortuga ante lo que le decían?", "opciones": ["No discutió", "Se enfadó mucho", "Volvió a casa"], "correcta": 0 },
+      { "imagen": "tortuga-pasos", "pregunta": "¿Cuánto tardó la tortuga en cruzar?", "opciones": ["Un día", "Un año", "Una semana"], "correcta": 2 },
+      { "tipo": "huecos", "pregunta": "Completa con la palabra que falta:", "frase": "La enseñanza que deja una fábula se llama ___.", "respuestas": ["moraleja"] },
+      { "tipo": "emparejar", "pregunta": "Une cada palabra con su significado:", "pares": [{ "izquierda": "Fábula", "derecha": "Cuento con animales" }, { "izquierda": "Moraleja", "derecha": "Enseñanza" }, { "izquierda": "Orilla", "derecha": "Borde del río" }] }
+    ]
+  },
+  {
+    "id": "test-quimica-1",
+    "asignatura": "Química",
+    "titulo": "Test de los estados del agua",
+    "preguntas": [
+      { "pregunta": "¿En qué estado está el agua de la lluvia?", "opciones": ["Sólido", "Líquido", "Gas"], "correcta": 1 },
+      { "imagen": "congelar", "pregunta": "¿En qué estado está la nieve?", "opciones": ["Sólido", "Líquido", "Gas"], "correcta": 0 },
+      { "imagen": "olla-hirviendo", "pregunta": "¿Qué sale de una olla con agua hirviendo?", "opciones": ["Hielo", "Arena", "Vapor"], "correcta": 2 },
+      { "tipo": "ordenar", "pregunta": "Ordena lo que le pasa a un cubito de hielo que se calienta mucho:", "pasos": ["Es hielo sólido", "Se derrite y es agua líquida", "Hierve y se convierte en vapor"] },
+      { "tipo": "unir", "pregunta": "Une cada cosa con su estado:", "pares": [{ "izquierda": "Una piedra", "derecha": "Sólido" }, { "izquierda": "La leche", "derecha": "Líquido" }, { "izquierda": "El aire", "derecha": "Gas" }] }
+    ]
+  },
+  {
+    "id": "test-fisica-1",
+    "asignatura": "Física",
+    "titulo": "Test de la gravedad",
+    "preguntas": [
+      { "imagen": "pelota-cae", "pregunta": "¿Hacia dónde cae una manzana cuando se suelta del árbol?", "opciones": ["Hacia el cielo", "Hacia el suelo", "Hacia un lado"], "correcta": 1 },
+      { "imagen": "astronauta-salto", "pregunta": "¿Dónde es menor la gravedad?", "opciones": ["En la Luna", "En la Tierra", "Es igual en las dos"], "correcta": 0 },
+      { "imagen": "tierra-gravedad", "pregunta": "¿Qué fuerza hace que la lluvia caiga al suelo?", "opciones": ["El calor", "La luz", "La gravedad"], "correcta": 2 },
+      { "tipo": "huecos", "pregunta": "Completa con la palabra que falta:", "frase": "La Luna gira alrededor de la ___.", "respuestas": ["Tierra"] },
+      { "tipo": "ordenar", "pregunta": "Ordena lo que pasa al lanzar una pelota hacia arriba:", "pasos": ["La lanzas hacia arriba", "Sube cada vez más despacio", "Se para un instante", "Cae al suelo"] }
+    ]
+  }
+]

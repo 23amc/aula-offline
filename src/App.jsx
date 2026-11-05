@@ -13,6 +13,7 @@ import {
   cuentaActual,
   guardarResultado,
   leerLecciones,
+  leerTests,
   registrarRespuesta,
   sincronizar,
   tareasParaReforzar,
@@ -40,6 +41,7 @@ export default function App() {
   const [pasoAcceso, setPasoAcceso] = useState('inicio')
   const [seccion, setSeccion] = useState('lecciones')
   const [lecciones, setLecciones] = useState(leerLecciones)
+  const [tests, setTests] = useState(leerTests)
   const [leccion, setLeccion] = useState(null)
   const [actual, setActual] = useState(0)
   const [puntos, setPuntos] = useState(0)
@@ -50,6 +52,7 @@ export default function App() {
 
   const refrescar = useCallback(() => {
     setLecciones(leerLecciones())
+    setTests(leerTests())
     setCuenta(cuentaActual())
   }, [])
 
@@ -144,7 +147,7 @@ export default function App() {
   }
 
   function empezarRefuerzo() {
-    empezar({ id: ID_REFUERZO, preguntas: tareasParaReforzar(cuenta.alias, lecciones) }, 'quiz')
+    empezar({ id: ID_REFUERZO, preguntas: tareasParaReforzar(cuenta.alias, [...lecciones, ...tests]) }, 'quiz')
   }
 
   function responder(correcta) {
@@ -206,7 +209,7 @@ export default function App() {
           pin={pinDocente}
           online={online}
           onSalir={salirDocente}
-          onLeccionesCambiadas={() => setLecciones(leerLecciones())}
+          onLeccionesCambiadas={refrescar}
         />
       )}
 
@@ -226,7 +229,8 @@ export default function App() {
           <MenuAlumno
             seccion={seccion}
             lecciones={lecciones}
-            refuerzo={tareasParaReforzar(cuenta.alias, lecciones)}
+            tests={tests}
+            refuerzo={tareasParaReforzar(cuenta.alias, [...lecciones, ...tests])}
             onSeccion={setSeccion}
             onLeer={(l) => empezar(l, 'leccion')}
             onTest={(l) => empezar(l, 'quiz')}
@@ -242,7 +246,7 @@ export default function App() {
           <h1>{leccion.titulo}</h1>
           <Ilustracion id={leccion.preguntas[0]?.imagen} />
           <p>{leccion.texto}</p>
-          <button onClick={() => setPantalla('quiz')}>Hacer el test</button>
+          <button onClick={() => setPantalla('quiz')}>Hacer las actividades</button>
           <button className="secundario" onClick={() => setPantalla('menu')}>Volver al menú</button>
         </div>
       )}

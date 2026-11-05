@@ -1,4 +1,5 @@
 import leccionesBase from './data/lecciones.json'
+import testsBase from './data/tests.json'
 import { supabase } from './supabase'
 
 function leer(clave, porDefecto) {
@@ -151,13 +152,20 @@ export function tareasParaReforzar(alias, lecciones) {
 
 // ---------- Lecciones: las incluidas en la app más las del servidor, que tienen prioridad ----------
 
-export function leerLecciones() {
+function leerContenido() {
+  const incluido = [...leccionesBase, ...testsBase]
   const delServidor = leer('lecciones_servidor', [])
   const porId = new Map(delServidor.map((l) => [l.id, l]))
-  const base = leccionesBase.map((l) => porId.get(l.id) ?? l)
-  const idsBase = new Set(leccionesBase.map((l) => l.id))
-  return [...base, ...delServidor.filter((l) => !idsBase.has(l.id))]
+  const idsIncluidos = new Set(incluido.map((l) => l.id))
+  return [...incluido.map((l) => porId.get(l.id) ?? l), ...delServidor.filter((l) => !idsIncluidos.has(l.id))]
 }
+
+// Los tests son independientes de las lecciones: comparten tabla y se distinguen por el id.
+const PREFIJO_TEST = 'test-'
+const esTest = (l) => l.id.startsWith(PREFIJO_TEST)
+
+export const leerLecciones = () => leerContenido().filter((l) => !esTest(l))
+export const leerTests = () => leerContenido().filter(esTest)
 
 async function actualizarLecciones() {
   const { data, error } = await supabase
@@ -248,9 +256,9 @@ export async function docenteResultados(pin) {
   }
 }
 
-export async function docenteGuardarLeccion(pin, leccion) {
+export async function docenteGuardarLeccion(pin, leccion, { test = false } = {}) {
   try {
-    const datos = leccion.id ? leccion : { ...leccion, id: `leccion-${nuevoId()}` }
+    const datos = leccion.id ? leccion : { ...leccion, id: `${test ? PREFIJO_TEST : 'leccion-'}${nuevoId()}` }
     const r = await llamar('docente_guardar_leccion', { p_pin: pin, p_leccion: datos })
     if (!r.ok) {
       const invalida = r.motivo === 'leccion_invalida'

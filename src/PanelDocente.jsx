@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { contarHuecos, ILUSTRACIONES, limpiarTarea, TIPOS, tareaVacia, tipoDe, validarTarea } from './actividades'
-import { docenteGuardarLeccion, docenteResultados, leerLecciones } from './datos'
+import { docenteGuardarLeccion, docenteResultados, leerLecciones, leerTests } from './datos'
 import Ilustracion from './Ilustracion'
 
 function Notas({ pin, lecciones }) {
@@ -27,7 +27,7 @@ function Notas({ pin, lecciones }) {
   return (
     <div>
       <label>
-        Lección
+        Lección o test
         <select value={filtro} onChange={(e) => setFiltro(e.target.value)}>
           <option value="">Todas</option>
           {lecciones.map((l) => <option key={l.id} value={l.id}>{l.titulo}</option>)}
@@ -58,10 +58,9 @@ function Notas({ pin, lecciones }) {
   )
 }
 
-function validar(leccion) {
-  if (!leccion.asignatura.trim() || !leccion.titulo.trim() || !leccion.texto.trim()) {
-    return 'Completa la asignatura, el título y el texto.'
-  }
+function validar(leccion, esTest) {
+  if (!leccion.asignatura.trim() || !leccion.titulo.trim()) return 'Completa la asignatura y el título.'
+  if (!esTest && !leccion.texto.trim()) return 'Escribe el texto de la lección.'
   if (leccion.preguntas.length === 0) return 'Añade al menos una tarea.'
   for (const [i, p] of leccion.preguntas.entries()) {
     const problema = validarTarea(p, i + 1)
@@ -216,7 +215,7 @@ function EditorTarea({ tarea, numero, onCambiar, onQuitar }) {
   )
 }
 
-function EditorLeccion({ pin, inicial, onGuardada, onCancelar }) {
+function EditorLeccion({ pin, inicial, esTest, onGuardada, onCancelar }) {
   const [leccion, setLeccion] = useState(inicial)
   const [error, setError] = useState('')
   const [ocupado, setOcupado] = useState(false)
@@ -227,14 +226,18 @@ function EditorLeccion({ pin, inicial, onGuardada, onCancelar }) {
   })
 
   async function guardar() {
-    const problema = validar(leccion)
+    const problema = validar(leccion, esTest)
     if (problema) {
       setError(problema)
       return
     }
     setError('')
     setOcupado(true)
-    const r = await docenteGuardarLeccion(pin, { ...leccion, preguntas: leccion.preguntas.map(limpiarTarea) })
+    const r = await docenteGuardarLeccion(pin, {
+      ...leccion,
+      texto: esTest ? leccion.titulo : leccion.texto, // El servidor exige texto; un test no lo muestra.
+      preguntas: leccion.preguntas.map(limpiarTarea),
+    }, { test: esTest })
     setOcupado(false)
     if (r.error) setError(r.error)
     else onGuardada()
@@ -242,10 +245,12 @@ function EditorLeccion({ pin, inicial, onGuardada, onCancelar }) {
 
   return (
     <div>
-      <h2>{leccion.id ? 'Modificar lección' : 'Nueva lección'}</h2>
+      <h2>{leccion.id ? 'Modificar' : 'Nuevo'}{esTest ? ' test' : leccion.id ? ' lección' : 'a lección'}</h2>
       <label>Asignatura<input value={leccion.asignatura} onChange={(e) => setLeccion({ ...leccion, asignatura: e.target.value })} /></label>
       <label>Título<input value={leccion.titulo} onChange={(e) => setLeccion({ ...leccion, titulo: e.target.value })} /></label>
-      <label>Texto de la lección<textarea rows={6} value={leccion.texto} onChange={(e) => setLeccion({ ...leccion, texto: e.target.value })} /></label>
+      {!esTest && (
+        <label>Texto de la lección<textarea rows={6} value={leccion.texto} onChange={(e) => setLeccion({ ...leccion, texto: e.target.value })} /></label>
+      )}
 
       <h2>Tareas</h2>
       {leccion.preguntas.map((p, i) => (
@@ -266,26 +271,52 @@ function EditorLeccion({ pin, inicial, onGuardada, onCancelar }) {
   )
 }
 
+function ListaContenido({ aviso, textoAnadir, ayuda, elementos, unidad, onAnadir, onAbrir }) {
+  return (
+    <div>
+      {aviso && <p className="aviso" role="status">{aviso}</p>}
+      <button onClick={onAnadir}>{textoAnadir}</button>
+      <p className="ayuda">{ayuda}</p>
+      {elementos.map((l) => (
+        <button key={l.id} className="secundario" onClick={() => onAbrir(l)}>
+          {l.asignatura}: {l.titulo} ({l.preguntas.length} {unidad})
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function PanelDocente({ pin, online, onSalir, onLeccionesCambiadas }) {
   const [seccion, setSeccion] = useState('notas')
   const [editando, setEditando] = useState(null)
   const [lecciones, setLecciones] = useState(leerLecciones)
+  const [tests, setTests] = useState(leerTests)
   const [aviso, setAviso] = useState('')
+
+  const esTest = seccion === 'tests'
+  const vacia = () => ({ asignatura: '', titulo: '', texto: '', preguntas: [tareaVacia('opciones')] })
 
   function guardada() {
     setLecciones(leerLecciones())
+    setTests(leerTests())
     setEditando(null)
-    setAviso('Lección guardada. Los alumnos la recibirán al sincronizar.')
+    setAviso(`${esTest ? 'Test guardado' : 'Lección guardada'}. Los alumnos lo recibirán al sincronizar.`)
     onLeccionesCambiadas()
   }
 
-  function abrirEditor(leccion) {
+  function abrirEditor(contenido) {
     setAviso('')
-    setEditando(leccion)
+    setEditando(contenido)
+  }
+
+  function cambiarSeccion(nueva) {
+    setAviso('')
+    setSeccion(nueva)
   }
 
   if (editando) {
-    return <EditorLeccion pin={pin} inicial={editando} onGuardada={guardada} onCancelar={() => setEditando(null)} />
+    // Los tests incluidos en la app no traen campo de texto.
+    return <EditorLeccion pin={pin} inicial={{ texto: '', ...editando }} esTest={esTest} onGuardada={guardada} onCancelar={() => setEditando(null)} />
   }
 
   return (
@@ -293,23 +324,35 @@ export default function PanelDocente({ pin, online, onSalir, onLeccionesCambiada
       <h1>Panel del profesor</h1>
       {!online && <p className="error">Sin conexión: el panel necesita internet para ver notas y guardar cambios.</p>}
       <div className="pestanas">
-        <button className={seccion === 'notas' ? '' : 'secundario'} onClick={() => setSeccion('notas')}>Notas</button>
-        <button className={seccion === 'lecciones' ? '' : 'secundario'} onClick={() => setSeccion('lecciones')}>Lecciones y tareas</button>
+        <button className={seccion === 'notas' ? '' : 'secundario'} onClick={() => cambiarSeccion('notas')}>Notas</button>
+        <button className={seccion === 'lecciones' ? '' : 'secundario'} onClick={() => cambiarSeccion('lecciones')}>Lecciones</button>
+        <button className={esTest ? '' : 'secundario'} onClick={() => cambiarSeccion('tests')}>Tests</button>
       </div>
 
-      {seccion === 'notas' && <Notas pin={pin} lecciones={lecciones} />}
+      {seccion === 'notas' && <Notas pin={pin} lecciones={[...lecciones, ...tests]} />}
 
       {seccion === 'lecciones' && (
-        <div>
-          {aviso && <p className="aviso" role="status">{aviso}</p>}
-          <button onClick={() => abrirEditor({ asignatura: '', titulo: '', texto: '', preguntas: [tareaVacia('opciones')] })}>Añadir lección</button>
-          <p className="ayuda">Toca una lección para modificar su texto y sus tareas:</p>
-          {lecciones.map((l) => (
-            <button key={l.id} className="secundario" onClick={() => abrirEditor(l)}>
-              {l.asignatura}: {l.titulo} ({l.preguntas.length} tareas)
-            </button>
-          ))}
-        </div>
+        <ListaContenido
+          aviso={aviso}
+          textoAnadir="Añadir lección"
+          ayuda="Toca una lección para modificar su texto y sus actividades:"
+          elementos={lecciones}
+          unidad="tareas"
+          onAnadir={() => abrirEditor(vacia())}
+          onAbrir={abrirEditor}
+        />
+      )}
+
+      {esTest && (
+        <ListaContenido
+          aviso={aviso}
+          textoAnadir="Añadir test"
+          ayuda="Los tests van aparte de las lecciones, con sus propias preguntas:"
+          elementos={tests}
+          unidad="preguntas"
+          onAnadir={() => abrirEditor(vacia())}
+          onAbrir={abrirEditor}
+        />
       )}
 
       <button className="secundario" onClick={onSalir}>Salir del panel</button>

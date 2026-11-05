@@ -4,7 +4,7 @@ const SECCIONES = [
   { id: 'refuerzo', nombre: 'Refuerzo', clase: 'naranja' },
 ]
 
-export default function MenuAlumno({ seccion, lecciones, refuerzo, onSeccion, onLeer, onTest, onRefuerzo }) {
+export default function MenuAlumno({ seccion, lecciones, tests, refuerzo, onSeccion, onLeer, onTest, onRefuerzo }) {
   return (
     <div>
       <div className="pestanas secciones">
@@ -29,11 +29,9 @@ export default function MenuAlumno({ seccion, lecciones, refuerzo, onSeccion, on
 
       {seccion === 'tests' && (
         <>
-          <p>Elige un test para ponerte a prueba:</p>
-          {lecciones.map((l) => (
-            <button key={l.id} onClick={() => onTest(l)}>
-              {l.asignatura}: {l.titulo} ({l.preguntas.length} tareas)
-            </button>
+          <p>Preguntas nuevas, distintas de las de las lecciones, para ponerte a prueba:</p>
+          {tests.map((t) => (
+            <button key={t.id} onClick={() => onTest(t)}>{t.titulo} ({t.preguntas.length} preguntas)</button>
           ))}
         </>
       )}
