@@ -54,7 +54,8 @@ export default function Acceso({ paso, onCambiarPaso, onAlumno, onDocente }) {
   if (paso === 'inicio') {
     return (
       <div className="inicio">
-        <img src={logo} alt="EduGo" />
+        <h1>EduGo</h1>
+        <img src={logo} alt="" />
         <button onClick={() => abrir('registro')}>Registrarse</button>
         <button className="secundario" onClick={() => abrir('sesion')}>Inicio de sesión</button>
       </div>
