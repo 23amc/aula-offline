@@ -1,7 +1,7 @@
 [
   { "claves": "pizarra dibujar pintar colores goma", "respuesta": "La pizarra está en la pestaña «Pizarra» del borde derecho. Eliges un color y pintas con el dedo o el ratón. Con «Goma» borras una parte y con «Borrar todo» la dejas en blanco." },
   { "claves": "refuerzo fallos fallo repasar practicar naranja", "respuesta": "En «Refuerzo», el botón naranja, aparecen las preguntas que más fallas. Cuando las aciertas, van desapareciendo de la lista. No cuenta como nota." },
-  { "claves": "test tests examen", "respuesta": "En «Tests» hay pruebas con preguntas distintas de las lecciones. En cada intento salen 10 preguntas al azar. Durante un test no puedo ayudarte: ¡tienes que hacerlo tú solo!" },
+  { "claves": "test tests examen", "respuesta": "En «Tests» hay pruebas con preguntas distintas de las lecciones. En cada intento salen 10 preguntas al azar. Durante un test puedo darte pistas, pero las respuestas tienes que encontrarlas tú." },
   { "claves": "leccion lecciones estudiar aprender", "respuesta": "En «Lecciones» están todas las lecciones. Abre una, léela con calma y después pulsa «Hacer las actividades» para practicar." },
   { "claves": "nota notas profesor enviar resultados", "respuesta": "Tus notas se guardan en el móvil y se envían a tu profesor cuando tienes conexión. Las de Refuerzo no se envían, porque son solo práctica." },
   { "claves": "conexion internet offline wifi red", "respuesta": "Puedes estudiar sin conexión. Todo se guarda en el móvil y se envía cuando vuelves a tener internet." },

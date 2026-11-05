@@ -27,6 +27,18 @@ import './App.css'
 const DURACION_PORTADA = 1500
 const ID_REFUERZO = 'refuerzo'
 
+// La mascota es la IA: tocarla, a ella o a su bocadillo, abre el chat.
+function MascotaIA({ estado, onPreguntar, bocadillo = false }) {
+  return (
+    <div className="mascota-fila">
+      <button className="mascota-boton" aria-label="Preguntar a la mascota" onClick={onPreguntar}>
+        <Mascota estado={estado} />
+      </button>
+      {bocadillo && <button className="bocadillo" onClick={onPreguntar}>Púlsame para desplegar la IA</button>}
+    </div>
+  )
+}
+
 function BarraProgreso({ completadas, total }) {
   return (
     <div className="progreso" role="progressbar" aria-label="Progreso de la lección" aria-valuemin={0} aria-valuemax={total} aria-valuenow={completadas}>
@@ -193,6 +205,8 @@ export default function App() {
     }
   }
 
+  const abrirIA = () => setPanel('ia')
+
   function alternarPanel(nombre) {
     setPanel(panel === nombre ? null : nombre)
   }
@@ -252,6 +266,8 @@ export default function App() {
       {pantalla === 'menu' && (
         <div>
           <h1>Hola, {cuenta.alias}</h1>
+          <MascotaIA estado="normal" onPreguntar={abrirIA} />
+          <p className="mensaje-mascota"><span className="ayuda">¿Tienes alguna duda? Tócame y pregúntame</span></p>
           {cuenta.conflicto && (
             <div className="conflicto">
               <p className="error" role="alert">
@@ -280,6 +296,7 @@ export default function App() {
         <div>
           <p>{leccion.asignatura}</p>
           <h1>{leccion.titulo}</h1>
+          <MascotaIA estado="normal" onPreguntar={abrirIA} bocadillo />
           <Ilustracion id={leccion.preguntas[0]?.imagen} />
           <p>{leccion.texto}</p>
           <button onClick={() => setPantalla('quiz')}>Hacer las actividades</button>
@@ -290,7 +307,7 @@ export default function App() {
       {pantalla === 'quiz' && (
         <div>
           <BarraProgreso completadas={actual + (acierto === null ? 0 : 1)} total={leccion.preguntas.length} />
-          <Mascota estado={acierto === null ? 'normal' : acierto ? 'contenta' : 'animando'} />
+          <MascotaIA estado={acierto === null ? 'normal' : acierto ? 'contenta' : 'animando'} onPreguntar={abrirIA} bocadillo />
           <p className="mensaje-mascota" role="status">
             {acierto === true && '¡Muy bien!'}
             {acierto === false && '¡Casi! Mira la respuesta y sigue adelante.'}
@@ -309,7 +326,7 @@ export default function App() {
 
       {pantalla === 'fin' && (
         <div>
-          <Mascota estado={puntos * 2 >= leccion.preguntas.length ? 'contenta' : 'animando'} />
+          <MascotaIA estado={puntos * 2 >= leccion.preguntas.length ? 'contenta' : 'animando'} onPreguntar={abrirIA} />
           <h1>¡Terminaste!</h1>
           <p>Has acertado {puntos} de {leccion.preguntas.length}</p>
           {leccion.id !== ID_REFUERZO && (

@@ -1,19 +1,24 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import Mascota from './Mascota'
 import PanelLateral from './PanelLateral'
 import { buscarFragmentos, esCuenta, explicarLeccion, responderBasico } from './asistenteBasico'
 
 const CLAVE_ACTIVADA = 'ia_avanzada'
 const TURNOS_DE_MEMORIA = 4
-const SALUDO = '¡Hola! Soy tu ayudante de EduGo. Pregúntame lo que no entiendas de las lecciones o de cómo usar la app.'
+const SALUDO = '¡Hola! Soy la mascota de EduGo. Pregúntame lo que no entiendas de las lecciones o de cómo usar la app.'
 
-const INSTRUCCIONES = `Eres el tutor de EduGo, una app educativa para niños y niñas.
+const NO_ENCONTRADO = /^No encuentro/
+const CUENTA_EN_TEST = 'En un test no te doy el resultado. ¡Cuenta con calma, que tú puedes!'
+
+const INSTRUCCIONES = `Eres la mascota de EduGo, un libro simpático que hace de tutor en una app educativa para niños y niñas.
 Responde siempre en español, con frases cortas y sencillas, en 3 frases como máximo.
 Usa la información de las lecciones si está disponible. Si no sabes algo, dilo y recomienda preguntar al profesor.
 Habla solo de temas adecuados para menores. En los ejercicios, ayuda a pensar en lugar de dar la respuesta sin más.`
 
-function construirInstrucciones(pregunta, lecciones, leccionActual) {
+function construirInstrucciones(pregunta, lecciones, leccionActual, enTest) {
   const fragmentos = buscarFragmentos(pregunta, lecciones, leccionActual).map((f) => `- ${f.texto}`)
   const partes = [INSTRUCCIONES]
+  if (enTest) partes.push('El alumno está haciendo un test: dale solo pistas y nunca la respuesta.')
   if (leccionActual) partes.push(`El alumno está en la lección «${leccionActual.titulo}»:\n${leccionActual.texto}`)
   if (fragmentos.length > 0) partes.push(`Información útil:\n${fragmentos.join('\n')}`)
   return partes.join('\n\n')
@@ -27,6 +32,7 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
   const [aviso, setAviso] = useState('')
   const [respondiendo, setRespondiendo] = useState(false)
   const motor = useRef(null)
+  const cargando = useRef(false)
   const final = useRef(null)
 
   const hayGPU = Boolean(navigator.gpu)
@@ -35,7 +41,8 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
     final.current?.scrollIntoView({ block: 'nearest' })
   }, [mensajes])
 
-  async function activar() {
+  const activar = useCallback(async () => {
+    cargando.current = true
     setAviso('')
     setProgreso(0)
     setEstadoIA('descargando')
@@ -52,7 +59,15 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
       // Sin conexión puede ser algo pasajero: se reintentará la próxima vez.
       if (navigator.onLine) localStorage.removeItem(CLAVE_ACTIVADA)
     }
-  }
+    cargando.current = false
+  }, [])
+
+  // Quien ya la activó la recupera al abrir el panel, se abra desde la pestaña o tocando a la mascota.
+  useEffect(() => {
+    if (!abierta || !hayGPU || motor.current || cargando.current || !localStorage.getItem(CLAVE_ACTIVADA)) return
+    const temporizador = setTimeout(activar, 0)
+    return () => clearTimeout(temporizador)
+  }, [abierta, hayGPU, activar])
 
   async function desactivar() {
     localStorage.removeItem(CLAVE_ACTIVADA)
@@ -62,12 +77,6 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
     const { borrarModelo } = await import('./motorIA')
     await borrarModelo().catch(() => {})
     setAviso('IA avanzada desactivada y descarga borrada.')
-  }
-
-  function alternar() {
-    // Quien ya la activó la recupera al abrir el panel, sin tener que pedirla otra vez.
-    if (!abierta && estadoIA === 'basica' && hayGPU && localStorage.getItem(CLAVE_ACTIVADA)) activar()
-    onAlternar()
   }
 
   function anadirRespuesta(texto) {
@@ -85,7 +94,7 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
       }))
       const flujo = await motor.current.chat.completions.create({
         messages: [
-          { role: 'system', content: construirInstrucciones(pregunta, lecciones, leccionActual) },
+          { role: 'system', content: construirInstrucciones(pregunta, lecciones, leccionActual, enTest) },
           ...anteriores,
           { role: 'user', content: pregunta },
         ],
@@ -111,8 +120,9 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
     const historial = mensajes
     setMensajes([...mensajes, { de: 'alumno', texto: limpia }])
     setEscrito('')
-    // Las cuentas se resuelven siempre con exactitud, sin depender del modelo.
-    if (estadoIA === 'lista' && !esCuenta(limpia)) responderConModelo(limpia, historial)
+    if (enTest && esCuenta(limpia)) anadirRespuesta(CUENTA_EN_TEST)
+    // Fuera de los tests, las cuentas se resuelven siempre con exactitud, sin depender del modelo.
+    else if (estadoIA === 'lista' && !esCuenta(limpia)) responderConModelo(limpia, historial)
     else anadirRespuesta(responderBasico(limpia, lecciones, leccionActual))
   }
 
@@ -124,16 +134,26 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
     }
   }
 
+  const ultimo = mensajes[mensajes.length - 1]
+  const preguntando = mensajes.length > 1
+  const expresion = respondiendo || estadoIA === 'descargando'
+    ? 'pensando'
+    : !preguntando ? 'normal' : NO_ENCONTRADO.test(ultimo.texto) ? 'animando' : 'contenta'
+
   return (
-    <PanelLateral nombre="IA" posicion="abajo" abierto={abierta} onAlternar={alternar}>
-      {enTest ? (
-        <div className="ia">
-          <h2>IA</h2>
-          <p role="status">Durante un test no puedo ayudarte: tienes que hacerlo tú solo. ¡Ánimo!</p>
-        </div>
-      ) : (
-        <div className="ia">
-          <h2>IA de EduGo</h2>
+    <PanelLateral
+      nombre="IA"
+      icono={<Mascota estado="icono" />}
+      posicion="abajo"
+      abierto={abierta}
+      onAlternar={onAlternar}
+    >
+      <div className="ia">
+          <div className="ia-cabecera">
+            {/* La clave repite la animación con cada respuesta. */}
+            <Mascota key={mensajes.length} estado={expresion} />
+            <h2>Pregúntame</h2>
+          </div>
 
           {estadoIA === 'basica' && (
             <div className="ia-tarjeta">
@@ -160,7 +180,12 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
           {aviso && <p className="ayuda" role="status">{aviso}</p>}
 
           <div className="ia-mensajes" role="log" aria-live="polite">
-            {mensajes.map((m, i) => <div key={i} className={`ia-mensaje ${m.de}`}>{m.texto}</div>)}
+            {mensajes.map((m, i) => (
+              <div key={i} className={`ia-fila ${m.de}`}>
+                {m.de === 'asistente' && <Mascota estado="icono" />}
+                <div className={`ia-mensaje ${m.de}`}>{m.texto}</div>
+              </div>
+            ))}
             <div ref={final} />
           </div>
 
@@ -178,8 +203,7 @@ export default function Asistente({ abierta, onAlternar, lecciones, leccionActua
               <button type="submit" disabled={!escrito.trim()}>Enviar</button>
             )}
           </form>
-        </div>
-      )}
+      </div>
     </PanelLateral>
   )
 }

@@ -39,7 +39,7 @@ export const esCuenta = (pregunta) => cuenta(pregunta) !== null
 
 function frasesDeLecciones(lecciones) {
   return lecciones.flatMap((l) => {
-    const frases = l.texto.split(/(?<=[.!?:])\s+/)
+    const frases = l.texto.split(/(?<=[.!?])\s+/)
     return frases.map((frase, i) => ({
       // «Por eso…» no se entiende sin la frase de la que depende.
       frase: i > 0 && /^(por eso|as[ií]|entonces|tambi[eé]n)\b/i.test(frase) ? `${frases[i - 1]} ${frase}` : frase,
@@ -72,7 +72,7 @@ export function buscarFragmentos(pregunta, lecciones, leccionActual, cantidad = 
 }
 
 export function explicarLeccion(leccion) {
-  return `Vamos por partes con «${leccion.titulo}»:\n\n${leccion.texto.split(/(?<=[.!?:])\s+/).map((f) => `• ${f}`).join('\n')}`
+  return `Vamos por partes con «${leccion.titulo}»:\n\n${leccion.texto.split(/(?<=[.!?])\s+/).map((f) => `• ${f}`).join('\n')}`
 }
 
 export function responderBasico(pregunta, lecciones, leccionActual) {
@@ -91,8 +91,11 @@ export function responderBasico(pregunta, lecciones, leccionActual) {
   if (!mejor) {
     return 'No encuentro eso en tus lecciones. Prueba con otras palabras, o pregúntaselo a tu profesor.'
   }
-  const partes = [mejor.texto]
-  // Dos frases de la misma lección suelen explicarse mejor juntas.
-  if (segundo && mejor.origen && segundo.origen === mejor.origen && segundo.puntos >= mejor.puntos) partes.push(segundo.texto)
-  return partes.join(' ') + (mejor.origen ? `\n\n(De la lección «${mejor.origen}»)` : '')
+  let respuesta = mejor.texto
+  // Dos frases de la misma lección suelen explicarse mejor juntas, pero una puede contener a la otra.
+  if (segundo && mejor.origen && segundo.origen === mejor.origen && segundo.puntos >= mejor.puntos) {
+    if (segundo.texto.includes(mejor.texto)) respuesta = segundo.texto
+    else if (!mejor.texto.includes(segundo.texto)) respuesta = `${mejor.texto} ${segundo.texto}`
+  }
+  return respuesta + (mejor.origen ? `\n\n(De la lección «${mejor.origen}»)` : '')
 }
