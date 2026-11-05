@@ -11,9 +11,15 @@ import PantallaLeccion from '../alumno/PantallaLeccion'
 import PantallaQuiz from '../alumno/PantallaQuiz'
 import Pizarra from '../herramientas/Pizarra'
 import PanelDocente from '../docente/PanelDocente'
+import { esquemaDeLeccion } from '../esquemas/esquemas'
+import PantallaEsquema from '../esquemas/PantallaEsquema'
+import { generarPractica } from '../alumno/practica'
 import {
   alternarGuardada,
+  borrarEsquema,
   cambiarAlias,
+  esquemasDe,
+  guardarEsquema,
   cerrarSesion,
   contarPendientes,
   elegirPreguntasTest,
@@ -32,6 +38,7 @@ import '../estilos/app.css'
 
 const DURACION_PORTADA = 1500
 const ID_REFUERZO = 'refuerzo'
+const ID_PRACTICA = 'practica'
 
 export default function App() {
   const [portada, setPortada] = useState(true)
@@ -54,6 +61,8 @@ export default function App() {
   const [nuevoAlias, setNuevoAlias] = useState('')
   const [errorAlias, setErrorAlias] = useState('')
   const [ajustes, setAjustes] = useState(leerAjustes)
+  const [esquemas, setEsquemas] = useState(() => (cuenta ? esquemasDe(cuenta.alias) : []))
+  const [esquemaAbierto, setEsquemaAbierto] = useState(null)
   const [, setIdioma] = useState(() => idiomaActual().codigo)
   const botonSiguiente = useRef(null)
 
@@ -144,6 +153,7 @@ export default function App() {
   function entrarComoAlumno(c) {
     setCuenta(c)
     setGuardadas(guardadasDe(c.alias))
+    setEsquemas(esquemasDe(c.alias))
     setVista('inicio')
     setPantalla('menu')
     sincronizarYRefrescar()
@@ -191,9 +201,15 @@ export default function App() {
     empezar({ ...test, preguntas: elegirPreguntasTest(cuenta.alias, test) }, 'quiz')
   }
 
+  // La práctica de matemáticas se inventa cada vez: no tiene nota ni refuerzo.
+  function empezarPractica(tema, nivel) {
+    empezar({ id: ID_PRACTICA, practica: { tema, nivel }, asignatura: 'Matemáticas', preguntas: generarPractica(tema, nivel) }, 'quiz')
+  }
+
   function repetir() {
     const test = tests.find((t) => t.id === leccion.id)
-    if (test) empezarTest(test)
+    if (leccion.practica) empezarPractica(leccion.practica.tema, leccion.practica.nivel)
+    else if (test) empezarTest(test)
     else empezar(leccion, 'quiz')
   }
 
@@ -201,9 +217,35 @@ export default function App() {
     empezar({ id: ID_REFUERZO, preguntas: tareasParaReforzar(cuenta.alias, [...lecciones, ...tests]) }, 'quiz')
   }
 
+  function abrirEsquema(inicial, contexto) {
+    setPanel(null)
+    setEsquemaAbierto({ inicial, contexto, volverA: pantalla })
+    setPantalla('esquema')
+  }
+
+  function abrirEsquemaLeccion(l) {
+    abrirEsquema(esquemaDeLeccion(l), { tema: l.titulo, texto: l.texto })
+  }
+
+  function volverDeEsquema() {
+    setPantalla(esquemaAbierto.volverA)
+    setEsquemaAbierto(null)
+  }
+
+  function guardarEsquemaAlumno(esquema) {
+    const guardado = guardarEsquema(cuenta.alias, esquema)
+    setEsquemas(esquemasDe(cuenta.alias))
+    return guardado
+  }
+
+  function borrarEsquemaAlumno(id) {
+    borrarEsquema(cuenta.alias, id)
+    setEsquemas(esquemasDe(cuenta.alias))
+  }
+
   function responder(correcta) {
     const tarea = leccion.preguntas[actual]
-    registrarRespuesta(cuenta.alias, tarea.clave ?? claveTarea(leccion.id, tarea), correcta)
+    if (!leccion.practica) registrarRespuesta(cuenta.alias, tarea.clave ?? claveTarea(leccion.id, tarea), correcta)
     setAcierto(correcta)
     if (correcta) setPuntos(puntos + 1)
   }
@@ -212,8 +254,8 @@ export default function App() {
     setAcierto(null)
     if (actual + 1 < leccion.preguntas.length) {
       setActual(actual + 1)
-    } else if (leccion.id === ID_REFUERZO) {
-      // El refuerzo es práctica: no cuenta como nota para el profesor.
+    } else if (leccion.id === ID_REFUERZO || leccion.practica) {
+      // El refuerzo y la práctica no cuentan como nota para el profesor.
       setPantalla('fin')
     } else {
       guardarResultado({
@@ -239,10 +281,12 @@ export default function App() {
     setPanel(panel === nombre ? null : nombre)
   }
 
-  const enActividad = pantalla === 'leccion' || pantalla === 'quiz' || pantalla === 'fin'
-  const enTest = pantalla === 'quiz' && tests.some((t) => t.id === leccion?.id)
+  const enActividad = pantalla === 'leccion' || pantalla === 'quiz' || pantalla === 'fin' || pantalla === 'esquema'
+  // En la práctica, la mascota da pistas pero no resuelve las cuentas.
+  const enTest = pantalla === 'quiz' && (tests.some((t) => t.id === leccion?.id) || Boolean(leccion?.practica))
   // Solo una lección real da contexto: los tests y el refuerzo no tienen texto que explicar.
-  const leccionAbierta = enActividad && lecciones.some((l) => l.id === leccion?.id) ? leccion : null
+  const desdeLeccion = pantalla !== 'esquema' || esquemaAbierto?.volverA === 'leccion'
+  const leccionAbierta = enActividad && desdeLeccion && lecciones.some((l) => l.id === leccion?.id) ? leccion : null
 
   const pendientes = cuenta ? contarPendientes(cuenta.alias) : 0
 
@@ -319,6 +363,12 @@ export default function App() {
               onLeer={(l) => empezar(l, 'leccion')}
               onTest={empezarTest}
               onRefuerzo={empezarRefuerzo}
+              onPractica={empezarPractica}
+              esquemas={esquemas}
+              onAbrirEsquema={(e) => abrirEsquema(e, { tema: e.titulo })}
+              onNuevoEsquema={() => abrirEsquema({ titulo: '', ramas: [{ titulo: '', ideas: [''] }] }, null)}
+              onBorrarEsquema={borrarEsquemaAlumno}
+              onEsquemaLeccion={abrirEsquemaLeccion}
               onPreguntar={abrirIA}
             />
           </>
@@ -331,7 +381,18 @@ export default function App() {
             onGuardar={() => setGuardadas(alternarGuardada(cuenta.alias, leccion.id))}
             onPreguntar={abrirIA}
             onActividades={() => setPantalla('quiz')}
+            onEsquema={() => abrirEsquemaLeccion(leccion)}
             onVolver={volverMenu}
+          />
+        )}
+
+        {pantalla === 'esquema' && (
+          <PantallaEsquema
+            key={esquemaAbierto.inicial.id ?? esquemaAbierto.inicial.titulo}
+            inicial={esquemaAbierto.inicial}
+            contexto={esquemaAbierto.contexto}
+            onGuardar={guardarEsquemaAlumno}
+            onVolver={volverDeEsquema}
           />
         )}
 
@@ -354,7 +415,7 @@ export default function App() {
             total={leccion.preguntas.length}
             resultados={resultadosDe(cuenta.alias)}
             pendientes={pendientes}
-            esRefuerzo={leccion.id === ID_REFUERZO}
+            esRefuerzo={leccion.id === ID_REFUERZO || Boolean(leccion.practica)}
             onRepetir={repetir}
             onVolver={volverMenu}
           />
@@ -376,6 +437,7 @@ export default function App() {
             lecciones={lecciones}
             leccionActual={leccionAbierta}
             enTest={enTest}
+            onAbrirEsquema={(e) => abrirEsquema(e, { tema: e.titulo })}
           />
         </>
       )}

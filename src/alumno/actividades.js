@@ -4,6 +4,7 @@ export const TIPOS = [
   { id: 'unir', nombre: 'Unir con flechas' },
   { id: 'ordenar', nombre: 'Ordenar' },
   { id: 'huecos', nombre: 'Rellenar huecos' },
+  { id: 'problema', nombre: 'Problema con respuesta escrita' },
 ]
 
 export const ILUSTRACIONES = [
@@ -33,6 +34,7 @@ export function tareaVacia(tipo, pregunta = '') {
   }
   if (tipo === 'ordenar') return { tipo, pregunta, pasos: ['', '', ''] }
   if (tipo === 'huecos') return { tipo, pregunta, frase: '', respuestas: [] }
+  if (tipo === 'problema') return { tipo, pregunta, respuesta: '', aceptadas: [], unidad: '', pista: '', pasos: [''] }
   return { pregunta, opciones: ['', '', ''], correcta: 0 }
 }
 
@@ -47,6 +49,8 @@ export function textoTarea(tarea) {
       return `${tarea.pregunta} ${tarea.frase.replace(/_{3,}/g, ', hueco, ')}`
     case 'ordenar':
       return `${tarea.pregunta} ${tarea.pasos.join('. ')}`
+    case 'problema':
+      return tarea.pregunta
     case 'emparejar':
     case 'unir':
       return `${tarea.pregunta} ${tarea.pares.map((p) => p.izquierda).join(', ')}. ${tarea.pares.map((p) => p.derecha).join(', ')}.`
@@ -104,6 +108,9 @@ export function validarTarea(tarea, numero) {
       }
       return null
     }
+    case 'problema':
+      if (vacio(tarea.respuesta)) return `Escribe la respuesta correcta de la tarea ${numero}.`
+      return null
     default:
       if (tarea.opciones.length < 2 || tarea.opciones.some(vacio)) {
         return `La tarea ${numero} necesita al menos 2 opciones, todas con texto.`
@@ -114,6 +121,17 @@ export function validarTarea(tarea, numero) {
 
 // Si se borró un hueco de la frase, su respuesta ya no debe guardarse.
 export function limpiarTarea(tarea) {
+  if (tipoDe(tarea) === 'problema') {
+    const { unidad, pista, ...resto } = tarea
+    return {
+      ...resto,
+      respuesta: tarea.respuesta.trim(),
+      aceptadas: (tarea.aceptadas ?? []).map((a) => a.trim()).filter(Boolean),
+      pasos: (tarea.pasos ?? []).map((p) => p.trim()).filter(Boolean),
+      ...(unidad?.trim() ? { unidad: unidad.trim() } : {}),
+      ...(pista?.trim() ? { pista: pista.trim() } : {}),
+    }
+  }
   if (tipoDe(tarea) !== 'huecos') return tarea
   return { ...tarea, respuestas: tarea.respuestas.slice(0, contarHuecos(tarea.frase)) }
 }

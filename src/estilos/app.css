@@ -2,7 +2,7 @@
 .app { max-width: 30rem; margin: 0 auto; padding: 1rem 1.125rem 2rem; box-sizing: border-box; }
 .app.pantalla-menu { padding-bottom: 11rem; }
 @media (max-width: 40rem) {
-  .app.pantalla-leccion, .app.pantalla-quiz, .app.pantalla-fin, .app.pantalla-docente { padding-right: 3.25rem; }
+  .app.pantalla-leccion, .app.pantalla-quiz, .app.pantalla-fin, .app.pantalla-docente, .app.pantalla-esquema { padding-right: 3.25rem; }
 }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 :focus-visible { outline: 3px solid #06264d; outline-offset: 2px; box-shadow: 0 0 0 2px white; }
@@ -282,6 +282,106 @@ button.pizarra-borrar { background: #b91c1c; color: white; }
 .opcion input[type='radio'] { width: 1.5rem; height: 1.5rem; flex: none; }
 button.quitar { width: 2.75rem; flex: none; margin: 0; padding: 0.625rem 0; }
 
+/* ---------- Piezas compartidas ---------- */
+.botones-fila { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.botones-fila > button { width: auto; flex: 1 1 auto; margin: 0.25rem 0; }
+.botones-fila > button.escuchar { flex: 0 1 auto; }
+button .icono { display: inline-block; vertical-align: -0.3em; width: 1.25rem; height: 1.25rem; }
+.mascota-mini { display: block; flex: none; width: 2.75rem; }
+.mascota-mini .mascota { width: 100%; }
+.seccion-titulo { margin: 1.5rem 0 0.75rem; }
+h3 { margin: 0 0 0.5rem; font-size: 1.0625rem; font-weight: 800; }
+
+/* Inicio: herramientas y próximas fechas */
+.herramientas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(8.5rem, 100%), 1fr)); gap: 0.875rem; }
+button.herramienta { display: flex; flex-direction: column; align-items: flex-start; gap: 0.375rem; margin: 0; padding: 1rem; text-align: start; font-weight: 400; }
+.herramienta strong { font-size: 1.0625rem; font-weight: 800; }
+.herramienta:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.herramienta .azulejo { width: 3rem; height: 3rem; }
+.proximas { margin-bottom: 1.5rem; }
+
+/* Práctica */
+.niveles { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.azulejo.signo { font-size: 1.75rem; font-weight: 800; line-height: 1; }
+
+/* Esquemas */
+.mapa-mental { display: block; width: 100%; max-width: 26rem; height: auto; margin: 0.5rem auto 1rem; }
+.mapa-nodo { cursor: pointer; }
+.esquema-arbol { display: flex; flex-direction: column; gap: 0.75rem; padding: 0; margin: 0 0 0.75rem; list-style: none; }
+.esquema-arbol > li { padding: 0.875rem 1rem; border-inline-start: 0.5rem solid var(--color-rama); }
+.esquema-arbol > li.elegida { background: var(--fondo-rama); }
+.esquema-arbol h2 { font-size: 1.0625rem; }
+.esquema-arbol ul { margin: 0.375rem 0 0; padding-inline-start: 1.25rem; line-height: 1.5; }
+.rama-editor { border-inline-start-width: 0.5rem; }
+.esquema-chat { margin-top: 0.5rem; padding: 0.625rem 0.75rem; border-radius: 0.75rem; background: var(--tarjeta); border-inline-start: 0.375rem solid var(--verde); }
+.esquema-chat ul { margin: 0.375rem 0; padding-inline-start: 1.125rem; }
+.panel-contenido .esquema-chat button { width: auto; min-height: 2.75rem; margin: 0.25rem 0 0; padding: 0.5rem 0.75rem; font-size: 0.9375rem; }
+.lista-simple { padding: 0; margin: 0; list-style: none; }
+.fila-con-borrar { display: flex; align-items: center; gap: 0.5rem; }
+.fila-con-borrar > button.tarjeta { flex: 1; min-width: 0; }
+.chips-lecciones { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chips-lecciones button { width: auto; margin: 0; padding: 0.625rem 0.875rem; font-size: 0.9375rem; }
+
+/* Ejemplos resueltos */
+.ejemplos { margin: 1rem 0; }
+.ejemplos > h2 { margin-bottom: 0.75rem; }
+.ejemplos > ol { padding: 0; margin: 0; list-style: none; }
+.ejemplo { padding: 1rem; }
+.ejemplo h3 { display: flex; align-items: center; gap: 0.5rem; }
+.ejemplo-numero { display: grid; place-items: center; flex: none; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--amarillo); color: var(--sobre-amarillo); font-size: 0.9375rem; }
+.ejemplo ol { margin: 0 0 0.5rem; padding-inline-start: 1.375rem; line-height: 1.6; }
+.ejemplo li + li { margin-top: 0.25rem; }
+.ejemplo button { margin: 0.25rem 0 0; }
+.ejemplo-resultado { margin: 0.5rem 0 0; padding: 0.5rem 0.75rem; border-radius: 0.75rem; background: var(--verde-tinte); color: var(--tinta); font-weight: 800; }
+.ejemplo-resultado .icono { display: inline-block; vertical-align: -0.3em; color: var(--verde); }
+
+/* Problemas con respuesta escrita */
+.problema-entrada { display: flex; align-items: center; gap: 0.5rem; }
+.problema-entrada input { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; font-weight: 700; }
+.problema-entrada input.bien { border-color: var(--verde); background: var(--verde-tinte); }
+.problema-entrada input.mal { border-color: var(--rojo); background: var(--rojo-tinte); }
+.unidad { flex: none; font-weight: 700; color: var(--tinta-suave); }
+.pista { padding: 0.5rem 0.75rem; border-radius: 0.875rem; background: #fff7d6; color: var(--tinta); }
+.actividad button.pista-boton { width: auto; min-height: 2.75rem; padding: 0.5rem 0.875rem; font-size: 0.9375rem; }
+.correccion { margin-top: 0.75rem; padding: 0.875rem 1rem; border-radius: 1.125rem; border: 2px solid var(--verde); background: var(--tarjeta); }
+.correccion.mal { border-color: var(--rojo); }
+.correccion p { margin: 0 0 0.5rem; }
+.diagnostico { font-weight: 700; }
+.pasos-solucion { margin: 0.5rem 0; }
+.pasos-solucion summary { min-height: 2.75rem; display: flex; align-items: center; font-weight: 800; cursor: pointer; }
+.pasos-solucion ol { margin: 0.25rem 0 0; padding-inline-start: 1.375rem; line-height: 1.6; }
+.explicacion-ia { display: flex; align-items: flex-start; gap: 0.625rem; margin-top: 0.5rem; padding: 0.75rem; border-radius: 1rem; background: var(--azul-pista); }
+.explicacion-ia p { margin: 0; white-space: pre-wrap; }
+.actividad .correccion button { margin: 0.5rem 0 0; }
+
+/* Calendario */
+.calendario { padding: 0.875rem; margin-bottom: 1rem; }
+.calendario-mes { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; }
+.calendario-mes h2 { flex: 1; text-align: center; }
+.calendario-mes button.boton-redondo { width: 2.75rem; height: 2.75rem; box-shadow: none; background: var(--azul-pista); }
+.calendario-tabla { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.calendario-tabla th { padding: 0.25rem 0; font-size: 0.8125rem; color: var(--tinta-suave); text-transform: uppercase; }
+.calendario-tabla td { padding: 0.125rem; text-align: center; }
+button.dia { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 2.75rem; margin: 0; padding: 0.25rem 0; border-radius: 0.875rem; background: none; color: var(--tinta); font-size: 1rem; font-weight: 700; }
+button.dia.hoy { box-shadow: inset 0 0 0 2px var(--azul); }
+button.dia.con-examen { background: var(--rojo-tinte); }
+button.dia[aria-pressed='true'] { background: var(--azul); color: var(--sobre-azul); }
+.puntos-dia { display: flex; gap: 0.1875rem; height: 0.375rem; }
+.puntos-dia span { width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--color); }
+button.dia[aria-pressed='true'] .puntos-dia span { background: var(--sobre-azul); }
+.calendario button.enlace { display: block; margin: 0.25rem auto 0; }
+.dia-elegido > h2 { margin: 0.5rem 0 0.75rem; }
+.lista-eventos { padding: 0; margin: 0 0 0.75rem; list-style: none; }
+.evento { display: flex; align-items: center; flex-wrap: wrap; gap: 0.625rem 0.875rem; padding: 0.875rem 1rem; }
+button.evento { margin: 0; text-align: start; font-weight: 400; }
+.evento .etiqueta { flex: none; }
+.evento .tarjeta-textos { flex: 1 1 9rem; }
+.evento-acciones { display: flex; gap: 0.5rem; margin-inline-start: auto; }
+.evento-acciones button { width: auto; margin: 0; padding: 0.5rem 0.75rem; font-size: 0.875rem; }
+.form-evento { padding: 1rem; margin: 0.75rem 0 1.25rem; }
+.fila-campos { display: flex; flex-wrap: wrap; gap: 0 0.75rem; }
+.fila-campos > label { flex: 1 1 8rem; }
+
 /* ---------- Animaciones ---------- */
 @keyframes acierto { 50% { transform: scale(1.03); } }
 @keyframes fallo { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
@@ -320,6 +420,12 @@ html.alto-contraste button.comprobar:disabled, html.alto-contraste button.boton-
 html.alto-contraste .escena { filter: contrast(1.1); }
 html.alto-contraste .error, html.alto-contraste .aviso { color: #ffeb3b; }
 html.alto-contraste button.pizarra-borrar { background: #ff8a80; color: #000; }
+html.alto-contraste .mapa-mental { background: #fff; border-radius: 0.75rem; }
+html.alto-contraste .esquema-arbol > li, html.alto-contraste .esquema-arbol > li.elegida { background: #000; }
+html.alto-contraste .pista, html.alto-contraste .explicacion-ia, html.alto-contraste .ejemplo-resultado, html.alto-contraste .esquema-chat, html.alto-contraste .correccion { background: #000; color: #fff; border: 2px solid #fff; }
+html.alto-contraste button.dia.con-examen { background: #000; outline: 2px solid #ff8a80; }
+html.alto-contraste button.dia[aria-pressed='true'] { background: #ffeb3b; color: #000; }
+html.alto-contraste .ejemplo-numero { background: #ffeb3b; color: #000; }
 html.alto-contraste :focus-visible { outline-color: #00e5ff; box-shadow: 0 0 0 2px #000; }
 
 @media (forced-colors: active) {

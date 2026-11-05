@@ -1,24 +1,30 @@
 import { useState } from 'react'
 import AjustesAccesibilidad from '../accesibilidad/AjustesAccesibilidad'
+import Calendario, { ProximasFechas } from '../calendario/Calendario'
 import { BotonMascota } from '../ia/MascotaIA'
 import { estiloDe } from './asignaturas'
 import Azulejo from './Azulejo'
+import { EJERCICIOS_POR_PRACTICA, NIVELES, TEMAS_PRACTICA } from './practica'
 import { PREGUNTAS_POR_TEST } from '../datos/almacen'
 import { idiomaActual, t } from '../idiomas/i18n'
+import CabeceraLista from '../interfaz/CabeceraLista'
 import { Anillo, GraficaResultados, MiniBarra } from '../interfaz/Graficos'
-import { Adelante, Atras, Barras, Casa, Cuadricula, FlechaDerecha, Libro, Lista, Persona } from '../interfaz/Iconos'
+import { Adelante, Barras, Calendario as IconoCalendario, Casa, Cuadricula, Esquema, FlechaDerecha, Lapiz, Libro, Lista, Mas, Persona } from '../interfaz/Iconos'
 import logo from '../assets/logo.png'
 
 const SECCIONES = [
   { id: 'lecciones', clave: 'secLecciones' },
   { id: 'tests', clave: 'secTests' },
+  { id: 'practicar', clave: 'secPracticar' },
   { id: 'refuerzo', clave: 'secRefuerzo', clase: 'naranja' },
+  { id: 'esquemas', clave: 'secEsquemas' },
   { id: 'guardadas', clave: 'secGuardadas' },
 ]
 
 const VISTAS = [
   { id: 'inicio', clave: 'navInicio', Icono: Casa },
   { id: 'aprender', clave: 'navAprender', Icono: Libro },
+  { id: 'calendario', clave: 'navCalendario', Icono: IconoCalendario },
   { id: 'progreso', clave: 'navProgreso', Icono: Barras },
   { id: 'perfil', clave: 'navPerfil', Icono: Persona },
 ]
@@ -28,16 +34,6 @@ function mejoresNotas(resultados) {
   const notas = {}
   for (const r of resultados) notas[r.leccion] = Math.max(notas[r.leccion] ?? 0, Math.round((r.puntos / r.total) * 100))
   return notas
-}
-
-function CabeceraLista({ titulo, onAtras, children }) {
-  return (
-    <div className="cabecera-lista">
-      <button className="boton-redondo" aria-label={t('navInicio')} onClick={onAtras}><Atras /></button>
-      <h1>{titulo}</h1>
-      {children}
-    </div>
-  )
 }
 
 function TarjetaLeccion({ item, subtitulo, nota, onAbrir }) {
@@ -54,7 +50,29 @@ function TarjetaLeccion({ item, subtitulo, nota, onAbrir }) {
   )
 }
 
-function VistaInicio({ cuenta, lecciones, notas, onLeer, onVista }) {
+function Herramientas({ onIr }) {
+  const herramientas = [
+    { id: 'practicar', clave: 'secPracticar', ayuda: 'ayudaPracticar', tono: 'amarillo', Icono: Lapiz, ir: () => onIr('aprender', 'practicar') },
+    { id: 'esquemas', clave: 'secEsquemas', ayuda: 'ayudaEsquemas', tono: 'verde', Icono: Esquema, ir: () => onIr('aprender', 'esquemas') },
+    { id: 'calendario', clave: 'navCalendario', ayuda: 'ayudaCalendario', tono: 'coral', Icono: IconoCalendario, ir: () => onIr('calendario') },
+  ]
+  return (
+    <section>
+      <h2 className="seccion-titulo">{t('herramientas')}</h2>
+      <div className="herramientas">
+        {herramientas.map(({ id, clave, ayuda, tono, Icono, ir }) => (
+          <button key={id} className="tarjeta herramienta" onClick={ir}>
+            <Azulejo tono={tono} redondo><Icono /></Azulejo>
+            <strong>{t(clave)}</strong>
+            <span className="ayuda">{t(ayuda)}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function VistaInicio({ cuenta, lecciones, notas, onLeer, onVista, onIr }) {
   const hechas = lecciones.filter((l) => notas[l.id] !== undefined).length
   const porcentaje = lecciones.length ? Math.round((hechas / lecciones.length) * 100) : 0
   // Se sigue por la primera sin hacer; si están todas, por la de peor nota.
@@ -82,6 +100,8 @@ function VistaInicio({ cuenta, lecciones, notas, onLeer, onVista }) {
         </section>
       )}
 
+      <ProximasFechas alias={cuenta.alias} onAbrir={() => onVista('calendario')} />
+
       <div className="seccion-cabecera">
         <h2>{t('tusLecciones')}</h2>
         <button className="enlace" onClick={() => onVista('aprender')}>{t('verTodo')}</button>
@@ -99,20 +119,80 @@ function VistaInicio({ cuenta, lecciones, notas, onLeer, onVista }) {
           </button>
         ))}
       </div>
+
+      <Herramientas onIr={onIr} />
     </>
   )
 }
 
-function VistaAprender({ seccion, lecciones, tests, refuerzo, guardadas, notas, onSeccion, onLeer, onTest, onRefuerzo, onVista }) {
+function Practicar({ onPractica }) {
+  const [nivel, setNivel] = useState(1)
+  return (
+    <>
+      <p className="ayuda">{t('introPracticar')}</p>
+      <div className="niveles" role="group" aria-label={t('nivel')}>
+        {NIVELES.map((n) => (
+          <button key={n} className="chip" aria-pressed={nivel === n} onClick={() => setNivel(n)}>{t(`nivel${n}`)}</button>
+        ))}
+      </div>
+      <div className="cuadricula">
+        {TEMAS_PRACTICA.map((tema) => (
+          <button key={tema.id} className="tarjeta tarjeta-cuadro" onClick={() => onPractica(tema.id, nivel)}>
+            <span className={`azulejo redondo signo tono-${tema.tono}`} aria-hidden="true">{tema.signo}</span>
+            <strong>{t(`tema.${tema.id}`)}</strong>
+            <span className="ayuda">{t('nEjercicios', { n: EJERCICIOS_POR_PRACTICA })}</span>
+          </button>
+        ))}
+      </div>
+    </>
+  )
+}
+
+function MisEsquemas({ esquemas, lecciones, onAbrir, onNuevo, onBorrar, onLeer }) {
+  return (
+    <>
+      <p className="ayuda">{t('introEsquemas')}</p>
+      <button onClick={onNuevo}><Mas /> {t('nuevoEsquema')}</button>
+      {esquemas.length === 0 ? <p>{t('sinEsquemas')}</p> : (
+        <ul className="lista lista-simple">
+          {esquemas.map((e) => (
+            <li key={e.id} className="fila-con-borrar">
+              <button className="tarjeta tarjeta-lista" onClick={() => onAbrir(e)}>
+                <Azulejo tono="verde"><Esquema /></Azulejo>
+                <span className="tarjeta-textos">
+                  <strong>{e.titulo}</strong>
+                  <span className="ayuda">{t('nRamas', { n: e.ramas.length })}</span>
+                </span>
+              </button>
+              <button className="secundario quitar" aria-label={t('borrarEsquema', { titulo: e.titulo })} onClick={() => onBorrar(e.id)}>×</button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <h2 className="seccion-titulo">{t('esquemasDeLecciones')}</h2>
+      <div className="chips-lecciones">
+        {lecciones.map((l) => (
+          <button key={l.id} className="secundario" lang="es" onClick={() => onLeer(l)}>{l.titulo}</button>
+        ))}
+      </div>
+    </>
+  )
+}
+
+function VistaAprender(props) {
+  const { seccion, lecciones, tests, refuerzo, guardadas, esquemas, notas, onSeccion, onLeer, onTest, onRefuerzo, onVista, onPractica, onAbrirEsquema, onNuevoEsquema, onBorrarEsquema, onEsquemaLeccion } = props
   const [enCuadricula, setEnCuadricula] = useState(false)
   const listaGuardadas = lecciones.filter((l) => guardadas.includes(l.id))
+  const conCuadricula = seccion === 'lecciones' || seccion === 'tests' || seccion === 'guardadas'
 
   return (
     <>
       <CabeceraLista titulo={t('navAprender')} onAtras={() => onVista('inicio')}>
-        <button className="boton-redondo" aria-label={t('verCuadricula')} aria-pressed={enCuadricula} onClick={() => setEnCuadricula(!enCuadricula)}>
-          {enCuadricula ? <Lista /> : <Cuadricula />}
-        </button>
+        {conCuadricula && (
+          <button className="boton-redondo" aria-label={t('verCuadricula')} aria-pressed={enCuadricula} onClick={() => setEnCuadricula(!enCuadricula)}>
+            {enCuadricula ? <Lista /> : <Cuadricula />}
+          </button>
+        )}
       </CabeceraLista>
 
       <div className="chips secciones">
@@ -123,7 +203,7 @@ function VistaAprender({ seccion, lecciones, tests, refuerzo, guardadas, notas, 
 
       {idiomaActual().codigo !== 'es' && <p className="ayuda">{t('contenidoEspanol')}</p>}
 
-      <div className={enCuadricula ? 'lista en-cuadricula' : 'lista'}>
+      <div className={enCuadricula && conCuadricula ? 'lista en-cuadricula' : 'lista'}>
         {seccion === 'lecciones' && (
           <>
             <p className="ayuda">{t('introLecciones')}</p>
@@ -138,6 +218,12 @@ function VistaAprender({ seccion, lecciones, tests, refuerzo, guardadas, notas, 
               <TarjetaLeccion key={test.id} item={test} subtitulo={t('nPreguntas', { n: Math.min(test.preguntas.length, PREGUNTAS_POR_TEST) })} nota={notas[test.id]} onAbrir={() => onTest(test)} />
             ))}
           </>
+        )}
+
+        {seccion === 'practicar' && <Practicar onPractica={onPractica} />}
+
+        {seccion === 'esquemas' && (
+          <MisEsquemas esquemas={esquemas} lecciones={lecciones} onAbrir={onAbrirEsquema} onNuevo={onNuevoEsquema} onBorrar={onBorrarEsquema} onLeer={onEsquemaLeccion} />
         )}
 
         {seccion === 'guardadas' && (listaGuardadas.length === 0 ? <p>{t('nadaGuardado')}</p> : listaGuardadas.map((l) => (
@@ -223,13 +309,19 @@ export function Navegacion({ vista, onVista, tapada }) {
 }
 
 export default function MenuAlumno(props) {
-  const { vista, cuenta, lecciones, tests, resultados, online, ajustes, onCambiarAjustes, onCambiarIdioma, onSalir, onLeer, onTest, onVista, onPreguntar } = props
+  const { vista, cuenta, lecciones, tests, resultados, online, ajustes, onCambiarAjustes, onCambiarIdioma, onSalir, onLeer, onTest, onVista, onSeccion, onPreguntar } = props
   const notas = mejoresNotas(resultados)
+
+  function ir(nuevaVista, seccion) {
+    if (seccion) onSeccion(seccion)
+    onVista(nuevaVista)
+  }
 
   return (
     <>
-      {vista === 'inicio' && <VistaInicio cuenta={cuenta} lecciones={lecciones} notas={notas} onLeer={onLeer} onVista={onVista} />}
+      {vista === 'inicio' && <VistaInicio cuenta={cuenta} lecciones={lecciones} notas={notas} onLeer={onLeer} onVista={onVista} onIr={ir} />}
       {vista === 'aprender' && <VistaAprender {...props} notas={notas} />}
+      {vista === 'calendario' && <Calendario alias={cuenta.alias} onAtras={() => onVista('inicio')} />}
       {vista === 'progreso' && <VistaProgreso lecciones={lecciones} tests={tests} resultados={resultados} notas={notas} onLeer={onLeer} onTest={onTest} onVista={onVista} />}
       {vista === 'perfil' && <VistaPerfil cuenta={cuenta} online={online} ajustes={ajustes} onCambiarAjustes={onCambiarAjustes} onCambiarIdioma={onCambiarIdioma} onSalir={onSalir} onVista={onVista} />}
       <BotonMascota flotante onPreguntar={onPreguntar} />

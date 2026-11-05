@@ -9,7 +9,9 @@ src/
 ├── main.jsx            Punto de entrada
 ├── app/                App.jsx: pantallas y navegación
 ├── acceso/             Registro e inicio de sesión
-├── alumno/             Menú, lección, preguntas, resultado e ilustraciones
+├── alumno/             Menú, lección, preguntas, corrección, práctica de mates e ilustraciones
+├── esquemas/           Mapas mentales: de cada lección, editables y con IA
+├── calendario/         Fechas del alumno y del profesor
 ├── interfaz/           Iconos y gráficos compartidos
 ├── docente/            Panel del profesor
 ├── ia/                 La mascota: chat, modo básico y modelo local
@@ -36,6 +38,10 @@ docs/marca/             Logo original y QR de la app
 | Añadir un tipo de actividad | `src/alumno/Actividad.jsx` y `src/alumno/actividades.js` |
 | Cambiar colores y aspecto | Variables al principio de `src/estilos/base.css` |
 | Cambiar lo que sabe la mascota | `src/datos/contenido/ayudaIA.json` |
+| Cambiar los ejercicios de práctica de mates | `src/alumno/practica.js` |
+| Cambiar cómo se corrigen las respuestas escritas | `src/alumno/correccion.js` |
+
+Las lecciones pueden llevar `ejemplos` (resueltos paso a paso) y `esquema` (ramas del mapa mental). Las tareas de tipo `problema` se responden escribiendo: la nota la pone siempre una corrección exacta (números, fracciones, «doce», faltas leves de ortografía) y, si la IA avanzada está activa, la mascota explica el error usando los `pasos` de la solución.
 
 ## Uso
 
@@ -46,7 +52,7 @@ npm run build    # Versión para publicar, en dist/
 npx cap sync     # Copiar a las apps de iOS y Android
 ```
 
-Requiere un archivo `.env.local` con `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`. La base de datos se crea ejecutando `supabase/schema.sql` en Supabase. El PIN del profesor se fija aparte; no lo guardes en el repositorio, que es público:
+Requiere un archivo `.env.local` con `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`. La base de datos se crea ejecutando `supabase/schema.sql` en Supabase; al actualizar la app, vuelve a ejecutarlo (no borra datos) para tener las fechas del profesor, los ejemplos y las tareas de tipo problema. El PIN del profesor se fija aparte; no lo guardes en el repositorio, que es público:
 
 ```sql
 select privado.establecer_pin_docente('TU_PIN');

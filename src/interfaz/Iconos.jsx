@@ -22,5 +22,9 @@ export const Cerrar = () => <Icono><path d="M6 6l12 12M18 6 6 18" /></Icono>
 export const Marcador = ({ activo }) => <Icono relleno={activo}><path d="M6 3.5h12V21l-6-4.5L6 21z" /></Icono>
 export const Cuadricula = () => <Icono><rect x="4" y="4" width="7" height="7" rx="1.5" /><rect x="13" y="4" width="7" height="7" rx="1.5" /><rect x="4" y="13" width="7" height="7" rx="1.5" /><rect x="13" y="13" width="7" height="7" rx="1.5" /></Icono>
 export const Lista = () => <Icono><path d="M4 6h16M4 12h16M4 18h16" /></Icono>
+export const Calendario = () => <Icono><rect x="4" y="5.5" width="16" height="14.5" rx="2.5" /><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" /><path d="M8 14h2M14 14h2M8 17h2" /></Icono>
+export const Esquema = () => <Icono><rect x="9" y="3.5" width="6" height="5" rx="1.5" /><rect x="3" y="15.5" width="6" height="5" rx="1.5" /><rect x="15" y="15.5" width="6" height="5" rx="1.5" /><path d="M12 8.5v3.5M6 15.5V12h12v3.5" /></Icono>
+export const Lapiz = () => <Icono><path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z" /><path d="M13.5 7l3 3" /></Icono>
+export const Mas = () => <Icono><path d="M12 5v14M5 12h14" /></Icono>
 export const Check = () => <Icono><path d="m5 13 4.5 4.5L19 7.5" /></Icono>
 export const Estrella = () => <Icono relleno><path d="m12 2.5 2.900 6.300 6.900.8-5.100 4.700 1.400 6.800-6.100-3.400-6.100 3.400 1.400-6.800-5.100-4.700 6.900-.8z" /></Icono>

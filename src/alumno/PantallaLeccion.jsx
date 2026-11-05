@@ -1,7 +1,8 @@
+import { useState } from 'react'
 import BotonEscuchar from '../accesibilidad/BotonEscuchar'
 import { Bocadillo, BotonMascota } from '../ia/MascotaIA'
 import { t } from '../idiomas/i18n'
-import { Atras, FlechaDerecha, Marcador } from '../interfaz/Iconos'
+import { Atras, Check, Esquema, FlechaDerecha, Marcador } from '../interfaz/Iconos'
 import Ilustracion from './Ilustracion'
 
 function Escena() {
@@ -22,7 +23,28 @@ function Escena() {
   )
 }
 
-export default function PantallaLeccion({ leccion, guardada, onGuardar, onPreguntar, onActividades, onVolver }) {
+// Un ejemplo resuelto que se descubre paso a paso, para pensar cada paso antes de verlo.
+function Ejemplo({ ejemplo, numero }) {
+  const [vistos, setVistos] = useState(1)
+  const completo = vistos > ejemplo.pasos.length
+  return (
+    <li className="tarjeta ejemplo">
+      <h3><span className="ejemplo-numero" aria-hidden="true">{numero}</span>{ejemplo.titulo}</h3>
+      <ol aria-live="polite">
+        {ejemplo.pasos.slice(0, vistos).map((paso, i) => <li key={i}>{paso}</li>)}
+      </ol>
+      {completo ? (
+        <p className="ejemplo-resultado"><Check /> {ejemplo.resultado}</p>
+      ) : (
+        <button className="secundario" onClick={() => setVistos(vistos + 1)}>
+          {vistos === ejemplo.pasos.length ? t('verResultadoEjemplo') : t('siguientePaso')}
+        </button>
+      )}
+    </li>
+  )
+}
+
+export default function PantallaLeccion({ leccion, guardada, onGuardar, onPreguntar, onActividades, onEsquema, onVolver }) {
   return (
     <>
       <div className="cabecera-lista">
@@ -42,7 +64,18 @@ export default function PantallaLeccion({ leccion, guardada, onGuardar, onPregun
       </div>
       <p className="texto-leccion" lang="es">{leccion.texto}</p>
       <Ilustracion id={leccion.preguntas[0]?.imagen} />
-      <BotonEscuchar texto={leccion.texto} />
+      <div className="botones-fila">
+        <BotonEscuchar texto={leccion.texto} />
+        <button className="secundario escuchar" onClick={onEsquema}><Esquema /> {t('verEsquema')}</button>
+      </div>
+      {leccion.ejemplos?.length > 0 && (
+        <section className="ejemplos" lang="es">
+          <h2>{t('ejemplosResueltos')}</h2>
+          <ol className="lista">
+            {leccion.ejemplos.map((ejemplo, i) => <Ejemplo key={`${leccion.id}-${i}`} ejemplo={ejemplo} numero={i + 1} />)}
+          </ol>
+        </section>
+      )}
       <div className="pie-leccion">
         <span className="puntos-pasos" aria-hidden="true">
           {[...leccion.preguntas, null].map((_, i) => <span key={i} className={i === 0 ? 'activo' : ''} />)}

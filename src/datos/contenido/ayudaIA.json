@@ -23,5 +23,14 @@
   { "claves": "condensar condensacion", "respuesta": "Condensarse es pasar de gas a líquido. Por eso aparecen gotitas cuando el vapor toca un cristal frío." },
   { "claves": "rozamiento friccion", "respuesta": "El rozamiento es la fuerza que frena un objeto cuando se desliza sobre otro." },
   { "claves": "iman imanes magnetismo", "respuesta": "Un imán atrae algunos metales, como el hierro. Tiene dos polos: norte y sur." },
-  { "claves": "sistema solar planeta planetas sol", "respuesta": "La Tierra es un planeta que gira alrededor del Sol. Tarda un año en dar una vuelta completa." }
+  { "claves": "sistema solar planeta planetas sol", "respuesta": "La Tierra es un planeta que gira alrededor del Sol. Tarda un año en dar una vuelta completa." },
+  { "claves": "multiplicar multiplicacion multiplicaciones tabla tablas veces", "respuesta": "Multiplicar es sumar varias veces el mismo número. 3 × 4 es lo mismo que 4 + 4 + 4, que da 12. Las tablas de multiplicar te ayudan a hacerlo más rápido." },
+  { "claves": "dividir division divisiones repartir reparto partes iguales", "respuesta": "Dividir es repartir en partes iguales. Si repartes 12 caramelos entre 3 amigos, a cada uno le tocan 4, porque 12 : 3 = 4. Puedes comprobarlo multiplicando: 3 × 4 = 12." },
+  { "claves": "fraccion fracciones numerador denominador medio tercio cuarto", "respuesta": "Una fracción indica partes de algo entero. En 3/4, el denominador (el 4, abajo) dice en cuántas partes iguales se divide, y el numerador (el 3, arriba) cuántas partes se toman." },
+  { "claves": "perimetro contorno borde valla", "respuesta": "El perímetro es lo que mide el borde de una figura. Se calcula sumando todos sus lados. Un cuadrado de 5 cm de lado tiene un perímetro de 5 + 5 + 5 + 5 = 20 cm." },
+  { "claves": "figura figuras triangulo cuadrado rectangulo circulo pentagono hexagono geometria lados", "respuesta": "Las figuras planas se nombran por sus lados: el triángulo tiene 3, el cuadrado y el rectángulo 4, el pentágono 5 y el hexágono 6. El círculo no tiene lados: es una línea curva." },
+  { "claves": "problema problemas resolver datos operacion", "respuesta": "Para resolver un problema: 1) lee con calma y busca los datos, 2) piensa qué te preguntan, 3) elige la operación (juntar es sumar, quitar es restar, repetir es multiplicar y repartir es dividir), 4) haz la cuenta y comprueba si el resultado tiene sentido." },
+  { "claves": "esquema esquemas mapa mental conceptual resumen resumir", "respuesta": "Dentro de cada lección tienes el botón «Esquema», que ordena las ideas principales en un mapa. También puedo hacerte uno si me escribes «hazme un esquema de…» y el tema." },
+  { "claves": "calendario fecha fechas examen examenes deberes agenda apuntar recordar", "respuesta": "En la pestaña «Calendario» puedes apuntar tus exámenes, deberes y otras fechas importantes. Las fechas que pone tu profesor también aparecen ahí." },
+  { "claves": "practicar practica ejercicios entrenar niveles", "respuesta": "En «Aprender» → «Practicar» tienes ejercicios de matemáticas sin fin, con tres niveles. Escribes la respuesta, te la corrijo y, si fallas, te explico cómo se hace." }
 ]

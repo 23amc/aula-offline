@@ -336,9 +336,74 @@ function Cuenta({ objeto, a, signo, b }) {
   )
 }
 
+// "grupos:3x4": tres grupos iguales de cuatro manzanas, para multiplicar y repartir.
+function Grupos({ a, b }) {
+  const ancho = b * CASILLA + 16
+  const alto = a * (CASILLA + 8) + 4
+  return (
+    <svg viewBox={`0 0 ${ancho} ${alto}`} className="ilustracion" role="img" aria-label={t('imgGrupos', { a, b })}>
+      {Array.from({ length: a }, (_, fila) => (
+        <g key={fila}>
+          <rect x="3" y={fila * (CASILLA + 8) + 3} width={ancho - 6} height={CASILLA + 2} rx="12" fill="#fff7d6" stroke={N} strokeWidth="2" strokeDasharray="5 4" />
+          {Array.from({ length: b }, (_, i) => <Manzana key={i} x={8 + i * CASILLA + CASILLA / 2} y={fila * (CASILLA + 8) + 3 + CASILLA / 2 + 4} />)}
+        </g>
+      ))}
+    </svg>
+  )
+}
+
+// "fraccion:3/4": un círculo en cuatro partes iguales con tres coloreadas.
+function Fraccion({ n, d }) {
+  const cx = 120
+  const cy = 70
+  const r = 58
+  const punto = (k) => [cx + r * Math.cos(-Math.PI / 2 + (k * 2 * Math.PI) / d), cy + r * Math.sin(-Math.PI / 2 + (k * 2 * Math.PI) / d)]
+  return (
+    <svg viewBox="0 0 240 140" className="ilustracion" role="img" aria-label={t('imgFraccion', { n, d })}>
+      {Array.from({ length: d }, (_, k) => {
+        const [x0, y0] = punto(k)
+        const [x1, y1] = punto(k + 1)
+        return <path key={k} d={`M${cx} ${cy} L${x0} ${y0} A${r} ${r} 0 0 1 ${x1} ${y1} Z`} fill={k < n ? SOL : 'white'} stroke={N} strokeWidth="3" strokeLinejoin="round" />
+      })}
+      <text x="214" y="62" textAnchor="middle" fontSize="22" fontWeight="800" fill={N}>{n}</text>
+      <path d="M200 72 h28" stroke={N} strokeWidth="3" strokeLinecap="round" />
+      <text x="214" y="96" textAnchor="middle" fontSize="22" fontWeight="800" fill={N}>{d}</text>
+    </svg>
+  )
+}
+
+const poligono = (lados, r = 54, cx = 120, cy = 72) =>
+  Array.from({ length: lados }, (_, k) => {
+    const angulo = -Math.PI / 2 + (k * 2 * Math.PI) / lados
+    return `${(cx + r * Math.cos(angulo)).toFixed(1)},${(cy + r * Math.sin(angulo)).toFixed(1)}`
+  }).join(' ')
+
+const FIGURAS = {
+  triangulo: <polygon points={poligono(3, 60, 120, 80)} />,
+  cuadrado: <rect x="68" y="20" width="104" height="104" rx="4" />,
+  rectangulo: <rect x="40" y="35" width="160" height="76" rx="4" />,
+  circulo: <circle cx="120" cy="72" r="56" />,
+  pentagono: <polygon points={poligono(5)} />,
+  hexagono: <polygon points={poligono(6)} />,
+}
+
+function Figura({ nombre }) {
+  return (
+    <svg viewBox="0 0 240 140" className="ilustracion" role="img" aria-label={t(`fig.${nombre}`)}>
+      <g fill="#7dd3fc" stroke={N} strokeWidth="4" strokeLinejoin="round">{FIGURAS[nombre]}</g>
+    </svg>
+  )
+}
+
 export default function Ilustracion({ id }) {
   const cuenta = id?.match(/^(manzanas|lapices):(\d+)([+-])(\d+)$/)
   if (cuenta) return <Cuenta objeto={cuenta[1]} a={+cuenta[2]} signo={cuenta[3]} b={+cuenta[4]} />
+  const grupos = id?.match(/^grupos:(\d+)x(\d+)$/)
+  if (grupos) return <Grupos a={Math.min(+grupos[1], 6)} b={Math.min(+grupos[2], 8)} />
+  const fraccion = id?.match(/^fraccion:(\d+)\/(\d+)$/)
+  if (fraccion && +fraccion[2] >= 2 && +fraccion[2] <= 12) return <Fraccion n={Math.min(+fraccion[1], +fraccion[2])} d={+fraccion[2]} />
+  const figura = id?.match(/^figura:(\w+)$/)
+  if (figura && FIGURAS[figura[1]]) return <Figura nombre={figura[1]} />
 
   const escena = ESCENAS[id]
   if (!escena) return null

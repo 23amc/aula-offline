@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { barajar, barajarSinResolver, normalizarRespuesta, partesDeFrase, tipoDe } from './actividades'
-import { t } from '../idiomas/i18n'
+import { corregirProblema, diagnosticar, esNumerica, explicarConIA, valorarConIA } from './correccion'
+import Mascota from '../ia/Mascota'
+import { activarIA, estadoIA, hayGPU, iaActivada, useIA } from '../ia/motorCompartido'
+import { idiomaActual, t } from '../idiomas/i18n'
 
 // El resultado nunca se indica solo con color: lleva símbolo y texto para lectores de pantalla.
 function Marca({ correcta }) {
@@ -336,7 +339,114 @@ function Huecos({ tarea, onResponder }) {
   )
 }
 
-const COMPONENTES = { opciones: Opciones, emparejar: Emparejar, unir: Unir, ordenar: Ordenar, huecos: Huecos }
+function PasosSolucion({ pasos, abierto = false }) {
+  if (!pasos?.length) return null
+  return (
+    <details className="pasos-solucion" open={abierto}>
+      <summary>{t('comoSeResuelve')}</summary>
+      <ol>{pasos.map((paso, i) => <li key={i}>{paso}</li>)}</ol>
+    </details>
+  )
+}
+
+// Respuesta escrita: la nota la pone siempre la corrección exacta; la IA, si está activa, explica el error.
+function Problema({ tarea, onResponder }) {
+  const ia = useIA()
+  const [escrito, setEscrito] = useState('')
+  const [correccion, setCorreccion] = useState(null)
+  const [verPista, setVerPista] = useState(false)
+  const [explicacion, setExplicacion] = useState('')
+  const [explicando, setExplicando] = useState(false)
+  const [comprobando, setComprobando] = useState(false)
+  const numerica = esNumerica(tarea)
+
+  async function explicar(texto = escrito) {
+    setExplicando(true)
+    setExplicacion('…')
+    try {
+      if (!(await activarIA())) throw new Error()
+      const final = await explicarConIA(tarea, texto, setExplicacion)
+      if (!final) setExplicacion('')
+    } catch {
+      setExplicacion('')
+    }
+    setExplicando(false)
+  }
+
+  async function comprobar(e) {
+    e.preventDefault()
+    const texto = escrito.trim()
+    if (!texto || comprobando) return
+    let r = corregirProblema(tarea, texto)
+    if (!r.correcta && !numerica && estadoIA().fase === 'lista') {
+      setComprobando(true)
+      const valida = await valorarConIA(tarea, texto).catch(() => false)
+      setComprobando(false)
+      if (valida) r = { correcta: true, porIA: true }
+    }
+    setCorreccion({ ...r, diagnostico: diagnosticar(tarea, r) })
+    onResponder(r.correcta)
+    if (!r.correcta && estadoIA().fase === 'lista') explicar(texto)
+  }
+
+  const respuesta = `${tarea.respuesta}${tarea.unidad ? ` ${tarea.unidad}` : ''}`
+
+  return (
+    <form className="problema" onSubmit={comprobar}>
+      <label className="problema-campo">
+        <span className="sr-only">{t('tuRespuesta')}</span>
+        <span className="problema-entrada">
+          <input
+            className={correccion ? (correccion.correcta ? 'bien' : 'mal') : ''}
+            value={escrito}
+            placeholder={t('escribeRespuesta')}
+            disabled={Boolean(correccion)}
+            inputMode={numerica ? 'decimal' : 'text'}
+            autoComplete="off"
+            aria-invalid={correccion ? !correccion.correcta : undefined}
+            onChange={(e) => setEscrito(e.target.value)}
+          />
+          {tarea.unidad && <span className="unidad">{tarea.unidad}</span>}
+        </span>
+      </label>
+
+      {!correccion && (
+        <>
+          {tarea.pista && (verPista
+            ? <p className="pista" role="status"><span aria-hidden="true">💡 </span>{tarea.pista}</p>
+            : <button type="button" className="secundario pista-boton" onClick={() => setVerPista(true)}>{t('verPista')}</button>)}
+          <button type="submit" className="comprobar" disabled={!escrito.trim() || comprobando}>{comprobando ? t('corrigiendo') : t('comprobar')}</button>
+        </>
+      )}
+
+      {correccion && (
+        <div className={`correccion ${correccion.correcta ? 'bien' : 'mal'}`}>
+          <p><Marca correcta={correccion.correcta} /><strong>{t('tuRespuestaFue', { texto: escrito.trim() })}</strong></p>
+          {correccion.ortografia && <p>{t('ojoOrtografia', { palabra: correccion.ortografia })}</p>}
+          {correccion.porIA && <p>{t('validadaPorIA', { texto: respuesta })}</p>}
+          {!correccion.correcta && (
+            <>
+              {correccion.diagnostico && <p className="diagnostico">{correccion.diagnostico}</p>}
+              <p className="solucion">{t('solucion', { texto: respuesta })}</p>
+            </>
+          )}
+          <PasosSolucion pasos={tarea.pasos} abierto={!correccion.correcta} />
+          {explicacion && (
+            <div className="explicacion-ia" lang={idiomaActual().codigo} aria-live="polite" aria-busy={explicando}>
+              <span className="mascota-mini"><Mascota estado={explicando ? 'pensando' : 'contenta'} /></span>
+              <p>{explicacion}</p>
+            </div>
+          )}
+          {!correccion.correcta && !explicacion && hayGPU && (ia.fase === 'lista' || iaActivada()) && (
+            <button type="button" className="secundario" disabled={explicando || ia.ocupada} onClick={() => explicar()}>{t('explicameIA')}</button>
+          )}
+        </div>
+      )}
+    </form>
+  )
+}
+
+const COMPONENTES = { opciones: Opciones, emparejar: Emparejar, unir: Unir, ordenar: Ordenar, huecos: Huecos, problema: Problema }
 
 export default function Actividad({ tarea, onResponder }) {
   const Componente = COMPONENTES[tipoDe(tarea)]

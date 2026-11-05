@@ -4,13 +4,25 @@
     "asignatura": "Matemáticas",
     "titulo": "Sumas y restas",
     "texto": "Sumar es juntar cantidades. Si tienes 3 manzanas y te dan 2 más, ahora tienes 5. Restar es quitar. Si tienes 5 manzanas y te comes 2, te quedan 3.",
+    "ejemplos": [
+      { "titulo": "Sumar juntando", "pasos": ["Tengo 4 canicas.", "Mi amiga me da 3 canicas más.", "Junto las dos cantidades: 4 + 3."], "resultado": "Ahora tengo 7 canicas." },
+      { "titulo": "Restar quitando", "pasos": ["Hay 9 galletas en el plato.", "Nos comemos 4.", "Quito lo que nos hemos comido: 9 - 4."], "resultado": "Quedan 5 galletas." }
+    ],
+    "esquema": [
+      { "titulo": "Sumar", "ideas": ["Es juntar cantidades", "Signo +", "3 + 2 = 5"] },
+      { "titulo": "Restar", "ideas": ["Es quitar una cantidad", "Signo -", "5 - 2 = 3"] },
+      { "titulo": "Palabras pista", "ideas": ["Me dan, llegan, compro: suma", "Me como, pierdo, regalo: resta"] },
+      { "titulo": "Comprobar", "ideas": ["Una resta se comprueba sumando", "5 - 2 = 3 porque 3 + 2 = 5"] }
+    ],
     "preguntas": [
       { "imagen": "manzanas:3+2", "pregunta": "¿Cuánto es 3 + 2?", "opciones": ["4", "5", "6"], "correcta": 1 },
       { "imagen": "manzanas:5-2", "pregunta": "¿Cuánto es 5 - 2?", "opciones": ["3", "2", "7"], "correcta": 0 },
       { "imagen": "lapices:4+3", "pregunta": "Tienes 4 lápices y te dan 3. ¿Cuántos tienes?", "opciones": ["1", "6", "7"], "correcta": 2 },
       { "imagen": "manzanas:10-5", "pregunta": "¿Cuánto es 10 - 5?", "opciones": ["5", "15", "4"], "correcta": 0 },
       { "imagen": "manzanas:6+3", "pregunta": "¿Cuánto es 6 + 3?", "opciones": ["8", "9", "10"], "correcta": 1 },
-      { "imagen": "manzanas:4+4", "tipo": "huecos", "pregunta": "Escribe los resultados:", "frase": "4 + 4 = ___ y 9 - 3 = ___", "respuestas": ["8", "6"] }
+      { "imagen": "manzanas:4+4", "tipo": "huecos", "pregunta": "Escribe los resultados:", "frase": "4 + 4 = ___ y 9 - 3 = ___", "respuestas": ["8", "6"] },
+      { "tipo": "problema", "imagen": "manzanas:7-3", "pregunta": "En una cesta hay 7 manzanas. Ana se lleva 3. ¿Cuántas manzanas quedan en la cesta?", "respuesta": "4", "aceptadas": ["cuatro"], "unidad": "manzanas", "pista": "Ana se lleva manzanas: ¿juntas o quitas?", "pasos": ["Hay 7 manzanas y se quitan 3.", "Quitar es restar: 7 - 3.", "Resultado: quedan 4 manzanas."] },
+      { "tipo": "problema", "pregunta": "En el autobús van 8 niños. En la parada suben 5 niños más. ¿Cuántos niños van ahora en el autobús?", "respuesta": "13", "aceptadas": ["trece"], "unidad": "niños", "pista": "Suben más niños: la cantidad crece.", "pasos": ["Había 8 niños y suben 5.", "Juntar es sumar: 8 + 5.", "Resultado: van 13 niños."] }
     ]
   },
   {
@@ -18,13 +30,24 @@
     "asignatura": "Literatura",
     "titulo": "La tortuga y el río",
     "texto": "Una fábula es un cuento corto con animales que hablan y que deja una enseñanza, llamada moraleja. Lee esta: Una tortuga quería cruzar el río para ver a su familia. Todos los animales le decían que era imposible porque era muy lenta. Ella no discutió. Cada día avanzaba un poco, sin prisa y sin parar. Al cabo de una semana llegó a la otra orilla. Moraleja: con paciencia y constancia se llega lejos.",
+    "ejemplos": [
+      { "titulo": "Encontrar la moraleja", "pasos": ["Piensa en qué hace el protagonista.", "La tortuga avanza un poco cada día sin rendirse.", "Pregúntate qué consigue gracias a eso."], "resultado": "Moraleja: con paciencia y constancia se llega lejos." },
+      { "titulo": "Otra fábula: la cigarra y la hormiga", "pasos": ["En verano la hormiga guarda comida y la cigarra solo canta.", "Llega el invierno y la cigarra no tiene nada que comer.", "La hormiga, que trabajó, tiene comida suficiente."], "resultado": "Moraleja: hay que prepararse para el futuro." }
+    ],
+    "esquema": [
+      { "titulo": "Qué es una fábula", "ideas": ["Cuento corto", "Animales que hablan", "Deja una enseñanza"] },
+      { "titulo": "Personajes", "ideas": ["La tortuga, que es la protagonista", "Los animales que dudan de ella"] },
+      { "titulo": "Lo que pasa", "ideas": ["Quiere cruzar el río", "Avanza un poco cada día", "Llega a la otra orilla"] },
+      { "titulo": "Moraleja", "ideas": ["Con paciencia y constancia se llega lejos"] }
+    ],
     "preguntas": [
       { "imagen": "fabula", "pregunta": "¿Qué es una fábula?", "opciones": ["Un cuento corto con animales que deja una enseñanza", "Una carta a un amigo", "Una receta de cocina"], "correcta": 0 },
       { "imagen": "tortuga-rio", "pregunta": "¿Para qué quería la tortuga cruzar el río?", "opciones": ["Para buscar comida", "Para ver a su familia", "Para jugar"], "correcta": 1 },
       { "imagen": "animales-dudan", "pregunta": "¿Qué le decían los demás animales?", "opciones": ["Que la ayudarían", "Que el río estaba seco", "Que era imposible porque era lenta"], "correcta": 2 },
       { "imagen": "tortuga-pasos", "pregunta": "¿Cómo logró cruzar el río?", "opciones": ["Corriendo muy rápido", "Avanzando un poco cada día sin parar", "Pidiendo un barco"], "correcta": 1 },
       { "imagen": "meta-alcanzada", "pregunta": "¿Cuál es la moraleja?", "opciones": ["Hay que correr siempre", "Con paciencia y constancia se llega lejos", "No hay que viajar"], "correcta": 1 },
-      { "imagen": "tortuga-rio", "tipo": "ordenar", "pregunta": "Ordena lo que pasa en la fábula:", "pasos": ["La tortuga quiere cruzar el río", "Los animales le dicen que es imposible", "Avanza un poco cada día", "Llega a la otra orilla"] }
+      { "imagen": "tortuga-rio", "tipo": "ordenar", "pregunta": "Ordena lo que pasa en la fábula:", "pasos": ["La tortuga quiere cruzar el río", "Los animales le dicen que es imposible", "Avanza un poco cada día", "Llega a la otra orilla"] },
+      { "tipo": "problema", "imagen": "tortuga-pasos", "pregunta": "¿Cuántos días tardó la tortuga en llegar a la otra orilla? Escribe el número.", "respuesta": "7", "aceptadas": ["siete"], "unidad": "días", "pista": "Busca en el texto cuánto tiempo pasó. ¿Cuántos días tiene una semana?", "pasos": ["El texto dice que llegó «al cabo de una semana».", "Una semana tiene 7 días.", "Resultado: tardó 7 días."] }
     ]
   },
   {
@@ -32,13 +55,24 @@
     "asignatura": "Química",
     "titulo": "Los estados del agua",
     "texto": "La materia puede estar en tres estados: sólido, líquido y gas. El agua es un buen ejemplo. El hielo es agua sólida, el agua del grifo es líquida y el vapor es agua en forma de gas. Cuando el agua se calienta mucho, hierve y se convierte en vapor. Cuando se enfría mucho, se congela y se convierte en hielo.",
+    "ejemplos": [
+      { "titulo": "Un cubito al sol", "pasos": ["Dejamos un cubito de hielo en un plato al sol.", "El calor del sol lo calienta.", "Poco a poco el hielo se convierte en agua."], "resultado": "El agua ha pasado de sólido a líquido: se ha derretido." },
+      { "titulo": "La olla que hierve", "pasos": ["Ponemos agua en una olla al fuego.", "El agua se calienta mucho y empieza a hervir.", "Sale vapor por encima de la olla."], "resultado": "El agua ha pasado de líquido a gas." }
+    ],
+    "esquema": [
+      { "titulo": "Sólido", "ideas": ["Tiene forma propia", "Ejemplo: el hielo"] },
+      { "titulo": "Líquido", "ideas": ["Toma la forma del recipiente", "Ejemplo: el agua del grifo"] },
+      { "titulo": "Gas", "ideas": ["Se reparte por todo el espacio", "Ejemplo: el vapor"] },
+      { "titulo": "Cambios de estado", "ideas": ["Calentar: hielo → agua → vapor", "Enfriar: vapor → agua → hielo"] }
+    ],
     "preguntas": [
       { "imagen": "tres-estados", "pregunta": "¿Cuáles son los tres estados de la materia?", "opciones": ["Sólido, líquido y gas", "Frío, tibio y caliente", "Hielo, nieve y lluvia"], "correcta": 0 },
       { "imagen": "hielo", "pregunta": "¿Cómo se llama el agua en estado sólido?", "opciones": ["Vapor", "Hielo", "Niebla"], "correcta": 1 },
       { "imagen": "vapor", "pregunta": "¿En qué estado está el vapor de agua?", "opciones": ["Sólido", "Líquido", "Gas"], "correcta": 2 },
       { "imagen": "olla-hirviendo", "pregunta": "¿Qué le pasa al agua cuando se calienta mucho?", "opciones": ["Se convierte en vapor", "Se convierte en hielo", "Desaparece"], "correcta": 0 },
       { "imagen": "congelar", "pregunta": "¿Qué ocurre cuando el agua se enfría mucho?", "opciones": ["Hierve", "Se congela", "Se vuelve gas"], "correcta": 1 },
-      { "imagen": "tres-estados", "tipo": "emparejar", "pregunta": "Une cada ejemplo con su estado:", "pares": [{ "izquierda": "Hielo", "derecha": "Sólido" }, { "izquierda": "Agua del grifo", "derecha": "Líquido" }, { "izquierda": "Vapor", "derecha": "Gas" }] }
+      { "imagen": "tres-estados", "tipo": "emparejar", "pregunta": "Une cada ejemplo con su estado:", "pares": [{ "izquierda": "Hielo", "derecha": "Sólido" }, { "izquierda": "Agua del grifo", "derecha": "Líquido" }, { "izquierda": "Vapor", "derecha": "Gas" }] },
+      { "tipo": "problema", "imagen": "congelar", "pregunta": "Metes un vaso de agua en el congelador y lo sacas al día siguiente. ¿En qué estado está el agua ahora?", "respuesta": "sólido", "aceptadas": ["solido", "hielo", "estado sólido", "en estado sólido", "es hielo"], "pista": "En el congelador hace mucho frío. ¿Qué le pasa al agua cuando se enfría mucho?", "pasos": ["En el congelador el agua se enfría mucho.", "Cuando el agua se enfría mucho, se congela.", "Resultado: el agua está en estado sólido, es hielo."] }
     ]
   },
   {
@@ -46,6 +80,16 @@
     "asignatura": "Física",
     "titulo": "La gravedad",
     "texto": "La gravedad es la fuerza que atrae los objetos hacia el centro de la Tierra. Por eso, si sueltas una pelota, cae al suelo. La gravedad también mantiene a la Luna girando alrededor de la Tierra. En la Luna la gravedad es menor que en la Tierra, por eso los astronautas dan saltos muy largos.",
+    "ejemplos": [
+      { "titulo": "Soltar un lápiz", "pasos": ["Sujetas un lápiz en el aire.", "Abres la mano.", "La gravedad tira del lápiz hacia abajo."], "resultado": "El lápiz cae al suelo." },
+      { "titulo": "Saltar en la Luna", "pasos": ["Un astronauta salta en la Tierra y sube un poco.", "En la Luna la gravedad tira menos de él.", "Con el mismo impulso sube más y tarda más en bajar."], "resultado": "En la Luna los saltos son mucho más largos." }
+    ],
+    "esquema": [
+      { "titulo": "Qué es", "ideas": ["Una fuerza que atrae", "Tira hacia el centro de la Tierra"] },
+      { "titulo": "En la Tierra", "ideas": ["Los objetos que sueltas caen", "Lo que lanzas hacia arriba vuelve a bajar"] },
+      { "titulo": "La Luna", "ideas": ["Gira alrededor de la Tierra por la gravedad", "Allí la gravedad es menor"] },
+      { "titulo": "Astronautas", "ideas": ["Dan saltos muy largos en la Luna"] }
+    ],
     "preguntas": [
       { "imagen": "tierra-gravedad", "pregunta": "¿Qué es la gravedad?", "opciones": ["Una fuerza que atrae los objetos hacia el centro de la Tierra", "Un tipo de viento", "Un animal"], "correcta": 0 },
       { "imagen": "pelota-cae", "pregunta": "¿Qué pasa si sueltas una pelota en el aire?", "opciones": ["Sube", "Cae al suelo", "Se queda quieta"], "correcta": 1 },
@@ -53,7 +97,224 @@
       { "imagen": "astronauta-salto", "pregunta": "¿Por qué los astronautas dan saltos largos en la Luna?", "opciones": ["Porque llevan zapatos especiales", "Porque allí la gravedad es menor", "Porque no pesan nada en ningún sitio"], "correcta": 1 },
       { "imagen": "piedra-lanzada", "pregunta": "Si lanzas una piedra hacia arriba, ¿qué ocurre después?", "opciones": ["Se queda flotando", "Sigue subiendo siempre", "Vuelve a caer"], "correcta": 2 },
       { "imagen": "tierra-gravedad", "tipo": "huecos", "pregunta": "Completa la frase:", "frase": "La fuerza que atrae los objetos hacia la Tierra se llama ___.", "respuestas": ["gravedad"] },
-      { "imagen": "luna-orbita", "tipo": "unir", "pregunta": "Une con flechas cada caso con lo que ocurre:", "pares": [{ "izquierda": "Una pelota que sueltas", "derecha": "Cae al suelo" }, { "izquierda": "La Luna", "derecha": "Gira alrededor de la Tierra" }, { "izquierda": "Un astronauta en la Luna", "derecha": "Da saltos muy largos" }] }
+      { "imagen": "luna-orbita", "tipo": "unir", "pregunta": "Une con flechas cada caso con lo que ocurre:", "pares": [{ "izquierda": "Una pelota que sueltas", "derecha": "Cae al suelo" }, { "izquierda": "La Luna", "derecha": "Gira alrededor de la Tierra" }, { "izquierda": "Un astronauta en la Luna", "derecha": "Da saltos muy largos" }] },
+      { "tipo": "problema", "imagen": "astronauta-salto", "pregunta": "En la Tierra, Leo salta 1 metro hacia delante. En la Luna, con el mismo esfuerzo, salta 6 veces más lejos. ¿Cuántos metros salta en la Luna?", "respuesta": "6", "aceptadas": ["seis"], "unidad": "metros", "pista": "«6 veces más» quiere decir multiplicar por 6.", "pasos": ["En la Tierra salta 1 metro.", "En la Luna salta 6 veces más: 1 × 6.", "Resultado: salta 6 metros."] }
+    ]
+  },
+  {
+    "id": "mates-2",
+    "asignatura": "Matemáticas",
+    "titulo": "Multiplicar",
+    "texto": "Multiplicar es sumar varias veces el mismo número. Si tienes 3 bolsas con 4 caramelos cada una, tienes 4 + 4 + 4, que es lo mismo que 3 × 4 = 12. El signo de multiplicar es ×. Los números que se multiplican se llaman factores y el resultado se llama producto. El orden de los factores no cambia el producto: 3 × 4 es igual que 4 × 3. Cualquier número multiplicado por 1 da el mismo número, y multiplicado por 0 da 0.",
+    "ejemplos": [
+      { "titulo": "Grupos iguales", "pasos": ["Hay 2 platos con 5 fresas en cada uno.", "Sumo las fresas de cada plato: 5 + 5.", "Es lo mismo que 2 veces 5: 2 × 5."], "resultado": "2 × 5 = 10 fresas." },
+      { "titulo": "Las ruedas de los coches", "pasos": ["Cada coche tiene 4 ruedas.", "En el aparcamiento hay 3 coches.", "Multiplico coches por ruedas: 3 × 4."], "resultado": "3 × 4 = 12 ruedas." },
+      { "titulo": "Cambiar el orden", "pasos": ["Calculo 2 × 6: 6 + 6 = 12.", "Calculo 6 × 2: 2 + 2 + 2 + 2 + 2 + 2 = 12.", "Los dos dan lo mismo."], "resultado": "El orden de los factores no cambia el producto." }
+    ],
+    "esquema": [
+      { "titulo": "Qué es", "ideas": ["Sumar varias veces el mismo número", "3 × 4 = 4 + 4 + 4"] },
+      { "titulo": "Sus partes", "ideas": ["Factores: los números que se multiplican", "Producto: el resultado"] },
+      { "titulo": "Propiedades", "ideas": ["3 × 4 = 4 × 3", "Por 1 da el mismo número", "Por 0 da 0"] },
+      { "titulo": "Cuándo se usa", "ideas": ["Grupos con la misma cantidad", "«Cada uno», «veces», «el doble»"] }
+    ],
+    "preguntas": [
+      { "imagen": "grupos:3x4", "pregunta": "¿Cuánto es 3 × 4?", "opciones": ["7", "12", "34"], "correcta": 1 },
+      { "imagen": "grupos:2x5", "pregunta": "¿Qué suma es igual que 2 × 5?", "opciones": ["5 + 5", "2 + 5", "2 + 2"], "correcta": 0 },
+      { "pregunta": "¿Cómo se llama el resultado de una multiplicación?", "opciones": ["Suma", "Factor", "Producto"], "correcta": 2 },
+      { "pregunta": "¿Cuánto es 7 × 0?", "opciones": ["7", "0", "1"], "correcta": 1 },
+      { "tipo": "huecos", "pregunta": "Completa las multiplicaciones:", "frase": "5 × 2 = ___ y 4 × 3 = ___", "respuestas": ["10", "12"] },
+      { "tipo": "unir", "pregunta": "Une cada multiplicación con su resultado:", "pares": [{ "izquierda": "2 × 3", "derecha": "6" }, { "izquierda": "4 × 2", "derecha": "8" }, { "izquierda": "5 × 5", "derecha": "25" }] },
+      { "tipo": "problema", "imagen": "grupos:4x3", "pregunta": "Hay 4 cestas y en cada cesta hay 3 manzanas. ¿Cuántas manzanas hay en total?", "respuesta": "12", "aceptadas": ["doce"], "unidad": "manzanas", "pista": "Todas las cestas tienen lo mismo. ¿Cuántas veces se repite el 3?", "pasos": ["Hay 4 grupos de 3 manzanas.", "Grupos iguales: se multiplica 4 × 3.", "Resultado: hay 12 manzanas."] },
+      { "tipo": "problema", "pregunta": "Una araña tiene 8 patas. ¿Cuántas patas tienen 3 arañas?", "respuesta": "24", "aceptadas": ["veinticuatro"], "unidad": "patas", "pista": "Cada araña tiene las mismas patas. Suma 8 tantas veces como arañas hay.", "pasos": ["Cada araña tiene 8 patas y hay 3 arañas.", "Se multiplica 3 × 8, que es 8 + 8 + 8.", "Resultado: tienen 24 patas."] },
+      { "tipo": "problema", "pregunta": "Marta lee 5 páginas cada día. ¿Cuántas páginas lee en una semana?", "respuesta": "35", "aceptadas": ["treinta y cinco"], "unidad": "páginas", "pista": "Una semana tiene 7 días y cada día lee lo mismo.", "pasos": ["Una semana tiene 7 días.", "Cada día lee 5 páginas: 7 × 5.", "Resultado: lee 35 páginas."] }
+    ]
+  },
+  {
+    "id": "mates-3",
+    "asignatura": "Matemáticas",
+    "titulo": "Dividir y repartir",
+    "texto": "Dividir es repartir una cantidad en partes iguales. Si repartes 12 caramelos entre 3 amigos, a cada uno le tocan 4, porque 12 : 3 = 4. El signo de dividir es : y a veces también se escribe ÷. La división es lo contrario de la multiplicación: 12 : 3 = 4 porque 3 × 4 = 12. A veces el reparto no es exacto y sobra algo: eso que sobra se llama resto. Si repartes 7 caramelos entre 2 amigos, cada uno recibe 3 y sobra 1.",
+    "ejemplos": [
+      { "titulo": "Repartir galletas", "pasos": ["Tengo 10 galletas y 2 amigos.", "Doy una galleta a cada uno, una y otra vez, hasta que no quedan.", "Cada amigo tiene 5 galletas."], "resultado": "10 : 2 = 5 galletas para cada uno." },
+      { "titulo": "Comprobar con la multiplicación", "pasos": ["Quiero saber cuánto es 15 : 5.", "Busco qué número por 5 da 15.", "3 × 5 = 15."], "resultado": "15 : 5 = 3." },
+      { "titulo": "Cuando sobra algo", "pasos": ["Reparto 7 cromos entre 2 amigos.", "Cada uno recibe 3 cromos: 2 × 3 = 6.", "De 7 a 6 falta 1, así que sobra 1."], "resultado": "Cada uno recibe 3 y el resto es 1." }
+    ],
+    "esquema": [
+      { "titulo": "Qué es", "ideas": ["Repartir en partes iguales", "Signo : o ÷"] },
+      { "titulo": "Relación", "ideas": ["Lo contrario de multiplicar", "12 : 3 = 4 porque 3 × 4 = 12"] },
+      { "titulo": "El resto", "ideas": ["Lo que sobra al repartir", "Siempre es menor que el divisor"] },
+      { "titulo": "Cuándo se usa", "ideas": ["Repartir entre varios", "Hacer grupos iguales"] }
+    ],
+    "preguntas": [
+      { "pregunta": "¿Cuánto es 12 : 3?", "opciones": ["4", "9", "15"], "correcta": 0 },
+      { "pregunta": "Dividir es…", "opciones": ["Juntar cantidades", "Repartir en partes iguales", "Sumar muchas veces"], "correcta": 1 },
+      { "pregunta": "¿Qué multiplicación sirve para comprobar que 20 : 4 = 5?", "opciones": ["20 × 4", "5 × 5", "4 × 5"], "correcta": 2 },
+      { "pregunta": "Si repartes 9 caramelos entre 2 niños, ¿cuántos sobran?", "opciones": ["1", "0", "2"], "correcta": 0 },
+      { "tipo": "huecos", "pregunta": "Completa las divisiones:", "frase": "8 : 2 = ___ y 18 : 3 = ___", "respuestas": ["4", "6"] },
+      { "tipo": "emparejar", "pregunta": "Empareja cada división con su resultado:", "pares": [{ "izquierda": "10 : 5", "derecha": "2" }, { "izquierda": "21 : 7", "derecha": "3" }, { "izquierda": "16 : 4", "derecha": "4" }] },
+      { "tipo": "problema", "imagen": "grupos:3x5", "pregunta": "Hay 15 manzanas y queremos ponerlas en 3 cestas con las mismas manzanas en cada una. ¿Cuántas manzanas van en cada cesta?", "respuesta": "5", "aceptadas": ["cinco"], "unidad": "manzanas", "pista": "Reparte las 15 manzanas entre las 3 cestas. ¿Qué número por 3 da 15?", "pasos": ["Repartir en partes iguales es dividir: 15 : 3.", "Busco qué número por 3 da 15: 3 × 5 = 15.", "Resultado: van 5 manzanas en cada cesta."] },
+      { "tipo": "problema", "pregunta": "Una profesora tiene 24 lápices y los reparte entre 6 mesas por igual. ¿Cuántos lápices hay en cada mesa?", "respuesta": "4", "aceptadas": ["cuatro"], "unidad": "lápices", "pista": "Es un reparto en partes iguales. Piensa en la tabla del 6.", "pasos": ["Se reparten 24 lápices entre 6 mesas: 24 : 6.", "6 × 4 = 24.", "Resultado: hay 4 lápices en cada mesa."] },
+      { "tipo": "problema", "pregunta": "Para una excursión van 20 alumnos. En cada coche caben 4 alumnos. ¿Cuántos coches hacen falta?", "respuesta": "5", "aceptadas": ["cinco"], "unidad": "coches", "pista": "Haz grupos de 4 alumnos. ¿Cuántos grupos salen de 20?", "pasos": ["Hay que hacer grupos de 4 con 20 alumnos: 20 : 4.", "4 × 5 = 20.", "Resultado: hacen falta 5 coches."] }
+    ]
+  },
+  {
+    "id": "mates-4",
+    "asignatura": "Matemáticas",
+    "titulo": "Las fracciones",
+    "texto": "Una fracción sirve para nombrar las partes de algo que hemos dividido en partes iguales. Se escribe con dos números separados por una raya, como 3/4. El número de abajo es el denominador: dice en cuántas partes iguales se ha dividido el total. El número de arriba es el numerador: dice cuántas de esas partes tomamos. Si una pizza se corta en 4 trozos iguales y te comes 1, te has comido 1/4, un cuarto. Cuando el numerador y el denominador son iguales, como 4/4, tenemos la unidad entera.",
+    "ejemplos": [
+      { "titulo": "La mitad de una tarta", "pasos": ["Cortamos una tarta en 2 partes iguales.", "Cogemos 1 de las 2 partes.", "Escribimos 1 arriba y 2 abajo."], "resultado": "Hemos cogido 1/2, la mitad." },
+      { "titulo": "Leer una fracción", "pasos": ["Una pizza tiene 8 trozos iguales.", "Comemos 3 trozos.", "Partes que tomamos: 3. Partes en total: 8."], "resultado": "Hemos comido 3/8, tres octavos." },
+      { "titulo": "Comparar fracciones", "pasos": ["Dos pizzas iguales tienen 4 trozos cada una.", "Ana come 3/4 y Luis come 1/4.", "Con el mismo denominador, gana el numerador mayor."], "resultado": "3/4 es mayor que 1/4: Ana ha comido más." }
+    ],
+    "esquema": [
+      { "titulo": "Qué es", "ideas": ["Partes iguales de un todo", "Se escribe como 3/4"] },
+      { "titulo": "Denominador", "ideas": ["El número de abajo", "En cuántas partes se divide"] },
+      { "titulo": "Numerador", "ideas": ["El número de arriba", "Cuántas partes tomamos"] },
+      { "titulo": "Cómo se leen", "ideas": ["1/2 un medio, 1/3 un tercio", "1/4 un cuarto, 3/8 tres octavos"] },
+      { "titulo": "La unidad", "ideas": ["Numerador igual al denominador", "4/4 es la pizza entera"] }
+    ],
+    "preguntas": [
+      { "imagen": "fraccion:1/2", "pregunta": "¿Qué fracción del círculo está coloreada?", "opciones": ["1/2", "1/3", "2/1"], "correcta": 0 },
+      { "imagen": "fraccion:3/4", "pregunta": "¿Qué fracción está coloreada en este círculo?", "opciones": ["1/4", "4/3", "3/4"], "correcta": 2 },
+      { "pregunta": "En la fracción 2/5, ¿qué número es el denominador?", "opciones": ["2", "5", "7"], "correcta": 1 },
+      { "pregunta": "¿Cuál de estas fracciones es una unidad entera?", "opciones": ["3/3", "1/3", "3/1"], "correcta": 0 },
+      { "tipo": "unir", "pregunta": "Une cada fracción con cómo se lee:", "pares": [{ "izquierda": "1/2", "derecha": "Un medio" }, { "izquierda": "1/3", "derecha": "Un tercio" }, { "izquierda": "1/4", "derecha": "Un cuarto" }] },
+      { "tipo": "ordenar", "pregunta": "Ordena de menor a mayor estas fracciones de la misma pizza:", "pasos": ["1/6", "2/6", "4/6", "5/6"] },
+      { "tipo": "problema", "imagen": "fraccion:3/8", "pregunta": "Una pizza está cortada en 8 trozos iguales y Pablo se come 3. ¿Qué fracción de la pizza se ha comido? Escríbela con una raya, por ejemplo 2/5.", "respuesta": "3/8", "aceptadas": ["tres octavos"], "pista": "Abajo va en cuántos trozos se cortó la pizza; arriba, cuántos se comió.", "pasos": ["La pizza tiene 8 trozos: el denominador es 8.", "Pablo se come 3 trozos: el numerador es 3.", "Resultado: se ha comido 3/8 de la pizza."] },
+      { "tipo": "problema", "pregunta": "Una tableta de chocolate tiene 6 onzas. Lucía se come la mitad. ¿Cuántas onzas se come?", "respuesta": "3", "aceptadas": ["tres"], "unidad": "onzas", "pista": "La mitad es repartir en 2 partes iguales.", "pasos": ["La mitad es dividir entre 2.", "6 : 2 = 3.", "Resultado: se come 3 onzas."] }
+    ]
+  },
+  {
+    "id": "mates-5",
+    "asignatura": "Matemáticas",
+    "titulo": "Figuras planas y perímetro",
+    "texto": "Las figuras planas son dibujos cerrados que se pueden hacer sobre un papel. Los polígonos tienen lados rectos: el triángulo tiene 3 lados, el cuadrado y el rectángulo tienen 4, el pentágono 5 y el hexágono 6. Los puntos donde se juntan dos lados se llaman vértices, y un polígono tiene tantos vértices como lados. El círculo no es un polígono, porque su borde es curvo. El perímetro es lo que mide el borde de una figura. Para calcularlo, se suman las medidas de todos sus lados.",
+    "ejemplos": [
+      { "titulo": "Perímetro de un cuadrado", "pasos": ["Un cuadrado tiene 4 lados iguales.", "Cada lado mide 3 cm.", "Sumo los 4 lados: 3 + 3 + 3 + 3."], "resultado": "El perímetro es 12 cm." },
+      { "titulo": "Perímetro de un rectángulo", "pasos": ["Un rectángulo mide 5 cm de largo y 2 cm de ancho.", "Tiene dos lados de 5 cm y dos de 2 cm.", "Sumo todos: 5 + 2 + 5 + 2."], "resultado": "El perímetro es 14 cm." }
+    ],
+    "esquema": [
+      { "titulo": "Polígonos", "ideas": ["Figuras con lados rectos", "Tienen lados y vértices"] },
+      { "titulo": "Por sus lados", "ideas": ["Triángulo 3, cuadrado 4", "Pentágono 5, hexágono 6"] },
+      { "titulo": "El círculo", "ideas": ["Tiene el borde curvo", "No es un polígono"] },
+      { "titulo": "Perímetro", "ideas": ["Lo que mide el borde", "Se suman todos los lados"] }
+    ],
+    "preguntas": [
+      { "imagen": "figura:triangulo", "pregunta": "¿Cómo se llama esta figura?", "opciones": ["Cuadrado", "Triángulo", "Pentágono"], "correcta": 1 },
+      { "imagen": "figura:hexagono", "pregunta": "¿Cuántos lados tiene esta figura?", "opciones": ["5", "8", "6"], "correcta": 2 },
+      { "imagen": "figura:circulo", "pregunta": "¿Por qué el círculo no es un polígono?", "opciones": ["Porque su borde es curvo", "Porque es muy pequeño", "Porque tiene muchos lados"], "correcta": 0 },
+      { "pregunta": "¿Qué es el perímetro?", "opciones": ["Lo que hay dentro de la figura", "Lo que mide el borde de la figura", "El número de vértices"], "correcta": 1 },
+      { "tipo": "emparejar", "pregunta": "Empareja cada figura con su número de lados:", "pares": [{ "izquierda": "Triángulo", "derecha": "3" }, { "izquierda": "Cuadrado", "derecha": "4" }, { "izquierda": "Pentágono", "derecha": "5" }] },
+      { "tipo": "huecos", "pregunta": "Completa la frase:", "frase": "Los puntos donde se juntan dos lados se llaman ___.", "respuestas": ["vértices"] },
+      { "tipo": "ordenar", "pregunta": "Ordena las figuras de menos a más lados:", "pasos": ["Triángulo", "Cuadrado", "Pentágono", "Hexágono"] },
+      { "tipo": "problema", "imagen": "figura:cuadrado", "pregunta": "Cada lado de este cuadrado mide 4 cm. ¿Cuál es su perímetro?", "respuesta": "16", "aceptadas": ["dieciséis"], "unidad": "cm", "pista": "Un cuadrado tiene 4 lados iguales. Súmalos todos.", "pasos": ["El cuadrado tiene 4 lados de 4 cm.", "Perímetro: 4 + 4 + 4 + 4, o 4 × 4.", "Resultado: el perímetro es 16 cm."] },
+      { "tipo": "problema", "imagen": "figura:rectangulo", "pregunta": "Un huerto con forma de rectángulo mide 6 metros de largo y 3 metros de ancho. ¿Cuántos metros de valla hacen falta para rodearlo?", "respuesta": "18", "aceptadas": ["dieciocho"], "unidad": "metros", "pista": "Rodear el huerto es recorrer su borde: tiene dos lados largos y dos cortos.", "pasos": ["El rectángulo tiene dos lados de 6 m y dos de 3 m.", "Perímetro: 6 + 3 + 6 + 3.", "Resultado: hacen falta 18 metros de valla."] }
+    ]
+  },
+  {
+    "id": "mates-6",
+    "asignatura": "Matemáticas",
+    "titulo": "Resolver problemas paso a paso",
+    "texto": "Para resolver un problema conviene seguir siempre los mismos pasos. Primero, lee el problema con calma, si hace falta dos veces. Segundo, busca los datos: los números y lo que significan. Tercero, piensa qué operación necesitas: sumar si se junta, restar si se quita, multiplicar si hay grupos iguales y dividir si se reparte. Cuarto, haz la operación y escribe el resultado con su unidad, por ejemplo «8 caramelos». Por último, comprueba si el resultado tiene sentido.",
+    "ejemplos": [
+      { "titulo": "Un problema de dos pasos", "pasos": ["Leer: Tengo 10 €. Compro un libro de 6 € y me regalan 3 €. ¿Cuánto tengo?", "Datos: tengo 10 €, gasto 6 € y me dan 3 €.", "Operaciones: primero 10 - 6 = 4, después 4 + 3 = 7.", "Comprobar: gasté más de lo que me dieron, así que tengo menos de 10 €."], "resultado": "Tengo 7 €." },
+      { "titulo": "Elegir la operación", "pasos": ["Leer: 5 amigos traen 3 globos cada uno. ¿Cuántos globos hay?", "Datos: 5 amigos y 3 globos por amigo.", "Grupos iguales: multiplico 5 × 3 = 15.", "Comprobar: 3 + 3 + 3 + 3 + 3 = 15."], "resultado": "Hay 15 globos." }
+    ],
+    "esquema": [
+      { "titulo": "1. Leer", "ideas": ["Con calma, dos veces si hace falta", "¿Qué me preguntan?"] },
+      { "titulo": "2. Datos", "ideas": ["Los números del problema", "Qué significa cada uno"] },
+      { "titulo": "3. Operación", "ideas": ["Juntar: sumar. Quitar: restar", "Grupos: multiplicar. Repartir: dividir"] },
+      { "titulo": "4. Resultado", "ideas": ["Hacer la cuenta", "Escribirlo con su unidad"] },
+      { "titulo": "5. Comprobar", "ideas": ["¿Tiene sentido el resultado?"] }
+    ],
+    "preguntas": [
+      { "tipo": "ordenar", "pregunta": "Ordena los pasos para resolver un problema:", "pasos": ["Leer el problema", "Buscar los datos", "Elegir la operación", "Hacer la operación", "Comprobar el resultado"] },
+      { "tipo": "unir", "pregunta": "Une cada situación con su operación:", "pares": [{ "izquierda": "Juntar", "derecha": "Sumar" }, { "izquierda": "Quitar", "derecha": "Restar" }, { "izquierda": "Grupos iguales", "derecha": "Multiplicar" }, { "izquierda": "Repartir", "derecha": "Dividir" }] },
+      { "pregunta": "«Reparte 20 cromos entre 4 amigos.» ¿Qué operación hay que hacer?", "opciones": ["Sumar", "Dividir", "Multiplicar"], "correcta": 1 },
+      { "pregunta": "Un problema pregunta cuántos años tiene una abuela y te sale 2. ¿Qué haces?", "opciones": ["Lo dejo así", "Reviso las cuentas porque no tiene sentido", "Le sumo 1"], "correcta": 1 },
+      { "tipo": "huecos", "pregunta": "Completa la frase:", "frase": "El resultado se escribe siempre con su ___.", "respuestas": ["unidad"] },
+      { "tipo": "problema", "pregunta": "En la biblioteca hay 3 estanterías con 9 libros cada una. Se prestan 5 libros. ¿Cuántos libros quedan en las estanterías?", "respuesta": "22", "aceptadas": ["veintidós"], "unidad": "libros", "pista": "Hay dos pasos: primero cuenta todos los libros y después quita los prestados.", "pasos": ["Primero los libros que había: 3 × 9 = 27.", "Después se quitan los prestados: 27 - 5.", "Resultado: quedan 22 libros."] },
+      { "tipo": "problema", "pregunta": "Juan tiene 12 canicas y su hermana tiene el doble. ¿Cuántas canicas tienen entre los dos?", "respuesta": "36", "aceptadas": ["treinta y seis"], "unidad": "canicas", "pista": "Primero calcula cuántas tiene la hermana. Después júntalas con las de Juan.", "pasos": ["La hermana tiene el doble: 12 × 2 = 24.", "Entre los dos: 12 + 24.", "Resultado: tienen 36 canicas."] },
+      { "tipo": "problema", "pregunta": "Una entrada de cine cuesta 6 €. Si vas con 2 amigos, sois 3 personas. Pagas con un billete de 20 €. ¿Cuánto te devuelven?", "respuesta": "2", "aceptadas": ["dos"], "unidad": "€", "pista": "Calcula cuánto cuestan las 3 entradas y réstalo de lo que pagas.", "pasos": ["Las 3 entradas cuestan 3 × 6 = 18 €.", "Pagas 20 €: 20 - 18.", "Resultado: te devuelven 2 €."] }
+    ]
+  },
+  {
+    "id": "lengua-2",
+    "asignatura": "Literatura",
+    "titulo": "Sinónimos y antónimos",
+    "texto": "Las palabras pueden estar relacionadas por lo que significan. Los sinónimos son palabras que significan lo mismo o casi lo mismo, como «contento» y «alegre». Usar sinónimos ayuda a no repetir siempre la misma palabra cuando escribimos. Los antónimos son palabras que significan lo contrario, como «alto» y «bajo». Muchos antónimos se forman añadiendo «des-» o «in-» delante, como «hacer» y «deshacer» o «útil» e «inútil». Conocer sinónimos y antónimos hace que hablemos y escribamos mejor.",
+    "ejemplos": [
+      { "titulo": "Cambiar por un sinónimo", "pasos": ["Frase: «La casa es muy grande y el jardín también es grande».", "Se repite «grande».", "Busco un sinónimo: «enorme»."], "resultado": "«La casa es muy grande y el jardín es enorme»." },
+      { "titulo": "Formar un antónimo", "pasos": ["Palabra: «ordenado».", "Añado «des-» delante.", "Compruebo que significa lo contrario."], "resultado": "«Desordenado» es el antónimo de «ordenado»." }
+    ],
+    "esquema": [
+      { "titulo": "Sinónimos", "ideas": ["Significan lo mismo", "Contento y alegre"] },
+      { "titulo": "Antónimos", "ideas": ["Significan lo contrario", "Alto y bajo"] },
+      { "titulo": "Prefijos", "ideas": ["des-: hacer, deshacer", "in-: útil, inútil"] },
+      { "titulo": "Para qué sirven", "ideas": ["No repetir palabras", "Hablar y escribir mejor"] }
+    ],
+    "preguntas": [
+      { "pregunta": "¿Qué es un sinónimo?", "opciones": ["Una palabra que significa lo mismo que otra", "Una palabra que significa lo contrario", "Una palabra muy larga"], "correcta": 0 },
+      { "pregunta": "¿Cuál es un antónimo de «frío»?", "opciones": ["Helado", "Caliente", "Fresco"], "correcta": 1 },
+      { "pregunta": "¿Qué palabra es sinónimo de «rápido»?", "opciones": ["Lento", "Quieto", "Veloz"], "correcta": 2 },
+      { "tipo": "emparejar", "pregunta": "Empareja cada palabra con su sinónimo:", "pares": [{ "izquierda": "Contento", "derecha": "Alegre" }, { "izquierda": "Bonito", "derecha": "Precioso" }, { "izquierda": "Empezar", "derecha": "Comenzar" }] },
+      { "tipo": "unir", "pregunta": "Une cada palabra con su antónimo:", "pares": [{ "izquierda": "Alto", "derecha": "Bajo" }, { "izquierda": "Día", "derecha": "Noche" }, { "izquierda": "Abrir", "derecha": "Cerrar" }] },
+      { "tipo": "huecos", "pregunta": "Escribe el antónimo añadiendo «des-»:", "frase": "Lo contrario de «hacer» es ___.", "respuestas": ["deshacer"] },
+      { "tipo": "ordenar", "pregunta": "Ordena de menos a más temperatura:", "pasos": ["Helado", "Frío", "Templado", "Caliente"] },
+      { "tipo": "problema", "pregunta": "Escribe un antónimo de la palabra «posible».", "respuesta": "imposible", "pista": "Prueba a añadir «im-» delante de la palabra.", "pasos": ["Buscamos lo contrario de «posible».", "Delante de la p, el prefijo «in-» se escribe «im-».", "Resultado: «imposible»."] }
+    ]
+  },
+  {
+    "id": "quimica-2",
+    "asignatura": "Química",
+    "titulo": "Mezclas y disoluciones",
+    "texto": "Una mezcla se forma al juntar dos o más sustancias sin que dejen de ser lo que eran. En algunas mezclas se distinguen las sustancias a simple vista, como en una ensalada o en agua con arena. En otras no se distinguen, como al disolver azúcar en agua: eso es una disolución. El agua caliente disuelve el azúcar más rápido que el agua fría. Las mezclas se pueden separar: la arena se separa del agua con un filtro, y la sal del agua dejando que el agua se evapore.",
+    "ejemplos": [
+      { "titulo": "Separar agua y arena", "pasos": ["Mezclamos arena con agua en un vaso.", "Ponemos un filtro de papel sobre otro vaso.", "Echamos la mezcla: el agua pasa y la arena se queda en el filtro."], "resultado": "Hemos separado la mezcla filtrando." },
+      { "titulo": "Recuperar la sal", "pasos": ["Disolvemos una cucharada de sal en agua.", "Dejamos el plato al sol varios días.", "El agua se evapora y quedan cristales de sal."], "resultado": "Hemos separado la disolución por evaporación." }
+    ],
+    "esquema": [
+      { "titulo": "Mezcla", "ideas": ["Juntar varias sustancias", "Cada una sigue siendo lo que era"] },
+      { "titulo": "Se distinguen", "ideas": ["Ensalada", "Agua con arena"] },
+      { "titulo": "Disolución", "ideas": ["No se distinguen las sustancias", "Azúcar o sal en agua"] },
+      { "titulo": "Separar mezclas", "ideas": ["Filtrar: agua y arena", "Evaporar: agua y sal"] }
+    ],
+    "preguntas": [
+      { "pregunta": "¿Qué es una mezcla?", "opciones": ["Juntar sustancias sin que dejen de ser lo que eran", "Romper un objeto", "Calentar agua"], "correcta": 0 },
+      { "pregunta": "¿Cuál de estas es una disolución?", "opciones": ["Una ensalada", "Agua con azúcar disuelto", "Agua con piedras"], "correcta": 1 },
+      { "pregunta": "¿Dónde se disuelve antes el azúcar?", "opciones": ["En agua fría", "En agua con hielo", "En agua caliente"], "correcta": 2 },
+      { "tipo": "unir", "pregunta": "Une cada mezcla con la forma de separarla:", "pares": [{ "izquierda": "Agua y arena", "derecha": "Filtrar" }, { "izquierda": "Agua y sal", "derecha": "Evaporar" }, { "izquierda": "Garbanzos y lentejas", "derecha": "Separar con la mano" }] },
+      { "tipo": "emparejar", "pregunta": "Empareja cada ejemplo con su tipo de mezcla:", "pares": [{ "izquierda": "Ensalada", "derecha": "Se distinguen" }, { "izquierda": "Agua con sal", "derecha": "No se distinguen" }] },
+      { "tipo": "huecos", "pregunta": "Completa la frase:", "frase": "Cuando el azúcar se mezcla con el agua y no se ve, se forma una ___.", "respuestas": ["disolución"] },
+      { "tipo": "ordenar", "pregunta": "Ordena los pasos para recuperar la sal del agua salada:", "pasos": ["Disolver sal en agua", "Poner el agua en un plato", "Dejar el plato al sol", "Ver los cristales de sal"] },
+      { "tipo": "problema", "pregunta": "Se te ha caído arena en una botella de agua. ¿Qué harías para separar la arena del agua? Escribe una palabra.", "respuesta": "filtrar", "aceptadas": ["filtrarla", "con un filtro", "un filtro", "filtro", "colar", "colarla"], "pista": "Piensa en algo que deja pasar el agua pero no los granos de arena.", "pasos": ["La arena no se disuelve: se ve en el agua.", "Un filtro de papel deja pasar el agua y retiene la arena.", "Resultado: hay que filtrar."] }
+    ]
+  },
+  {
+    "id": "fisica-2",
+    "asignatura": "Física",
+    "titulo": "Los imanes",
+    "texto": "Un imán es un objeto que atrae algunos metales, como el hierro y el acero. No atrae la madera, el plástico, el papel ni el cristal. Todo imán tiene dos polos, llamados norte y sur. Si acercas dos polos distintos, los imanes se atraen; si acercas dos polos iguales, se repelen y se empujan. La Tierra se porta como un imán gigante, y por eso la aguja de una brújula señala siempre hacia el norte.",
+    "ejemplos": [
+      { "titulo": "¿Qué atrae el imán?", "pasos": ["Ponemos en la mesa un clip, una goma y una cuchara de madera.", "Acercamos un imán a cada objeto.", "Solo el clip, que es de acero, se pega al imán."], "resultado": "El imán atrae el hierro y el acero, pero no la goma ni la madera." },
+      { "titulo": "Juntar dos imanes", "pasos": ["Acercamos el polo norte de un imán al polo sur de otro.", "Se juntan de golpe: se atraen.", "Damos la vuelta a uno y acercamos norte con norte: se empujan."], "resultado": "Polos distintos se atraen y polos iguales se repelen." }
+    ],
+    "esquema": [
+      { "titulo": "Qué atraen", "ideas": ["Hierro y acero", "No: madera, plástico, papel"] },
+      { "titulo": "Los polos", "ideas": ["Todo imán tiene norte y sur"] },
+      { "titulo": "Atraer y repeler", "ideas": ["Polos distintos se atraen", "Polos iguales se repelen"] },
+      { "titulo": "La brújula", "ideas": ["La Tierra es como un imán gigante", "La aguja señala al norte"] }
+    ],
+    "preguntas": [
+      { "pregunta": "¿Cuál de estos objetos atrae un imán?", "opciones": ["Un clip de acero", "Una goma de borrar", "Un lápiz de madera"], "correcta": 0 },
+      { "pregunta": "¿Cómo se llaman los dos polos de un imán?", "opciones": ["Arriba y abajo", "Norte y sur", "Grande y pequeño"], "correcta": 1 },
+      { "pregunta": "¿Qué pasa si acercas el polo norte de un imán al polo norte de otro?", "opciones": ["Se pegan", "No pasa nada", "Se repelen"], "correcta": 2 },
+      { "pregunta": "¿Hacia dónde señala siempre la aguja de una brújula?", "opciones": ["Hacia el norte", "Hacia el sol", "Hacia abajo"], "correcta": 0 },
+      { "tipo": "emparejar", "pregunta": "Empareja cada objeto con lo que hace el imán:", "pares": [{ "izquierda": "Clavo de hierro", "derecha": "Lo atrae" }, { "izquierda": "Vaso de cristal", "derecha": "No lo atrae" }] },
+      { "tipo": "unir", "pregunta": "Une cada pareja de polos con lo que ocurre:", "pares": [{ "izquierda": "Norte y sur", "derecha": "Se atraen" }, { "izquierda": "Norte y norte", "derecha": "Se repelen" }, { "izquierda": "Sur y sur", "derecha": "También se repelen" }] },
+      { "tipo": "huecos", "pregunta": "Completa la frase:", "frase": "Los polos iguales se ___ y los polos distintos se ___.", "respuestas": ["repelen", "atraen"] },
+      { "tipo": "problema", "pregunta": "En una caja se han mezclado clips de acero y botones de plástico. ¿Qué objeto usarías para sacar solo los clips? Escribe una palabra.", "respuesta": "imán", "aceptadas": ["iman", "un imán", "un iman", "con un imán", "con un iman"], "pista": "Piensa en qué objeto atrae el acero pero no el plástico.", "pasos": ["Los clips son de acero y los botones de plástico.", "Un imán atrae el acero pero no el plástico.", "Resultado: usaría un imán."] }
     ]
   }
 ]

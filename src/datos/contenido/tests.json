@@ -33,7 +33,10 @@
       {"tipo": "huecos", "pregunta": "Escribe el número que falta en esta suma:", "frase": "6 + ___ = 10", "respuestas": ["4"]},
       {"tipo": "huecos", "pregunta": "Escribe el número que falta en esta resta:", "frase": "___ - 2 = 5", "respuestas": ["7"]},
       {"tipo": "unir", "pregunta": "Une cada resta con su resultado:", "pares": [{"izquierda": "9 - 1", "derecha": "8"}, {"izquierda": "6 - 3", "derecha": "3"}, {"izquierda": "8 - 4", "derecha": "4"}]},
-      {"tipo": "ordenar", "pregunta": "Ordena los números de mayor a menor:", "pasos": ["10", "8", "3", "1"]}
+      {"tipo": "ordenar", "pregunta": "Ordena los números de mayor a menor:", "pasos": ["10", "8", "3", "1"]},
+      {"imagen": "lapices:8-3", "tipo": "problema", "pregunta": "En una caja hay 8 lápices de colores. Sacas 3 para pintar. ¿Cuántos quedan en la caja?", "respuesta": "5", "unidad": "lápices", "pista": "Si sacas lápices, en la caja quedan menos: es una resta.", "pasos": ["Había 8 lápices y sacas 3.", "Hay que quitar: 8 - 3.", "Resultado: quedan 5 lápices."]},
+      {"tipo": "problema", "pregunta": "Lucía tiene 4 cromos y su hermano le regala 5. ¿Cuántos cromos tiene ahora?", "respuesta": "9", "unidad": "cromos", "pista": "Le regalan más cromos: se juntan, así que es una suma.", "pasos": ["Tenía 4 cromos y le dan 5.", "Juntamos: 4 + 5.", "Resultado: tiene 9 cromos."]},
+      {"tipo": "problema", "pregunta": "En el autobús van 10 niños. En una parada se bajan 4. ¿Cuántos niños quedan en el autobús?", "respuesta": "6", "unidad": "niños", "pista": "Los que se bajan ya no están: hay que quitarlos.", "pasos": ["Iban 10 niños y se bajan 4.", "Restamos: 10 - 4.", "Resultado: quedan 6 niños."]}
     ]
   },
   {
@@ -70,7 +73,10 @@
       {"tipo": "huecos", "pregunta": "Escribe el contrario de esta palabra:", "frase": "Lo contrario de «grande» es ___.", "respuestas": ["pequeño"]},
       {"tipo": "emparejar", "pregunta": "Une cada palabra con su sinónimo:", "pares": [{"izquierda": "Bonito", "derecha": "Hermoso"}, {"izquierda": "Rápido", "derecha": "Veloz"}, {"izquierda": "Empezar", "derecha": "Comenzar"}]},
       {"tipo": "unir", "pregunta": "Une cada palabra con su contrario:", "pares": [{"izquierda": "Día", "derecha": "Noche"}, {"izquierda": "Frío", "derecha": "Calor"}, {"izquierda": "Arriba", "derecha": "Abajo"}]},
-      {"tipo": "ordenar", "pregunta": "Ordena estas palabras por orden alfabético:", "pasos": ["Árbol", "Casa", "Mesa", "Sol"]}
+      {"tipo": "ordenar", "pregunta": "Ordena estas palabras por orden alfabético:", "pasos": ["Árbol", "Casa", "Mesa", "Sol"]},
+      {"imagen": "meta-alcanzada", "tipo": "problema", "pregunta": "¿Cómo se llama la enseñanza que deja una fábula al final?", "respuesta": "moraleja", "aceptadas": ["la moraleja"], "pista": "Empieza por «m» y aparece al final de la fábula de la tortuga.", "pasos": ["Las fábulas terminan con una enseñanza.", "Esa enseñanza tiene un nombre especial.", "Resultado: la moraleja."]},
+      {"tipo": "problema", "pregunta": "Escribe un sinónimo de «feliz».", "respuesta": "contento", "aceptadas": ["contenta", "alegre", "dichoso", "dichosa"], "pista": "Piensa en otra palabra que dices cuando estás muy bien.", "pasos": ["Un sinónimo significa lo mismo que otra palabra.", "Quien está feliz también está…", "Resultado: contento o alegre."]},
+      {"tipo": "problema", "pregunta": "¿Cuántas sílabas tiene la palabra «mariposa»?", "respuesta": "4", "unidad": "sílabas", "pista": "Dila despacio dando una palmada en cada golpe de voz.", "pasos": ["Separamos la palabra: ma-ri-po-sa.", "Contamos las partes: 1, 2, 3, 4.", "Resultado: 4 sílabas."]}
     ]
   },
   {
@@ -108,7 +114,10 @@
       {"tipo": "huecos", "pregunta": "¿Cómo se llama este gas?", "frase": "El gas que hace subir los globos de feria se llama ___.", "respuestas": ["helio"]},
       {"tipo": "emparejar", "pregunta": "Une cada material con su origen:", "pares": [{"izquierda": "Madera", "derecha": "Árboles"}, {"izquierda": "Lana", "derecha": "Ovejas"}, {"izquierda": "Vidrio", "derecha": "Arena"}]},
       {"tipo": "ordenar", "pregunta": "Ordena el viaje del agua en la naturaleza:", "pasos": ["El agua del mar se evapora", "El vapor forma nubes", "Llueve", "El agua vuelve al mar"]},
-      {"tipo": "unir", "pregunta": "Une cada cambio con lo que significa:", "pares": [{"izquierda": "Fusión", "derecha": "De sólido a líquido"}, {"izquierda": "Evaporación", "derecha": "De líquido a gas"}, {"izquierda": "Condensación", "derecha": "De gas a líquido"}]}
+      {"tipo": "unir", "pregunta": "Une cada cambio con lo que significa:", "pares": [{"izquierda": "Fusión", "derecha": "De sólido a líquido"}, {"izquierda": "Evaporación", "derecha": "De líquido a gas"}, {"izquierda": "Condensación", "derecha": "De gas a líquido"}]},
+      {"imagen": "hielo", "tipo": "problema", "pregunta": "¿Cómo se llama el paso de sólido a líquido, como cuando se derrite el hielo?", "respuesta": "fusión", "aceptadas": ["la fusión", "derretirse"], "pista": "Es lo contrario de congelarse. Empieza por «f».", "pasos": ["El hielo es sólido y al calentarse se vuelve líquido.", "Ese cambio tiene un nombre.", "Resultado: la fusión."]},
+      {"tipo": "problema", "pregunta": "El agua hierve a 100 °C y se congela a 0 °C. ¿Cuántos grados hay de diferencia?", "respuesta": "100", "unidad": "°C", "pista": "Para saber la diferencia entre dos números, resta el menor al mayor.", "pasos": ["La temperatura mayor es 100 y la menor es 0.", "Restamos: 100 - 0.", "Resultado: 100 °C de diferencia."]},
+      {"tipo": "problema", "pregunta": "Un vaso tiene 250 ml de agua y al sol se evaporan 50 ml. ¿Cuánta agua queda en el vaso?", "respuesta": "200", "unidad": "ml", "pista": "El agua que se evapora se va del vaso: hay que quitarla.", "pasos": ["Había 250 ml y se evaporan 50 ml.", "Restamos: 250 - 50.", "Resultado: quedan 200 ml."]}
     ]
   },
   {
@@ -145,7 +154,106 @@
       {"tipo": "huecos", "pregunta": "¿Cómo viaja el sonido?", "frase": "El sonido viaja por el aire en forma de ___.", "respuestas": ["ondas"]},
       {"tipo": "emparejar", "pregunta": "Une cada instrumento con lo que mide:", "pares": [{"izquierda": "Regla", "derecha": "Longitud"}, {"izquierda": "Reloj", "derecha": "Tiempo"}, {"izquierda": "Termómetro", "derecha": "Temperatura"}]},
       {"tipo": "unir", "pregunta": "Une cada fuente con su tipo de energía:", "pares": [{"izquierda": "El Sol", "derecha": "Solar"}, {"izquierda": "El viento", "derecha": "Eólica"}, {"izquierda": "Un río", "derecha": "Hidráulica"}]},
-      {"tipo": "ordenar", "pregunta": "Ordena estos planetas del más cercano al Sol al más lejano:", "pasos": ["Mercurio", "Venus", "Tierra", "Marte"]}
+      {"tipo": "ordenar", "pregunta": "Ordena estos planetas del más cercano al Sol al más lejano:", "pasos": ["Mercurio", "Venus", "Tierra", "Marte"]},
+      {"tipo": "problema", "pregunta": "Un kilómetro tiene 1000 metros. ¿Cuántos metros son 3 kilómetros?", "respuesta": "3000", "unidad": "metros", "pista": "Cada kilómetro son 1000 metros, y tienes 3.", "pasos": ["Cada kilómetro tiene 1000 metros.", "Multiplicamos: 3 × 1000.", "Resultado: 3000 metros."]},
+      {"imagen": "tierra-gravedad", "tipo": "problema", "pregunta": "¿Cómo se llama la fuerza que atrae los objetos hacia el centro de la Tierra?", "respuesta": "gravedad", "aceptadas": ["la gravedad"], "pista": "Por ella cae una pelota cuando la sueltas.", "pasos": ["Si sueltas algo, cae hacia el suelo.", "La fuerza que tira de él tiene un nombre.", "Resultado: la gravedad."]},
+      {"imagen": "pelota-cae", "tipo": "problema", "pregunta": "Una pelota tarda 2 segundos en caer desde una ventana. Si la sueltas 4 veces, ¿cuántos segundos cae en total?", "respuesta": "8", "unidad": "segundos", "pista": "Cada vez tarda lo mismo: puedes multiplicar.", "pasos": ["Cada caída dura 2 segundos y hay 4 caídas.", "Multiplicamos: 4 × 2.", "Resultado: 8 segundos."]}
+    ]
+  },
+  {
+    "id": "test-mates-2",
+    "asignatura": "Matemáticas",
+    "titulo": "Test de multiplicar y dividir",
+    "preguntas": [
+      {"imagen": "grupos:3x4", "pregunta": "¿Cuánto es 3 × 4?", "opciones": ["12", "7", "10"], "correcta": 0},
+      {"imagen": "grupos:2x5", "pregunta": "¿Cuánto es 2 × 5?", "opciones": ["7", "10", "25"], "correcta": 1},
+      {"imagen": "grupos:5x3", "pregunta": "¿Cuánto es 5 × 3?", "opciones": ["8", "53", "15"], "correcta": 2},
+      {"imagen": "grupos:4x6", "pregunta": "¿Cuánto es 4 × 6?", "opciones": ["24", "20", "10"], "correcta": 0},
+      {"pregunta": "¿Cuánto es 6 × 7?", "opciones": ["48", "42", "36"], "correcta": 1},
+      {"pregunta": "¿Cuánto es 8 × 5?", "opciones": ["13", "45", "40"], "correcta": 2},
+      {"pregunta": "¿Cuánto es 9 × 3?", "opciones": ["27", "24", "12"], "correcta": 0},
+      {"pregunta": "¿Cuánto es 12 : 3?", "opciones": ["3", "4", "9"], "correcta": 1},
+      {"pregunta": "¿Cuánto es 20 : 5?", "opciones": ["5", "15", "4"], "correcta": 2},
+      {"pregunta": "¿Cuánto es 18 : 2?", "opciones": ["9", "8", "16"], "correcta": 0},
+      {"pregunta": "¿Cuánto es 7 × 7?", "opciones": ["14", "49", "42"], "correcta": 1},
+      {"pregunta": "¿Cuánto es 10 × 6?", "opciones": ["16", "66", "60"], "correcta": 2},
+      {"pregunta": "¿Qué resultado da cualquier número multiplicado por 0?", "opciones": ["0", "1", "El mismo número"], "correcta": 0},
+      {"pregunta": "Multiplicar 4 × 3 es lo mismo que sumar…", "opciones": ["4 + 3", "3 + 3 + 3 + 3", "4 + 4"], "correcta": 1},
+      {"pregunta": "¿Cuánto es 35 : 7?", "opciones": ["7", "6", "5"], "correcta": 2},
+      {"tipo": "huecos", "pregunta": "Escribe los resultados de las multiplicaciones:", "frase": "2 × 6 = ___ y 3 × 3 = ___", "respuestas": ["12", "9"]},
+      {"tipo": "huecos", "pregunta": "Escribe el número que falta en esta multiplicación:", "frase": "5 × ___ = 30", "respuestas": ["6"]},
+      {"tipo": "huecos", "pregunta": "Escribe el resultado de la división:", "frase": "24 : 4 = ___", "respuestas": ["6"]},
+      {"tipo": "unir", "pregunta": "Une cada multiplicación con su resultado:", "pares": [{"izquierda": "2 × 4", "derecha": "8"}, {"izquierda": "3 × 5", "derecha": "15"}, {"izquierda": "6 × 2", "derecha": "12"}]},
+      {"tipo": "unir", "pregunta": "Une cada división con su resultado:", "pares": [{"izquierda": "10 : 2", "derecha": "5"}, {"izquierda": "9 : 3", "derecha": "3"}, {"izquierda": "16 : 4", "derecha": "4"}]},
+      {"tipo": "emparejar", "pregunta": "Une cada palabra con lo que significa:", "pares": [{"izquierda": "Doble", "derecha": "Multiplicar por 2"}, {"izquierda": "Triple", "derecha": "Multiplicar por 3"}, {"izquierda": "Mitad", "derecha": "Dividir entre 2"}]},
+      {"tipo": "ordenar", "pregunta": "Ordena estas multiplicaciones de menor a mayor resultado:", "pasos": ["2 × 3", "4 × 4", "3 × 7", "5 × 5"]},
+      {"imagen": "grupos:4x5", "tipo": "problema", "pregunta": "En clase hay 4 mesas y en cada mesa se sientan 5 niños. ¿Cuántos niños hay?", "respuesta": "20", "unidad": "niños", "pista": "En cada mesa se repite el mismo número de niños: puedes multiplicar.", "pasos": ["Hay 4 mesas con 5 niños cada una.", "Multiplicamos: 4 × 5.", "Resultado: 20 niños."]},
+      {"tipo": "problema", "pregunta": "Tienes 15 caramelos y los repartes a partes iguales entre 3 amigos. ¿Cuántos le tocan a cada uno?", "respuesta": "5", "unidad": "caramelos", "pista": "Repartir en partes iguales es dividir.", "pasos": ["Hay que repartir 15 caramelos entre 3.", "Dividimos: 15 : 3.", "Resultado: 5 caramelos para cada amigo."]},
+      {"imagen": "grupos:3x6", "tipo": "problema", "pregunta": "Una caja tiene 6 huevos. ¿Cuántos huevos hay en 3 cajas?", "respuesta": "18", "unidad": "huevos", "pista": "Cada caja tiene los mismos huevos: multiplica.", "pasos": ["Hay 3 cajas de 6 huevos.", "Multiplicamos: 3 × 6.", "Resultado: 18 huevos."]},
+      {"tipo": "problema", "pregunta": "Un coche tiene 4 ruedas. ¿Cuántas ruedas tienen 7 coches?", "respuesta": "28", "unidad": "ruedas", "pista": "Son 7 veces 4 ruedas.", "pasos": ["Cada coche tiene 4 ruedas y hay 7 coches.", "Multiplicamos: 7 × 4.", "Resultado: 28 ruedas."]},
+      {"tipo": "problema", "pregunta": "Hay 24 niños y se hacen equipos de 6. ¿Cuántos equipos salen?", "respuesta": "4", "unidad": "equipos", "pista": "Mira cuántas veces cabe 6 en 24.", "pasos": ["Repartimos 24 niños en grupos de 6.", "Dividimos: 24 : 6.", "Resultado: 4 equipos."]},
+      {"tipo": "problema", "pregunta": "Una entrada de cine cuesta 5 €. ¿Cuánto pagan 4 amigos?", "respuesta": "20", "unidad": "€", "pista": "Cada amigo paga lo mismo.", "pasos": ["Cada entrada cuesta 5 € y son 4 amigos.", "Multiplicamos: 4 × 5.", "Resultado: pagan 20 €."]},
+      {"tipo": "problema", "pregunta": "Una araña tiene 8 patas. ¿Cuántas patas tienen 3 arañas?", "respuesta": "24", "unidad": "patas", "pista": "Son 3 veces 8 patas.", "pasos": ["Cada araña tiene 8 patas y hay 3.", "Multiplicamos: 3 × 8.", "Resultado: 24 patas."]},
+      {"tipo": "problema", "pregunta": "Mamá compra 30 fresas y las pone en 5 platos, con las mismas en cada uno. ¿Cuántas fresas hay en cada plato?", "respuesta": "6", "unidad": "fresas", "pista": "Se reparten en partes iguales: divide.", "pasos": ["Repartimos 30 fresas en 5 platos.", "Dividimos: 30 : 5.", "Resultado: 6 fresas en cada plato."]}
+    ]
+  },
+  {
+    "id": "test-mates-3",
+    "asignatura": "Matemáticas",
+    "titulo": "Problemas para resolver",
+    "preguntas": [
+      {"tipo": "problema", "pregunta": "En el parque hay 12 palomas y llegan 7 más. ¿Cuántas palomas hay ahora?", "respuesta": "19", "unidad": "palomas", "pista": "Llegan más palomas: se juntan, así que es una suma.", "pasos": ["Había 12 palomas y llegan 7.", "Sumamos: 12 + 7.", "Resultado: 19 palomas."]},
+      {"tipo": "problema", "pregunta": "Una biblioteca tiene 45 libros en una estantería y presta 18. ¿Cuántos libros quedan?", "respuesta": "27", "unidad": "libros", "pista": "Los libros prestados ya no están: hay que quitarlos.", "pasos": ["Había 45 libros y se prestan 18.", "Restamos: 45 - 18.", "Resultado: quedan 27 libros."]},
+      {"imagen": "grupos:3x6", "tipo": "problema", "pregunta": "Pedro tiene 3 bolsas con 6 canicas cada una. ¿Cuántas canicas tiene?", "respuesta": "18", "unidad": "canicas", "pista": "Todas las bolsas tienen las mismas canicas: multiplica.", "pasos": ["Hay 3 bolsas de 6 canicas.", "Multiplicamos: 3 × 6.", "Resultado: 18 canicas."]},
+      {"tipo": "problema", "pregunta": "Hay 32 galletas para repartir por igual entre 4 niños. ¿Cuántas recibe cada niño?", "respuesta": "8", "unidad": "galletas", "pista": "Repartir por igual es dividir.", "pasos": ["Repartimos 32 galletas entre 4 niños.", "Dividimos: 32 : 4.", "Resultado: 8 galletas cada uno."]},
+      {"tipo": "problema", "pregunta": "Compras un cuaderno de 3 € y un lápiz de 2 €. ¿Cuánto pagas en total?", "respuesta": "5", "unidad": "€", "pista": "Junta los dos precios.", "pasos": ["El cuaderno cuesta 3 € y el lápiz 2 €.", "Sumamos: 3 + 2.", "Resultado: pagas 5 €."]},
+      {"tipo": "problema", "pregunta": "Tienes 10 € y compras un libro de 7 €. ¿Cuánto dinero te sobra?", "respuesta": "3", "unidad": "€", "pista": "Al pagar, el dinero del libro se va: resta.", "pasos": ["Tienes 10 € y gastas 7 €.", "Restamos: 10 - 7.", "Resultado: te sobran 3 €."]},
+      {"tipo": "problema", "pregunta": "Un helado cuesta 2 €. ¿Cuánto cuestan 6 helados?", "respuesta": "12", "unidad": "€", "pista": "Cada helado cuesta lo mismo: multiplica.", "pasos": ["Cada helado cuesta 2 € y compras 6.", "Multiplicamos: 6 × 2.", "Resultado: 12 €."]},
+      {"tipo": "problema", "pregunta": "Pagas una pelota de 8 € con un billete de 20 €. ¿Cuánto te devuelven?", "respuesta": "12", "unidad": "€", "pista": "Te devuelven lo que sobra después de pagar.", "pasos": ["Das 20 € y la pelota cuesta 8 €.", "Restamos: 20 - 8.", "Resultado: te devuelven 12 €."]},
+      {"tipo": "problema", "pregunta": "Un bocadillo cuesta 1,50 € y un zumo 1 €. ¿Cuánto cuestan los dos juntos?", "respuesta": "2,5", "unidad": "€", "pista": "Suma los dos precios. Los céntimos van después de la coma.", "pasos": ["El bocadillo cuesta 1,50 € y el zumo 1 €.", "Sumamos: 1,50 + 1.", "Resultado: 2,50 €."]},
+      {"tipo": "problema", "pregunta": "Una película empieza a las 5 de la tarde y dura 2 horas. ¿A qué hora de la tarde termina?", "respuesta": "7", "aceptadas": ["19", "las 7", "a las 7", "las 19"], "pista": "Cuenta 2 horas a partir de las 5.", "pasos": ["Empieza a las 5 y pasan 2 horas.", "Sumamos: 5 + 2.", "Resultado: termina a las 7 de la tarde."]},
+      {"tipo": "problema", "pregunta": "Una hora tiene 60 minutos. ¿Cuántos minutos son 2 horas?", "respuesta": "120", "unidad": "minutos", "pista": "Son 2 veces 60 minutos.", "pasos": ["Cada hora tiene 60 minutos y hay 2 horas.", "Multiplicamos: 2 × 60.", "Resultado: 120 minutos."]},
+      {"tipo": "problema", "pregunta": "Una semana tiene 7 días. ¿Cuántos días hay en 3 semanas?", "respuesta": "21", "unidad": "días", "pista": "Son 3 veces 7 días.", "pasos": ["Cada semana tiene 7 días y hay 3 semanas.", "Multiplicamos: 3 × 7.", "Resultado: 21 días."]},
+      {"tipo": "problema", "pregunta": "El recreo dura 30 minutos y ya han pasado 10. ¿Cuántos minutos faltan para que acabe?", "respuesta": "20", "unidad": "minutos", "pista": "Quita al total del recreo el tiempo que ya ha pasado.", "pasos": ["El recreo dura 30 minutos y han pasado 10.", "Restamos: 30 - 10.", "Resultado: faltan 20 minutos."]},
+      {"tipo": "problema", "pregunta": "Tienes 5 cromos, ganas 8 en un juego y después regalas 4. ¿Cuántos cromos te quedan?", "respuesta": "9", "unidad": "cromos", "pista": "Hazlo en dos pasos: primero lo que ganas y luego lo que regalas.", "pasos": ["Primero sumamos lo que ganas: 5 + 8 = 13.", "Después restamos lo que regalas: 13 - 4.", "Resultado: te quedan 9 cromos."]},
+      {"tipo": "problema", "pregunta": "Compras 2 cuadernos de 4 € cada uno y pagas con un billete de 10 €. ¿Cuánto te devuelven?", "respuesta": "2", "unidad": "€", "pista": "Primero calcula cuánto cuestan los dos cuadernos.", "pasos": ["Los cuadernos cuestan 2 × 4 = 8 €.", "Lo que sobra es 10 - 8.", "Resultado: te devuelven 2 €."]},
+      {"tipo": "problema", "pregunta": "En un autobús van 20 personas. En la primera parada bajan 6 y suben 3. ¿Cuántas personas van ahora?", "respuesta": "17", "unidad": "personas", "pista": "Los que bajan se restan y los que suben se suman.", "pasos": ["Primero restamos los que bajan: 20 - 6 = 14.", "Después sumamos los que suben: 14 + 3.", "Resultado: van 17 personas."]},
+      {"imagen": "grupos:3x5", "tipo": "problema", "pregunta": "Hay 3 cajas con 5 lápices cada una y se pierden 4 lápices. ¿Cuántos lápices quedan?", "respuesta": "11", "unidad": "lápices", "pista": "Primero cuenta todos los lápices y después quita los perdidos.", "pasos": ["En las cajas hay 3 × 5 = 15 lápices.", "Quitamos los perdidos: 15 - 4.", "Resultado: quedan 11 lápices."]},
+      {"tipo": "problema", "pregunta": "Ana lee 6 páginas cada día. ¿Cuántas páginas lee en una semana?", "respuesta": "42", "unidad": "páginas", "pista": "¿Cuántos días tiene una semana?", "pasos": ["Una semana tiene 7 días.", "Multiplicamos: 7 × 6.", "Resultado: 42 páginas."]},
+      {"imagen": "fraccion:5/8", "tipo": "problema", "pregunta": "Una tarta se corta en 8 trozos iguales y se comen 3. ¿Qué fracción de la tarta queda?", "respuesta": "5/8", "pista": "Cuenta los trozos que quedan y escribe cuántos son de los 8.", "pasos": ["La tarta tiene 8 trozos y se comen 3.", "Quedan 8 - 3 = 5 trozos de 8.", "Resultado: quedan 5/8 de la tarta."]},
+      {"imagen": "figura:cuadrado", "tipo": "problema", "pregunta": "Un jardín cuadrado mide 5 metros en cada lado. ¿Cuántos metros de valla hacen falta para rodearlo?", "respuesta": "20", "unidad": "metros", "pista": "Un cuadrado tiene 4 lados iguales. Súmalos todos.", "pasos": ["Un cuadrado tiene 4 lados de 5 metros.", "Sumamos: 5 + 5 + 5 + 5, que es 4 × 5.", "Resultado: 20 metros de valla."]}
+    ]
+  },
+  {
+    "id": "test-mates-4",
+    "asignatura": "Matemáticas",
+    "titulo": "Test de fracciones y figuras",
+    "preguntas": [
+      {"imagen": "fraccion:1/2", "pregunta": "¿Qué fracción del dibujo está pintada?", "opciones": ["1/2", "1/3", "2/1"], "correcta": 0},
+      {"imagen": "fraccion:3/4", "pregunta": "¿Qué fracción está coloreada en este dibujo?", "opciones": ["4/3", "3/4", "1/4"], "correcta": 1},
+      {"imagen": "fraccion:2/3", "pregunta": "Mira el dibujo. ¿Qué parte está pintada?", "opciones": ["1/3", "3/2", "2/3"], "correcta": 2},
+      {"pregunta": "En la fracción 3/5, ¿cómo se llama el 5?", "opciones": ["Denominador", "Numerador", "Resultado"], "correcta": 0},
+      {"pregunta": "En la fracción 2/7, ¿qué indica el 2?", "opciones": ["En cuántas partes se divide", "Cuántas partes se toman", "Nada"], "correcta": 1},
+      {"pregunta": "¿Cuál de estas fracciones es mayor?", "opciones": ["1/4", "1/3", "1/2"], "correcta": 2},
+      {"imagen": "fraccion:4/8", "pregunta": "¿A qué fracción es igual 4/8?", "opciones": ["1/2", "1/4", "4/4"], "correcta": 0},
+      {"imagen": "figura:triangulo", "pregunta": "¿Cuántos lados tiene un triángulo?", "opciones": ["4", "3", "5"], "correcta": 1},
+      {"imagen": "figura:hexagono", "pregunta": "¿Cómo se llama esta figura de 6 lados?", "opciones": ["Pentágono", "Cuadrado", "Hexágono"], "correcta": 2},
+      {"imagen": "figura:circulo", "pregunta": "¿Cuántos lados tiene un círculo?", "opciones": ["Ninguno", "1", "4"], "correcta": 0},
+      {"imagen": "figura:pentagono", "pregunta": "¿Cuántos lados tiene un pentágono?", "opciones": ["6", "5", "4"], "correcta": 1},
+      {"imagen": "figura:rectangulo", "pregunta": "¿Qué tiene un rectángulo?", "opciones": ["3 lados iguales", "5 lados", "4 lados y 4 ángulos rectos"], "correcta": 2},
+      {"pregunta": "¿Cómo se llama la línea que va del centro de un círculo a su borde?", "opciones": ["Radio", "Diámetro", "Lado"], "correcta": 0},
+      {"tipo": "huecos", "pregunta": "Completa cómo se escriben estas fracciones:", "frase": "La mitad se escribe 1/___ y un cuarto se escribe 1/___.", "respuestas": ["2", "4"]},
+      {"imagen": "figura:cuadrado", "tipo": "huecos", "pregunta": "Escribe cuántos lados tiene cada figura:", "frase": "Un cuadrado tiene ___ lados y un triángulo tiene ___.", "respuestas": ["4", "3"]},
+      {"tipo": "unir", "pregunta": "Une cada figura con su número de lados:", "pares": [{"izquierda": "Triángulo", "derecha": "3"}, {"izquierda": "Cuadrado", "derecha": "4"}, {"izquierda": "Hexágono", "derecha": "6"}]},
+      {"tipo": "emparejar", "pregunta": "Une cada fracción con su nombre:", "pares": [{"izquierda": "1/2", "derecha": "Un medio"}, {"izquierda": "1/3", "derecha": "Un tercio"}, {"izquierda": "1/4", "derecha": "Un cuarto"}]},
+      {"tipo": "ordenar", "pregunta": "Ordena las fracciones de menor a mayor:", "pasos": ["1/4", "2/4", "3/4", "4/4"]},
+      {"tipo": "ordenar", "pregunta": "Ordena las figuras de menos a más lados:", "pasos": ["Triángulo", "Cuadrado", "Pentágono", "Hexágono"]},
+      {"imagen": "fraccion:1/2", "tipo": "problema", "pregunta": "Tienes 10 caramelos y te comes la mitad. ¿Cuántos caramelos te comes?", "respuesta": "5", "unidad": "caramelos", "pista": "La mitad es repartir en 2 partes iguales.", "pasos": ["La mitad es dividir entre 2.", "Dividimos: 10 : 2.", "Resultado: te comes 5 caramelos."]},
+      {"imagen": "fraccion:1/4", "tipo": "problema", "pregunta": "Una pizza tiene 8 trozos. Te comes 1/4 de la pizza. ¿Cuántos trozos te comes?", "respuesta": "2", "unidad": "trozos", "pista": "1/4 es una de 4 partes iguales.", "pasos": ["1/4 es dividir en 4 partes iguales y tomar una.", "Dividimos: 8 : 4.", "Resultado: te comes 2 trozos."]},
+      {"imagen": "figura:triangulo", "tipo": "problema", "pregunta": "Un triángulo tiene 3 lados de 4 cm cada uno. ¿Cuánto mide su perímetro?", "respuesta": "12", "unidad": "cm", "pista": "El perímetro es la suma de todos los lados.", "pasos": ["El triángulo tiene 3 lados de 4 cm.", "Sumamos: 4 + 4 + 4, que es 3 × 4.", "Resultado: 12 cm."]},
+      {"imagen": "figura:rectangulo", "tipo": "problema", "pregunta": "Un rectángulo mide 6 cm de largo y 3 cm de ancho. ¿Cuánto mide su perímetro?", "respuesta": "18", "unidad": "cm", "pista": "Un rectángulo tiene 2 lados largos y 2 cortos.", "pasos": ["Los lados son 6, 6, 3 y 3 cm.", "Sumamos: 6 + 6 + 3 + 3.", "Resultado: 18 cm."]},
+      {"imagen": "fraccion:3/6", "tipo": "problema", "pregunta": "Un bizcocho se corta en 6 trozos iguales y se comen 3. ¿Qué fracción del bizcocho se han comido?", "respuesta": "3/6", "aceptadas": ["1/2"], "pista": "El número de abajo son los trozos totales; el de arriba, los que se comen.", "pasos": ["El bizcocho tiene 6 trozos y se comen 3.", "Se han comido 3 de 6 trozos.", "Resultado: 3/6, que es lo mismo que 1/2."]},
+      {"imagen": "figura:hexagono", "tipo": "problema", "pregunta": "Un hexágono tiene todos sus lados de 2 cm. ¿Cuánto mide su perímetro?", "respuesta": "12", "unidad": "cm", "pista": "¿Cuántos lados tiene un hexágono?", "pasos": ["Un hexágono tiene 6 lados de 2 cm.", "Multiplicamos: 6 × 2.", "Resultado: 12 cm."]}
     ]
   }
 ]

@@ -107,17 +107,12 @@ export function cambiarAlias(cuenta, nuevoAlias) {
   ))
   delete cuentas[claveVieja]
   escribir('cuentas', cuentas)
-  const fallos = leer('fallos', {})
-  if (fallos[claveVieja]) {
-    fallos[normalizar(limpio)] = fallos[claveVieja]
-    delete fallos[claveVieja]
-    escribir('fallos', fallos)
-  }
-  const vistas = leer('preguntas_vistas', {})
-  if (vistas[claveVieja]) {
-    vistas[normalizar(limpio)] = vistas[claveVieja]
-    delete vistas[claveVieja]
-    escribir('preguntas_vistas', vistas)
+  for (const almacen of ['fallos', 'preguntas_vistas', 'guardadas', 'esquemas', 'eventos']) {
+    const datos = leer(almacen, {})
+    if (!datos[claveVieja]) continue
+    datos[normalizar(limpio)] = datos[claveVieja]
+    delete datos[claveVieja]
+    escribir(almacen, datos)
   }
   return { cuenta: abrirSesion({ alias: limpio, pin: cuenta.pin, sincronizada: false }) }
 }
@@ -175,14 +170,61 @@ export function tareasParaReforzar(alias, lecciones) {
     .slice(0, MAX_REFUERZO)
 }
 
+// ---------- Esquemas que cada alumno guarda; solo en este dispositivo ----------
+
+export function esquemasDe(alias) {
+  return leer('esquemas', {})[normalizar(alias)] ?? []
+}
+
+export function guardarEsquema(alias, esquema) {
+  const conId = { ...esquema, id: esquema.id ?? nuevoId(), fecha: new Date().toISOString() }
+  const actuales = esquemasDe(alias).filter((e) => e.id !== conId.id)
+  escribir('esquemas', { ...leer('esquemas', {}), [normalizar(alias)]: [conId, ...actuales] })
+  return conId
+}
+
+export function borrarEsquema(alias, id) {
+  escribir('esquemas', { ...leer('esquemas', {}), [normalizar(alias)]: esquemasDe(alias).filter((e) => e.id !== id) })
+}
+
+// ---------- Calendario: las fechas del alumno, en el móvil, y las del profesor, que llegan al sincronizar ----------
+
+export function eventosDe(alias) {
+  const propios = (leer('eventos', {})[normalizar(alias)] ?? []).map((e) => ({ ...e, propio: true }))
+  const delProfesor = leer('eventos_servidor', []).map((e) => ({ ...e, propio: false }))
+  return [...propios, ...delProfesor].sort((a, b) => (a.fecha + (a.hora ?? '')).localeCompare(b.fecha + (b.hora ?? '')))
+}
+
+export function guardarEvento(alias, evento) {
+  const todos = leer('eventos', {})
+  const delAlumno = todos[normalizar(alias)] ?? []
+  const conId = { ...evento, id: evento.id ?? nuevoId() }
+  delete conId.propio
+  escribir('eventos', { ...todos, [normalizar(alias)]: [...delAlumno.filter((e) => e.id !== conId.id), conId] })
+}
+
+export function borrarEvento(alias, id) {
+  const todos = leer('eventos', {})
+  escribir('eventos', { ...todos, [normalizar(alias)]: (todos[normalizar(alias)] ?? []).filter((e) => e.id !== id) })
+}
+
+async function actualizarEventos() {
+  const { data, error } = await supabase.from('eventos').select('*').order('fecha')
+  if (error) throw error
+  escribir('eventos_servidor', data.map(({ id, fecha, hora, titulo, tipo, nota }) => ({ id, fecha, hora, titulo, tipo, nota })))
+}
+
 // ---------- Lecciones: las incluidas en la app más las del servidor, que tienen prioridad ----------
+
+// Si el profesor edita una lección incluida, conserva lo que el servidor no guarda (p. ej., el esquema).
+const sinVacios = (l) => Object.fromEntries(Object.entries(l).filter(([, v]) => v !== null && v !== undefined))
 
 function leerContenido() {
   const incluido = [...leccionesBase, ...testsBase]
-  const delServidor = leer('lecciones_servidor', [])
+  const delServidor = leer('lecciones_servidor', []).map(sinVacios)
   const porId = new Map(delServidor.map((l) => [l.id, l]))
   const idsIncluidos = new Set(incluido.map((l) => l.id))
-  return [...incluido.map((l) => porId.get(l.id) ?? l), ...delServidor.filter((l) => !idsIncluidos.has(l.id))]
+  return [...incluido.map((l) => (porId.has(l.id) ? { ...l, ...porId.get(l.id) } : l)), ...delServidor.filter((l) => !idsIncluidos.has(l.id))]
 }
 
 // Los tests son independientes de las lecciones: comparten tabla y se distinguen por el id.
@@ -215,12 +257,10 @@ export function elegirPreguntasTest(alias, test) {
 }
 
 async function actualizarLecciones() {
-  const { data, error } = await supabase
-    .from('lecciones')
-    .select('id, asignatura, titulo, texto, preguntas')
-    .order('creada')
+  // Con *, la app sigue funcionando con bases de datos creadas antes de añadir columnas.
+  const { data, error } = await supabase.from('lecciones').select('*').order('creada')
   if (error) throw error
-  escribir('lecciones_servidor', data)
+  escribir('lecciones_servidor', data.map(({ id, asignatura, titulo, texto, preguntas, ejemplos }) => ({ id, asignatura, titulo, texto, preguntas, ejemplos })))
 }
 
 // ---------- Sincronización ----------
@@ -263,7 +303,7 @@ let repetir = false
 async function ciclosDeSincronizacion() {
   do {
     repetir = false
-    await Promise.allSettled([actualizarLecciones(), subirResultados()])
+    await Promise.allSettled([actualizarLecciones(), actualizarEventos(), subirResultados()])
   } while (repetir)
   enCurso = null
 }
@@ -310,6 +350,30 @@ export async function docenteGuardarLeccion(pin, leccion, { test = false } = {})
       return { error: invalida ? 'La lección tiene campos sin completar.' : mensajeMotivo(r.motivo, t('errPin')) }
     }
     await actualizarLecciones()
+    return {}
+  } catch {
+    return { error: t('errRed') }
+  }
+}
+
+export const leerEventosProfesor = () => leer('eventos_servidor', [])
+
+export async function docenteGuardarEvento(pin, evento) {
+  try {
+    const r = await llamar('docente_guardar_evento', { p_pin: pin, p_evento: { ...evento, id: evento.id ?? nuevoId() } })
+    if (!r.ok) return { error: r.motivo === 'evento_invalido' ? 'Completa la fecha y el título.' : mensajeMotivo(r.motivo, t('errPin')) }
+    await actualizarEventos()
+    return {}
+  } catch {
+    return { error: t('errRed') }
+  }
+}
+
+export async function docenteBorrarEvento(pin, id) {
+  try {
+    const r = await llamar('docente_borrar_evento', { p_pin: pin, p_id: id })
+    if (!r.ok) return { error: mensajeMotivo(r.motivo, t('errPin')) }
+    await actualizarEventos()
     return {}
   } catch {
     return { error: t('errRed') }

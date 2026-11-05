@@ -51,11 +51,28 @@ create table if not exists public.lecciones (
   creada timestamptz not null default now(),
   actualizada timestamptz not null default now()
 );
+alter table public.lecciones add column if not exists ejemplos jsonb;
 alter table public.lecciones enable row level security;
 revoke all on public.lecciones from anon, authenticated;
 grant select on public.lecciones to anon, authenticated;
 drop policy if exists "lecciones visibles" on public.lecciones;
 create policy "lecciones visibles" on public.lecciones for select to anon, authenticated using (true);
+
+-- Fechas de la clase (exámenes, deberes…). Públicas para leer; solo se escriben con docente_guardar_evento.
+create table if not exists public.eventos (
+  id text primary key,
+  fecha date not null,
+  hora text check (hora is null or hora ~ '^[0-9]{2}:[0-9]{2}$'),
+  titulo text not null check (char_length(titulo) between 1 and 60),
+  tipo text not null default 'otro' check (tipo in ('examen', 'deberes', 'repaso', 'excursion', 'otro')),
+  nota text check (nota is null or char_length(nota) <= 120),
+  creado timestamptz not null default now()
+);
+alter table public.eventos enable row level security;
+revoke all on public.eventos from anon, authenticated;
+grant select on public.eventos to anon, authenticated;
+drop policy if exists "eventos visibles" on public.eventos;
+create policy "eventos visibles" on public.eventos for select to anon, authenticated using (true);
 
 -- Comprueba un PIN con límite de intentos: 5 fallos bloquean esa clave 15 minutos.
 -- Devuelve 'ok', 'bloqueado' o 'credenciales'. Las funciones públicas devuelven el fallo
@@ -172,7 +189,7 @@ begin
 end;
 $$;
 
--- Comprueba una tarea según su tipo: opciones (por defecto), emparejar, unir, ordenar o huecos.
+-- Comprueba una tarea según su tipo: opciones (por defecto), emparejar, unir, ordenar, huecos o problema.
 create or replace function privado.tarea_valida(p jsonb)
 returns boolean language plpgsql set search_path = '' as $$
 declare
@@ -209,6 +226,10 @@ begin
       return false;
     end if;
     return not exists (select 1 from jsonb_array_elements(p->'respuestas') e where coalesce(btrim(e #>> '{}'), '') = '');
+  elsif v_tipo = 'problema' then
+    return jsonb_typeof(p->'respuesta') = 'string' and btrim(p->>'respuesta') <> ''
+      and (p->'pasos' is null or jsonb_typeof(p->'pasos') = 'array')
+      and (p->'aceptadas' is null or jsonb_typeof(p->'aceptadas') = 'array');
   end if;
   return false;
 end;
@@ -238,26 +259,77 @@ begin
     end if;
   end loop;
 
-  insert into public.lecciones (id, asignatura, titulo, texto, preguntas)
-  values (p_leccion->>'id', p_leccion->>'asignatura', p_leccion->>'titulo', p_leccion->>'texto', p_leccion->'preguntas')
+  if p_leccion->'ejemplos' is not null and jsonb_typeof(p_leccion->'ejemplos') not in ('array', 'null') then
+    return jsonb_build_object('ok', false, 'motivo', 'leccion_invalida');
+  end if;
+
+  insert into public.lecciones (id, asignatura, titulo, texto, preguntas, ejemplos)
+  values (p_leccion->>'id', p_leccion->>'asignatura', p_leccion->>'titulo', p_leccion->>'texto', p_leccion->'preguntas',
+          nullif(p_leccion->'ejemplos', 'null'::jsonb))
   on conflict (id) do update set
     asignatura = excluded.asignatura,
     titulo = excluded.titulo,
     texto = excluded.texto,
     preguntas = excluded.preguntas,
+    ejemplos = excluded.ejemplos,
     actualizada = now();
 
   return jsonb_build_object('ok', true);
 end;
 $$;
 
--- Permisos: la app (rol anon) solo puede llamar a estas cuatro funciones.
+create or replace function public.docente_guardar_evento(p_pin text, p_evento jsonb)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare
+  v_estado text := privado.comprobar_docente(p_pin);
+begin
+  if v_estado <> 'ok' then
+    return jsonb_build_object('ok', false, 'motivo', v_estado);
+  end if;
+
+  if coalesce(btrim(p_evento->>'id'), '') = '' or coalesce(btrim(p_evento->>'titulo'), '') = ''
+     or coalesce(p_evento->>'fecha', '') !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' then
+    return jsonb_build_object('ok', false, 'motivo', 'evento_invalido');
+  end if;
+
+  begin
+    insert into public.eventos (id, fecha, hora, titulo, tipo, nota)
+    values (p_evento->>'id', (p_evento->>'fecha')::date, nullif(p_evento->>'hora', ''), btrim(p_evento->>'titulo'),
+            coalesce(nullif(p_evento->>'tipo', ''), 'otro'), nullif(btrim(p_evento->>'nota'), ''))
+    on conflict (id) do update set
+      fecha = excluded.fecha, hora = excluded.hora, titulo = excluded.titulo, tipo = excluded.tipo, nota = excluded.nota;
+  exception when check_violation or invalid_datetime_format or datetime_field_overflow then
+    return jsonb_build_object('ok', false, 'motivo', 'evento_invalido');
+  end;
+
+  return jsonb_build_object('ok', true);
+end;
+$$;
+
+create or replace function public.docente_borrar_evento(p_pin text, p_id text)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare
+  v_estado text := privado.comprobar_docente(p_pin);
+begin
+  if v_estado <> 'ok' then
+    return jsonb_build_object('ok', false, 'motivo', v_estado);
+  end if;
+  delete from public.eventos where id = p_id;
+  return jsonb_build_object('ok', true);
+end;
+$$;
+
+-- Permisos: la app (rol anon) solo puede llamar a estas seis funciones.
 revoke all on all functions in schema privado from public, anon, authenticated;
 revoke all on function public.alumno_sincronizar(text, text, jsonb, boolean) from public, anon, authenticated;
 revoke all on function public.docente_entrar(text) from public, anon, authenticated;
 revoke all on function public.docente_resultados(text) from public, anon, authenticated;
 revoke all on function public.docente_guardar_leccion(text, jsonb) from public, anon, authenticated;
+revoke all on function public.docente_guardar_evento(text, jsonb) from public, anon, authenticated;
+revoke all on function public.docente_borrar_evento(text, text) from public, anon, authenticated;
 grant execute on function public.alumno_sincronizar(text, text, jsonb, boolean) to anon, authenticated;
 grant execute on function public.docente_entrar(text) to anon, authenticated;
 grant execute on function public.docente_resultados(text) to anon, authenticated;
 grant execute on function public.docente_guardar_leccion(text, jsonb) to anon, authenticated;
+grant execute on function public.docente_guardar_evento(text, jsonb) to anon, authenticated;
+grant execute on function public.docente_borrar_evento(text, text) to anon, authenticated;
