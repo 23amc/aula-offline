@@ -164,5 +164,19 @@
   "sinResultados": "Încă nu există rezultate. Termină o lecție sau un test.",
   "aciertos": "Corecte",
   "nota": "Notă",
-  "nEstrellas": "{n} din 3 stele"
+  "nEstrellas": "{n} din 3 stele",
+  "miCalendario": "Calendarul meu",
+  "ayudaCalendario": "Atinge o zi și notează-ți testele sau temele.",
+  "mesAnterior": "Luna anterioară",
+  "mesSiguiente": "Luna următoare",
+  "queApuntar": "Ce vrei să notezi?",
+  "tipoApunte": "Tipul notiței",
+  "examen": "Test",
+  "tarea": "Temă",
+  "apuntar": "Notează",
+  "nadaEseDia": "Nu este nimic notat în această zi.",
+  "borrarApunte": "Șterge {texto}",
+  "apuntado": "Notat",
+  "apunteBorrado": "Șters",
+  "nApuntes": "Notițe: {n}"
 }

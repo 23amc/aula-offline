@@ -107,17 +107,13 @@ export function cambiarAlias(cuenta, nuevoAlias) {
   ))
   delete cuentas[claveVieja]
   escribir('cuentas', cuentas)
-  const fallos = leer('fallos', {})
-  if (fallos[claveVieja]) {
-    fallos[normalizar(limpio)] = fallos[claveVieja]
-    delete fallos[claveVieja]
-    escribir('fallos', fallos)
-  }
-  const vistas = leer('preguntas_vistas', {})
-  if (vistas[claveVieja]) {
-    vistas[normalizar(limpio)] = vistas[claveVieja]
-    delete vistas[claveVieja]
-    escribir('preguntas_vistas', vistas)
+  for (const clave of ['fallos', 'preguntas_vistas', 'guardadas', 'apuntes']) {
+    const porAlumno = leer(clave, {})
+    if (porAlumno[claveVieja]) {
+      porAlumno[normalizar(limpio)] = porAlumno[claveVieja]
+      delete porAlumno[claveVieja]
+      escribir(clave, porAlumno)
+    }
   }
   return { cuenta: abrirSesion({ alias: limpio, pin: cuenta.pin, sincronizada: false }) }
 }
@@ -147,6 +143,25 @@ export function alternarGuardada(alias, id) {
   const nuevas = actuales.includes(id) ? actuales.filter((x) => x !== id) : [...actuales, id]
   escribir('guardadas', { ...leer('guardadas', {}), [normalizar(alias)]: nuevas })
   return nuevas
+}
+
+// ---------- Calendario de exámenes y tareas de cada alumno; solo en este dispositivo ----------
+
+export function apuntesDe(alias) {
+  return leer('apuntes', {})[normalizar(alias)] ?? []
+}
+
+function escribirApuntes(alias, apuntes) {
+  escribir('apuntes', { ...leer('apuntes', {}), [normalizar(alias)]: apuntes })
+  return apuntes
+}
+
+export function guardarApunte(alias, apunte) {
+  return escribirApuntes(alias, [...apuntesDe(alias), { ...apunte, id: nuevoId() }])
+}
+
+export function borrarApunte(alias, id) {
+  return escribirApuntes(alias, apuntesDe(alias).filter((a) => a.id !== id))
 }
 
 // ---------- Refuerzo: por alumno y tarea, cuántos fallos quedan por compensar con aciertos ----------

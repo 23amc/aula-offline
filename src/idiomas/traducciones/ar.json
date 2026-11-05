@@ -164,5 +164,19 @@
   "sinResultados": "لا توجد نتائج بعد. أنهِ درسًا أو اختبارًا.",
   "aciertos": "الإجابات الصحيحة",
   "nota": "الدرجة",
-  "nEstrellas": "{n} من 3 نجوم"
+  "nEstrellas": "{n} من 3 نجوم",
+  "miCalendario": "تقويمي",
+  "ayudaCalendario": "اضغط على يوم واكتب امتحاناتك أو واجباتك.",
+  "mesAnterior": "الشهر السابق",
+  "mesSiguiente": "الشهر التالي",
+  "queApuntar": "ماذا تريد أن تكتب؟",
+  "tipoApunte": "نوع الملاحظة",
+  "examen": "امتحان",
+  "tarea": "واجب",
+  "apuntar": "أضف",
+  "nadaEseDia": "لا يوجد شيء مكتوب في هذا اليوم.",
+  "borrarApunte": "حذف {texto}",
+  "apuntado": "تمت الإضافة",
+  "apunteBorrado": "تم الحذف",
+  "nApuntes": "الملاحظات: {n}"
 }

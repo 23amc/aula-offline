@@ -164,5 +164,19 @@
   "sinResultados": "No results yet. Finish a lesson or a test.",
   "aciertos": "Correct",
   "nota": "Score",
-  "nEstrellas": "{n} of 3 stars"
+  "nEstrellas": "{n} of 3 stars",
+  "miCalendario": "My calendar",
+  "ayudaCalendario": "Tap a day and write down your exams or homework.",
+  "mesAnterior": "Previous month",
+  "mesSiguiente": "Next month",
+  "queApuntar": "What do you want to write down?",
+  "tipoApunte": "Type of note",
+  "examen": "Exam",
+  "tarea": "Homework",
+  "apuntar": "Add",
+  "nadaEseDia": "Nothing written down for this day.",
+  "borrarApunte": "Delete {texto}",
+  "apuntado": "Added",
+  "apunteBorrado": "Deleted",
+  "nApuntes": "Notes: {n}"
 }

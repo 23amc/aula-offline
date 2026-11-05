@@ -164,5 +164,19 @@
   "sinResultados": "还没有成绩。完成一节课或一个测试吧。",
   "aciertos": "答对",
   "nota": "得分",
-  "nEstrellas": "{n}/3 颗星"
+  "nEstrellas": "{n}/3 颗星",
+  "miCalendario": "我的日历",
+  "ayudaCalendario": "点击某一天，记下你的考试或作业。",
+  "mesAnterior": "上个月",
+  "mesSiguiente": "下个月",
+  "queApuntar": "你想记什么？",
+  "tipoApunte": "记录类型",
+  "examen": "考试",
+  "tarea": "作业",
+  "apuntar": "记下",
+  "nadaEseDia": "这一天还没有记录。",
+  "borrarApunte": "删除 {texto}",
+  "apuntado": "已记下",
+  "apunteBorrado": "已删除",
+  "nApuntes": "记录：{n}"
 }

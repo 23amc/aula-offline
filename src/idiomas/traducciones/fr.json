@@ -164,5 +164,19 @@
   "sinResultados": "Pas encore de résultats. Termine une leçon ou un test.",
   "aciertos": "Bonnes réponses",
   "nota": "Note",
-  "nEstrellas": "{n} étoiles sur 3"
+  "nEstrellas": "{n} étoiles sur 3",
+  "miCalendario": "Mon calendrier",
+  "ayudaCalendario": "Touche un jour et note tes contrôles ou tes devoirs.",
+  "mesAnterior": "Mois précédent",
+  "mesSiguiente": "Mois suivant",
+  "queApuntar": "Que veux-tu noter ?",
+  "tipoApunte": "Type de note",
+  "examen": "Contrôle",
+  "tarea": "Devoir",
+  "apuntar": "Noter",
+  "nadaEseDia": "Rien de noté ce jour-là.",
+  "borrarApunte": "Supprimer {texto}",
+  "apuntado": "Noté",
+  "apunteBorrado": "Supprimé",
+  "nApuntes": "Notes : {n}"
 }

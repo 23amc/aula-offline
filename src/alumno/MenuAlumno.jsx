@@ -3,6 +3,7 @@ import AjustesAccesibilidad from '../accesibilidad/AjustesAccesibilidad'
 import { BotonMascota } from '../ia/MascotaIA'
 import { estiloDe } from './asignaturas'
 import Azulejo from './Azulejo'
+import Calendario from './Calendario'
 import { PREGUNTAS_POR_TEST } from '../datos/almacen'
 import { idiomaActual, t } from '../idiomas/i18n'
 import { Anillo, GraficaResultados, MiniBarra } from '../interfaz/Graficos'
@@ -99,6 +100,8 @@ function VistaInicio({ cuenta, lecciones, notas, onLeer, onVista }) {
           </button>
         ))}
       </div>
+
+      <Calendario key={cuenta.alias} alias={cuenta.alias} />
     </>
   )
 }

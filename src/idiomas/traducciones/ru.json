@@ -164,5 +164,19 @@
   "sinResultados": "Результатов пока нет. Закончи урок или тест.",
   "aciertos": "Правильно",
   "nota": "Оценка",
-  "nEstrellas": "{n} из 3 звёзд"
+  "nEstrellas": "{n} из 3 звёзд",
+  "miCalendario": "Мой календарь",
+  "ayudaCalendario": "Нажми на день и запиши свои контрольные или домашние задания.",
+  "mesAnterior": "Предыдущий месяц",
+  "mesSiguiente": "Следующий месяц",
+  "queApuntar": "Что хочешь записать?",
+  "tipoApunte": "Тип записи",
+  "examen": "Контрольная",
+  "tarea": "Домашнее задание",
+  "apuntar": "Записать",
+  "nadaEseDia": "На этот день ничего не записано.",
+  "borrarApunte": "Удалить {texto}",
+  "apuntado": "Записано",
+  "apunteBorrado": "Удалено",
+  "nApuntes": "Записи: {n}"
 }

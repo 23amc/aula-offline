@@ -164,5 +164,19 @@
   "sinResultados": "Ancora nessun risultato. Finisci una lezione o un test.",
   "aciertos": "Risposte giuste",
   "nota": "Voto",
-  "nEstrellas": "{n} stelle su 3"
+  "nEstrellas": "{n} stelle su 3",
+  "miCalendario": "Il mio calendario",
+  "ayudaCalendario": "Tocca un giorno e annota le tue verifiche o i tuoi compiti.",
+  "mesAnterior": "Mese precedente",
+  "mesSiguiente": "Mese successivo",
+  "queApuntar": "Che cosa vuoi annotare?",
+  "tipoApunte": "Tipo di appunto",
+  "examen": "Verifica",
+  "tarea": "Compiti",
+  "apuntar": "Annota",
+  "nadaEseDia": "Niente di annotato in questo giorno.",
+  "borrarApunte": "Elimina {texto}",
+  "apuntado": "Annotato",
+  "apunteBorrado": "Eliminato",
+  "nApuntes": "Appunti: {n}"
 }

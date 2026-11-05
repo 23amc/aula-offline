@@ -164,5 +164,19 @@
   "sinResultados": "Noch keine Ergebnisse. Beende eine Lektion oder einen Test.",
   "aciertos": "Richtig",
   "nota": "Note",
-  "nEstrellas": "{n} von 3 Sternen"
+  "nEstrellas": "{n} von 3 Sternen",
+  "miCalendario": "Mein Kalender",
+  "ayudaCalendario": "Tippe auf einen Tag und notiere deine Prüfungen oder Hausaufgaben.",
+  "mesAnterior": "Vorheriger Monat",
+  "mesSiguiente": "Nächster Monat",
+  "queApuntar": "Was möchtest du notieren?",
+  "tipoApunte": "Art der Notiz",
+  "examen": "Prüfung",
+  "tarea": "Hausaufgabe",
+  "apuntar": "Notieren",
+  "nadaEseDia": "An diesem Tag ist nichts notiert.",
+  "borrarApunte": "{texto} löschen",
+  "apuntado": "Notiert",
+  "apunteBorrado": "Gelöscht",
+  "nApuntes": "Notizen: {n}"
 }

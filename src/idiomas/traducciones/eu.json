@@ -164,5 +164,19 @@
   "sinResultados": "Oraindik ez dago emaitzarik. Amaitu ikasgai bat edo test bat.",
   "aciertos": "Asmatutakoak",
   "nota": "Nota",
-  "nEstrellas": "3 izarretik {n}"
+  "nEstrellas": "3 izarretik {n}",
+  "miCalendario": "Nire egutegia",
+  "ayudaCalendario": "Sakatu egun bat eta idatzi zure azterketak edo etxerako lanak.",
+  "mesAnterior": "Aurreko hilabetea",
+  "mesSiguiente": "Hurrengo hilabetea",
+  "queApuntar": "Zer idatzi nahi duzu?",
+  "tipoApunte": "Ohar mota",
+  "examen": "Azterketa",
+  "tarea": "Etxerako lana",
+  "apuntar": "Idatzi",
+  "nadaEseDia": "Egun honetan ez dago ezer idatzita.",
+  "borrarApunte": "Ezabatu {texto}",
+  "apuntado": "Idatzita",
+  "apunteBorrado": "Ezabatuta",
+  "nApuntes": "Oharrak: {n}"
 }

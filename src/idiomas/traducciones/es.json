@@ -164,5 +164,19 @@
   "sinResultados": "Todavía no hay resultados. Termina una lección o un test.",
   "aciertos": "Aciertos",
   "nota": "Nota",
-  "nEstrellas": "{n} de 3 estrellas"
+  "nEstrellas": "{n} de 3 estrellas",
+  "miCalendario": "Mi calendario",
+  "ayudaCalendario": "Toca un día y apunta tus exámenes o tareas.",
+  "mesAnterior": "Mes anterior",
+  "mesSiguiente": "Mes siguiente",
+  "queApuntar": "¿Qué quieres apuntar?",
+  "tipoApunte": "Tipo de apunte",
+  "examen": "Examen",
+  "tarea": "Tarea",
+  "apuntar": "Apuntar",
+  "nadaEseDia": "No hay nada apuntado este día.",
+  "borrarApunte": "Borrar {texto}",
+  "apuntado": "Apuntado",
+  "apunteBorrado": "Borrado",
+  "nApuntes": "Apuntes: {n}"
 }

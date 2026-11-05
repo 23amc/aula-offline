@@ -164,5 +164,19 @@
   "sinResultados": "Результатів ще немає. Заверши урок або тест.",
   "aciertos": "Правильно",
   "nota": "Оцінка",
-  "nEstrellas": "{n} із 3 зірок"
+  "nEstrellas": "{n} із 3 зірок",
+  "miCalendario": "Мій календар",
+  "ayudaCalendario": "Натисни на день і запиши свої контрольні або домашні завдання.",
+  "mesAnterior": "Попередній місяць",
+  "mesSiguiente": "Наступний місяць",
+  "queApuntar": "Що хочеш записати?",
+  "tipoApunte": "Тип запису",
+  "examen": "Контрольна",
+  "tarea": "Домашнє завдання",
+  "apuntar": "Записати",
+  "nadaEseDia": "На цей день нічого не записано.",
+  "borrarApunte": "Видалити {texto}",
+  "apuntado": "Записано",
+  "apunteBorrado": "Видалено",
+  "nApuntes": "Записи: {n}"
 }

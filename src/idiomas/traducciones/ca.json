@@ -164,5 +164,19 @@
   "sinResultados": "Encara no hi ha resultats. Acaba una lliçó o un test.",
   "aciertos": "Encerts",
   "nota": "Nota",
-  "nEstrellas": "{n} de 3 estrelles"
+  "nEstrellas": "{n} de 3 estrelles",
+  "miCalendario": "El meu calendari",
+  "ayudaCalendario": "Prem un dia i apunta els teus exàmens o deures.",
+  "mesAnterior": "Mes anterior",
+  "mesSiguiente": "Mes següent",
+  "queApuntar": "Què vols apuntar?",
+  "tipoApunte": "Tipus d'apunt",
+  "examen": "Examen",
+  "tarea": "Deures",
+  "apuntar": "Apunta",
+  "nadaEseDia": "No hi ha res apuntat aquest dia.",
+  "borrarApunte": "Esborra {texto}",
+  "apuntado": "Apuntat",
+  "apunteBorrado": "Esborrat",
+  "nApuntes": "Apunts: {n}"
 }
