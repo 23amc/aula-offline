@@ -1,3 +1,4 @@
+import '@fontsource-variable/nunito'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './estilos/base.css'

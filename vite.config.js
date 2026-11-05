@@ -14,8 +14,8 @@ export default defineConfig({
         short_name: 'EduGo',
         lang: 'es',
         description: 'Aprender sin conexión',
-        theme_color: '#2563eb',
-        background_color: '#ffffff',
+        theme_color: '#0771b8',
+        background_color: '#f2f6fd',
         display: 'standalone',
         start_url: '/',
         icons: [
@@ -24,7 +24,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,json}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,json,woff2}'],
         // El motor de IA pesa varios MB: solo lo descarga quien activa la IA avanzada.
         globIgnores: ['**/motorIA-*.js', '**/ia.worker-*.js'],
         runtimeCaching: [

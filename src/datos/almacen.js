@@ -132,6 +132,23 @@ export function contarPendientes(alias) {
   return leer('resultados', []).filter((r) => !r.enviado && normalizar(r.alias) === normalizar(alias)).length
 }
 
+export function resultadosDe(alias) {
+  return leer('resultados', []).filter((r) => normalizar(r.alias) === normalizar(alias))
+}
+
+// ---------- Lecciones guardadas por cada alumno; solo en este dispositivo ----------
+
+export function guardadasDe(alias) {
+  return leer('guardadas', {})[normalizar(alias)] ?? []
+}
+
+export function alternarGuardada(alias, id) {
+  const actuales = guardadasDe(alias)
+  const nuevas = actuales.includes(id) ? actuales.filter((x) => x !== id) : [...actuales, id]
+  escribir('guardadas', { ...leer('guardadas', {}), [normalizar(alias)]: nuevas })
+  return nuevas
+}
+
 // ---------- Refuerzo: por alumno y tarea, cuántos fallos quedan por compensar con aciertos ----------
 
 export function registrarRespuesta(alias, clave, correcta) {

@@ -9,7 +9,8 @@ src/
 ├── main.jsx            Punto de entrada
 ├── app/                App.jsx: pantallas y navegación
 ├── acceso/             Registro e inicio de sesión
-├── alumno/             Menú, actividades e ilustraciones
+├── alumno/             Menú, lección, preguntas, resultado e ilustraciones
+├── interfaz/           Iconos y gráficos compartidos
 ├── docente/            Panel del profesor
 ├── ia/                 La mascota: chat, modo básico y modelo local
 ├── herramientas/       Pizarra y panel lateral
@@ -33,6 +34,7 @@ docs/marca/             Logo original y QR de la app
 | Cambiar un texto de la interfaz | `src/idiomas/traducciones/` |
 | Añadir un idioma | Crear su archivo en `traducciones/` y añadirlo a `IDIOMAS` en `src/idiomas/i18n.js` |
 | Añadir un tipo de actividad | `src/alumno/Actividad.jsx` y `src/alumno/actividades.js` |
+| Cambiar colores y aspecto | Variables al principio de `src/estilos/base.css` |
 | Cambiar lo que sabe la mascota | `src/datos/contenido/ayudaIA.json` |
 
 ## Uso

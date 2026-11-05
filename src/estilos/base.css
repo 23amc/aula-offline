@@ -1,5 +1,35 @@
+:root {
+  --fondo: #f2f6fd;
+  --tarjeta: #ffffff;
+  --tinta: #1e3a5c;
+  --tinta-suave: #55657a;
+  --linea: #dfe6f0;
+  --borde-campo: #76879c;
+  --azul: #0771b8;
+  --sobre-azul: #ffffff;
+  --azul-vivo: #0a96e0;
+  --azul-pista: #e4ecf6;
+  --azul-apagado: #7fd3fb;
+  --amarillo: #ffcc00;
+  --sobre-amarillo: #1e3a5c;
+  --naranja: #d24308;
+  --sobre-naranja: #ffffff;
+  --verde: #0b7a55;
+  --verde-tinte: #dff7ec;
+  --rojo: #c02a1d;
+  --rojo-tinte: #ffe6e2;
+  --sombra: 0 8px 24px rgba(30, 58, 92, 0.09);
+  --sombra-azul: 0 10px 24px rgba(8, 121, 196, 0.3);
+  --radio: 1.5rem;
+}
+
+html { scroll-padding-bottom: 10.5rem; background: var(--fondo); }
+
 body {
-  font-family: sans-serif;
+  margin: 0;
+  font-family: 'Nunito Variable', ui-rounded, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);

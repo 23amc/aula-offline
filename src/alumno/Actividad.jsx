@@ -28,10 +28,11 @@ function Opciones({ tarea, onResponder }) {
       {tarea.opciones.map((texto, i) => {
         const esCorrecta = respondida && i === tarea.correcta
         const esFallo = respondida && i === elegida && !esCorrecta
-        const clase = esCorrecta ? 'correcta' : esFallo ? 'incorrecta' : respondida ? 'secundario' : ''
+        const clase = esCorrecta ? 'correcta' : esFallo ? 'incorrecta' : ''
         return (
-          <button key={i} className={clase} disabled={respondida} onClick={() => elegir(i)}>
-            {(esCorrecta || esFallo) && <Marca correcta={esCorrecta} />}{texto}
+          <button key={i} className={`respuesta ${clase}`} disabled={respondida} onClick={() => elegir(i)}>
+            <span className="letra" aria-hidden="true">{String.fromCharCode(65 + i)}</span>
+            <span>{(esCorrecta || esFallo) && <Marca correcta={esCorrecta} />}{texto}</span>
           </button>
         )
       })}

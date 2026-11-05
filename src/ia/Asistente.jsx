@@ -22,7 +22,7 @@ function construirInstrucciones(pregunta, lecciones, leccionActual, enTest) {
   return partes.join('\n\n')
 }
 
-export default function Asistente({ abierta, oculta, onAlternar, lecciones, leccionActual, enTest }) {
+export default function Asistente({ abierta, oculta, onAlternar, lecciones, leccionActual, enTest, sinPestana }) {
   const [mensajes, setMensajes] = useState([{ de: 'asistente', saludo: true }])
   const [escrito, setEscrito] = useState('')
   const [estadoIA, setEstadoIA] = useState('basica') // basica | descargando | lista
@@ -32,6 +32,7 @@ export default function Asistente({ abierta, oculta, onAlternar, lecciones, lecc
   const motor = useRef(null)
   const cargando = useRef(false)
   const final = useRef(null)
+  const entrada = useRef(null)
 
   const hayGPU = Boolean(navigator.gpu)
 
@@ -111,6 +112,8 @@ export default function Asistente({ abierta, oculta, onAlternar, lecciones, lecc
   }
 
   function enviar(pregunta) {
+    // Los botones se desactivan mientras responde: el foco no debe perderse con ellos.
+    entrada.current?.focus()
     const limpia = pregunta.trim()
     if (!limpia || respondiendo) return
     const historial = mensajes
@@ -140,6 +143,7 @@ export default function Asistente({ abierta, oculta, onAlternar, lecciones, lecc
     <PanelLateral
       nombre={t('ia')}
       oculto={oculta}
+      sinPestana={sinPestana}
       icono={<Mascota estado="icono" />}
       posicion="abajo"
       abierto={abierta}
@@ -201,7 +205,7 @@ export default function Asistente({ abierta, oculta, onAlternar, lecciones, lecc
           )}
 
           <form className="ia-enviar" onSubmit={(e) => { e.preventDefault(); enviar(escrito) }}>
-            <input aria-label={t('escribePregunta')} placeholder={t('escribePregunta')} value={escrito} autoComplete="off" onChange={(e) => setEscrito(e.target.value)} />
+            <input ref={entrada} aria-label={t('escribePregunta')} placeholder={t('escribePregunta')} value={escrito} autoComplete="off" onChange={(e) => setEscrito(e.target.value)} />
             {respondiendo ? (
               <button type="button" className="secundario" onClick={() => motor.current?.interruptGenerate()}>{t('parar')}</button>
             ) : (

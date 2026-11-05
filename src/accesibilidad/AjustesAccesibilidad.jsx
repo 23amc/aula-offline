@@ -10,7 +10,7 @@ function Opcion({ etiqueta, activa, onCambiar }) {
   )
 }
 
-export default function AjustesAccesibilidad({ ajustes, onCambiar, onCambiarIdioma }) {
+export default function AjustesAccesibilidad({ ajustes, abierto = false, onCambiar, onCambiarIdioma }) {
   const cambiar = (cambios) => onCambiar({ ...ajustes, ...cambios })
 
   return (
@@ -21,7 +21,7 @@ export default function AjustesAccesibilidad({ ajustes, onCambiar, onCambiarIdio
           {IDIOMAS.map((i) => <option key={i.codigo} value={i.codigo} lang={i.codigo}>{i.nombre}</option>)}
         </select>
       </label>
-      <details className="accesibilidad">
+      <details className="accesibilidad" open={abierto}>
         <summary>{t('accesibilidad')}</summary>
         <fieldset>
           <legend>{t('tamano')}</legend>

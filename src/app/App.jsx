@@ -1,27 +1,29 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import AjustesAccesibilidad from '../accesibilidad/AjustesAccesibilidad'
-import BotonEscuchar from '../accesibilidad/BotonEscuchar'
 import { callar, enfocarTitulo, guardarAjustes, hablar, leerAjustes } from '../accesibilidad/accesibilidad'
 import Acceso from '../acceso/Acceso'
 import { claveTarea, textoTarea } from '../alumno/actividades'
 import { cambiarIdioma, idiomaActual, t } from '../idiomas/i18n'
-import Actividad from '../alumno/Actividad'
 import Asistente from '../ia/Asistente'
-import Ilustracion from '../alumno/Ilustracion'
-import Mascota from '../ia/Mascota'
-import MenuAlumno from '../alumno/MenuAlumno'
+import MenuAlumno, { Navegacion } from '../alumno/MenuAlumno'
+import PantallaFin from '../alumno/PantallaFin'
+import PantallaLeccion from '../alumno/PantallaLeccion'
+import PantallaQuiz from '../alumno/PantallaQuiz'
 import Pizarra from '../herramientas/Pizarra'
 import PanelDocente from '../docente/PanelDocente'
 import {
+  alternarGuardada,
   cambiarAlias,
   cerrarSesion,
   contarPendientes,
   elegirPreguntasTest,
   cuentaActual,
+  guardadasDe,
   guardarResultado,
   leerLecciones,
   leerTests,
   registrarRespuesta,
+  resultadosDe,
   sincronizar,
   tareasParaReforzar,
 } from '../datos/almacen'
@@ -31,33 +33,6 @@ import '../estilos/app.css'
 const DURACION_PORTADA = 1500
 const ID_REFUERZO = 'refuerzo'
 
-// La mascota es la IA: tocarla, a ella o a su bocadillo, abre el chat.
-function MascotaIA({ estado, onPreguntar, bocadillo = false }) {
-  return (
-    <div className="mascota-fila">
-      {/* Con bocadillo, los dos botones hacen lo mismo: el teclado y los lectores de pantalla solo necesitan uno. */}
-      <button
-        className="mascota-boton"
-        aria-label={bocadillo ? undefined : t('preguntarMascota')}
-        aria-hidden={bocadillo || undefined}
-        tabIndex={bocadillo ? -1 : undefined}
-        onClick={onPreguntar}
-      >
-        <Mascota estado={estado} />
-      </button>
-      {bocadillo && <button className="bocadillo" onClick={onPreguntar}>{t('bocadillo')}</button>}
-    </div>
-  )
-}
-
-function BarraProgreso({ completadas, total }) {
-  return (
-    <div className="progreso" role="progressbar" aria-label={t('progreso')} aria-valuemin={0} aria-valuemax={total} aria-valuenow={completadas}>
-      <div className="progreso-relleno" style={{ width: `${(completadas / total) * 100}%` }} />
-    </div>
-  )
-}
-
 export default function App() {
   const [portada, setPortada] = useState(true)
   const [versionNueva, setVersionNueva] = useState(false)
@@ -65,7 +40,9 @@ export default function App() {
   const [pinDocente, setPinDocente] = useState(null)
   const [pantalla, setPantalla] = useState(cuenta ? 'menu' : 'acceso')
   const [pasoAcceso, setPasoAcceso] = useState('inicio')
+  const [vista, setVista] = useState('inicio')
   const [seccion, setSeccion] = useState('lecciones')
+  const [guardadas, setGuardadas] = useState(() => (cuenta ? guardadasDe(cuenta.alias) : []))
   const [panel, setPanel] = useState(null)
   const [lecciones, setLecciones] = useState(leerLecciones)
   const [tests, setTests] = useState(leerTests)
@@ -138,8 +115,9 @@ export default function App() {
   useEffect(() => {
     if (portada) return
     enfocarTitulo()
+    window.scrollTo(0, 0)
     document.title = `${document.querySelector('main h1')?.textContent ?? ''} · EduGo`
-  }, [portada, pantalla, actual, pasoAcceso])
+  }, [portada, pantalla, vista, actual, pasoAcceso])
 
   // Tras responder, el botón pulsado queda desactivado: el foco pasa a «Siguiente».
   useEffect(() => {
@@ -165,6 +143,8 @@ export default function App() {
 
   function entrarComoAlumno(c) {
     setCuenta(c)
+    setGuardadas(guardadasDe(c.alias))
+    setVista('inicio')
     setPantalla('menu')
     sincronizarYRefrescar()
   }
@@ -250,6 +230,11 @@ export default function App() {
 
   const abrirIA = () => setPanel('ia')
 
+  function volverMenu() {
+    setPanel(null)
+    setPantalla('menu')
+  }
+
   function alternarPanel(nombre) {
     setPanel(panel === nombre ? null : nombre)
   }
@@ -272,18 +257,23 @@ export default function App() {
 
   // En pantallas estrechas el panel abierto tapa el resto: el teclado no debe poder ir a lo que no se ve.
   const contenidoTapado = panel !== null && window.matchMedia('(max-width: 40rem)').matches
-  const pregunta = pantalla === 'quiz' ? leccion.preguntas[actual] : null
+  const enMenu = pantalla === 'menu'
 
   return (
-    <div className={pantalla === 'acceso' ? 'app' : 'app con-pizarra'}>
+    <div className={`app pantalla-${pantalla}`}>
       <header inert={contenidoTapado}>
-        <div className="barra">
-          {!(pantalla === 'acceso' && pasoAcceso === 'inicio') && <img className="logo-mini" src={logo} alt="EduGo" />}
-          <div className={online ? 'estado conectado' : 'estado sin-conexion'} role="status">
-            {online ? t('conectado') : t('sinConexion')}
-          </div>
+        <div className={online ? 'estado conectado sr-only' : 'estado sin-conexion'} role="status">
+          {online ? t('conectado') : t('sinConexion')}
         </div>
-        <AjustesAccesibilidad ajustes={ajustes} onCambiar={cambiarAjustes} onCambiarIdioma={seleccionarIdioma} />
+        {pantalla === 'docente' && (
+          <div className="marca">
+            <img src={logo} alt="" />
+            <span>EduGo</span>
+          </div>
+        )}
+        {(pantalla === 'acceso' || pantalla === 'docente') && (
+          <AjustesAccesibilidad ajustes={ajustes} onCambiar={cambiarAjustes} onCambiarIdioma={seleccionarIdioma} />
+        )}
       </header>
 
       <main inert={contenidoTapado}>
@@ -300,11 +290,8 @@ export default function App() {
           />
         )}
 
-        {pantalla === 'menu' && (
-          <div>
-            <h1>{t('hola', { alias: cuenta.alias })}</h1>
-            <MascotaIA estado="normal" onPreguntar={abrirIA} />
-            <p className="mensaje-mascota"><span className="ayuda">{t('tocaMascota')}</span></p>
+        {enMenu && (
+          <>
             {cuenta.conflicto && (
               <div className="conflicto">
                 <p className="error" role="alert">{t('conflictoAlias')}</p>
@@ -314,79 +301,77 @@ export default function App() {
               </div>
             )}
             <MenuAlumno
+              vista={vista}
               seccion={seccion}
+              cuenta={cuenta}
               lecciones={lecciones}
               tests={tests}
               refuerzo={tareasParaReforzar(cuenta.alias, [...lecciones, ...tests])}
+              resultados={resultadosDe(cuenta.alias)}
+              guardadas={guardadas}
+              online={online}
+              ajustes={ajustes}
+              onCambiarAjustes={cambiarAjustes}
+              onCambiarIdioma={seleccionarIdioma}
+              onSalir={salirAlumno}
+              onVista={setVista}
               onSeccion={setSeccion}
               onLeer={(l) => empezar(l, 'leccion')}
               onTest={empezarTest}
               onRefuerzo={empezarRefuerzo}
+              onPreguntar={abrirIA}
             />
-            <button className="secundario" onClick={salirAlumno}>{t('cerrarSesion')}</button>
-          </div>
+          </>
         )}
 
         {pantalla === 'leccion' && (
-          <div>
-            <p lang="es">{leccion.asignatura}</p>
-            <h1 lang="es">{leccion.titulo}</h1>
-            <MascotaIA estado="normal" onPreguntar={abrirIA} bocadillo />
-            <Ilustracion id={leccion.preguntas[0]?.imagen} />
-            <p lang="es">{leccion.texto}</p>
-            <BotonEscuchar texto={leccion.texto} />
-            <button onClick={() => setPantalla('quiz')}>{t('hacerActividades')}</button>
-            <button className="secundario" onClick={() => setPantalla('menu')}>{t('volverMenu')}</button>
-          </div>
+          <PantallaLeccion
+            leccion={leccion}
+            guardada={guardadas.includes(leccion.id)}
+            onGuardar={() => setGuardadas(alternarGuardada(cuenta.alias, leccion.id))}
+            onPreguntar={abrirIA}
+            onActividades={() => setPantalla('quiz')}
+            onVolver={volverMenu}
+          />
         )}
 
         {pantalla === 'quiz' && (
-          <div>
-            <BarraProgreso completadas={actual + (acierto === null ? 0 : 1)} total={leccion.preguntas.length} />
-            <MascotaIA estado={acierto === null ? 'normal' : acierto ? 'contenta' : 'animando'} onPreguntar={abrirIA} bocadillo />
-            <p className="mensaje-mascota" role="status">
-              {acierto === true && t('muyBien')}
-              {acierto === false && t('casi')}
-            </p>
-            <p>{t('preguntaDe', { n: actual + 1, total: leccion.preguntas.length })}</p>
-            <h1 className="pregunta" lang="es">{pregunta.pregunta}</h1>
-            <Ilustracion id={pregunta.imagen} />
-            <BotonEscuchar key={actual} texto={textoTarea(pregunta)} />
-            <div lang="es">
-              <Actividad key={actual} tarea={pregunta} onResponder={responder} />
-            </div>
-            {acierto !== null && (
-              <button ref={botonSiguiente} className="siguiente" onClick={siguiente}>
-                {actual + 1 < leccion.preguntas.length ? t('siguiente') : t('verResultado')}
-              </button>
-            )}
-          </div>
+          <PantallaQuiz
+            leccion={leccion}
+            actual={actual}
+            acierto={acierto}
+            botonSiguiente={botonSiguiente}
+            onResponder={responder}
+            onSiguiente={siguiente}
+            onPreguntar={abrirIA}
+            onSalir={volverMenu}
+          />
         )}
 
         {pantalla === 'fin' && (
-          <div>
-            <MascotaIA estado={puntos * 2 >= leccion.preguntas.length ? 'contenta' : 'animando'} onPreguntar={abrirIA} />
-            <h1>{t('terminaste')}</h1>
-            <p>{t('acertaste', { puntos, total: leccion.preguntas.length })}</p>
-            {leccion.id !== ID_REFUERZO && (
-              <>
-                <p>{t('pendientes', { n: pendientes })}</p>
-                <button onClick={repetir}>{t('repetir')}</button>
-              </>
-            )}
-            <button className="secundario" onClick={() => setPantalla('menu')}>{t('volverMenu')}</button>
-          </div>
+          <PantallaFin
+            puntos={puntos}
+            total={leccion.preguntas.length}
+            resultados={resultadosDe(cuenta.alias)}
+            pendientes={pendientes}
+            esRefuerzo={leccion.id === ID_REFUERZO}
+            onRepetir={repetir}
+            onVolver={volverMenu}
+          />
         )}
       </main>
+
+      {enMenu && <Navegacion vista={vista} onVista={setVista} tapada={contenidoTapado} />}
 
       {/* Después del contenido en el orden del teclado. Fuera de las pantallas para mantener el dibujo
           al navegar; al cerrar sesión se borra. */}
       {pantalla !== 'acceso' && (
         <>
-          <Pizarra abierta={panel === 'pizarra'} oculta={panel === 'ia'} onAlternar={() => alternarPanel('pizarra')} />
+          <Pizarra abierta={panel === 'pizarra'} oculta={panel === 'ia' || enMenu} onAlternar={() => alternarPanel('pizarra')} />
           <Asistente
             abierta={panel === 'ia'}
             oculta={panel === 'pizarra'}
+            sinPestana={enMenu}
             onAlternar={() => alternarPanel('ia')}
             lecciones={lecciones}
             leccionActual={leccionAbierta}
