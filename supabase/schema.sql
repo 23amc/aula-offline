@@ -1,6 +1,7 @@
 -- EduGo: esquema de Supabase.
 -- Ejecútalo entero en el SQL Editor de Supabase. Se puede volver a ejecutar sin perder datos.
--- Al final se fija el PIN del profesor; volver a ejecutarlo lo restablece a ese valor.
+-- El PIN del profesor no se guarda aquí, porque este repositorio es público. Para fijarlo o cambiarlo, ejecuta aparte:
+--   select privado.establecer_pin_docente('TU_PIN');
 
 create extension if not exists pgcrypto with schema extensions;
 
@@ -260,5 +261,3 @@ grant execute on function public.alumno_sincronizar(text, text, jsonb, boolean) 
 grant execute on function public.docente_entrar(text) to anon, authenticated;
 grant execute on function public.docente_resultados(text) to anon, authenticated;
 grant execute on function public.docente_guardar_leccion(text, jsonb) to anon, authenticated;
-
-select privado.establecer_pin_docente('1234');

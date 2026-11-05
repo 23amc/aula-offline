@@ -13,6 +13,11 @@ button { display: block; width: 100%; padding: 14px; margin: 8px 0; font-size: 1
 input { width: 100%; padding: 12px; font-size: 18px; box-sizing: border-box; margin-bottom: 8px; }
 button.secundario { background: #e5e7eb; color: #111827; }
 button:disabled { opacity: 0.6; }
+button.naranja { background: #d24308; color: white; }
+.secciones button[aria-pressed='true'] { outline: 3px solid #111827; outline-offset: 2px; }
+.lista-refuerzo { padding: 0; margin: 0 0 8px; list-style: none; }
+.lista-refuerzo li { padding: 10px 12px; margin-bottom: 8px; border-left: 5px solid #d24308; border-radius: 4px; background: #fff7ed; }
+.lista-refuerzo small { display: block; margin-top: 4px; color: #4b5563; }
 button.correcta, button.correcta:disabled { background: #16a34a; color: white; opacity: 1; animation: acierto 0.35s ease-out; }
 button.incorrecta, button.incorrecta:disabled { background: #dc2626; color: white; opacity: 1; animation: fallo 0.35s ease-in-out; }
 button.activa { background: white; color: #111827; outline: 3px solid #2563eb; outline-offset: -3px; }

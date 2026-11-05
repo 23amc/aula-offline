@@ -3,6 +3,7 @@ import Acceso from './Acceso'
 import Actividad from './Actividad'
 import Ilustracion from './Ilustracion'
 import Mascota from './Mascota'
+import MenuAlumno from './MenuAlumno'
 import Pizarra from './Pizarra'
 import PanelDocente from './PanelDocente'
 import {
@@ -12,12 +13,15 @@ import {
   cuentaActual,
   guardarResultado,
   leerLecciones,
+  registrarRespuesta,
   sincronizar,
+  tareasParaReforzar,
 } from './datos'
 import logo from './assets/logo.png'
 import './App.css'
 
 const DURACION_PORTADA = 1500
+const ID_REFUERZO = 'refuerzo'
 
 function BarraProgreso({ completadas, total }) {
   return (
@@ -34,6 +38,7 @@ export default function App() {
   const [pinDocente, setPinDocente] = useState(null)
   const [pantalla, setPantalla] = useState(cuenta ? 'menu' : 'acceso')
   const [pasoAcceso, setPasoAcceso] = useState('inicio')
+  const [seccion, setSeccion] = useState('lecciones')
   const [lecciones, setLecciones] = useState(leerLecciones)
   const [leccion, setLeccion] = useState(null)
   const [actual, setActual] = useState(0)
@@ -130,19 +135,21 @@ export default function App() {
     }
   }
 
-  function empezar() {
+  function empezar(l, destino) {
+    setLeccion(l)
     setActual(0)
     setPuntos(0)
     setAcierto(null)
-    setPantalla('leccion')
+    setPantalla(destino)
   }
 
-  function elegir(l) {
-    setLeccion(l)
-    empezar()
+  function empezarRefuerzo() {
+    empezar({ id: ID_REFUERZO, preguntas: tareasParaReforzar(cuenta.alias, lecciones) }, 'quiz')
   }
 
   function responder(correcta) {
+    const tarea = leccion.preguntas[actual]
+    registrarRespuesta(cuenta.alias, tarea.clave ?? `${leccion.id}|${tarea.pregunta}`, correcta)
     setAcierto(correcta)
     if (correcta) setPuntos(puntos + 1)
   }
@@ -151,6 +158,9 @@ export default function App() {
     setAcierto(null)
     if (actual + 1 < leccion.preguntas.length) {
       setActual(actual + 1)
+    } else if (leccion.id === ID_REFUERZO) {
+      // El refuerzo es práctica: no cuenta como nota para el profesor.
+      setPantalla('fin')
     } else {
       guardarResultado({
         alias: cuenta.alias,
@@ -213,12 +223,15 @@ export default function App() {
               <button onClick={guardarNuevoAlias}>Cambiar alias</button>
             </div>
           )}
-          <p>¿Qué quieres aprender hoy?</p>
-          {lecciones.map((l) => (
-            <button key={l.id} onClick={() => elegir(l)}>
-              {l.asignatura}: {l.titulo}
-            </button>
-          ))}
+          <MenuAlumno
+            seccion={seccion}
+            lecciones={lecciones}
+            refuerzo={tareasParaReforzar(cuenta.alias, lecciones)}
+            onSeccion={setSeccion}
+            onLeer={(l) => empezar(l, 'leccion')}
+            onTest={(l) => empezar(l, 'quiz')}
+            onRefuerzo={empezarRefuerzo}
+          />
           <button className="secundario" onClick={salirAlumno}>Cerrar sesión</button>
         </div>
       )}
@@ -229,7 +242,7 @@ export default function App() {
           <h1>{leccion.titulo}</h1>
           <Ilustracion id={leccion.preguntas[0]?.imagen} />
           <p>{leccion.texto}</p>
-          <button onClick={() => setPantalla('quiz')}>Empezar el quiz</button>
+          <button onClick={() => setPantalla('quiz')}>Hacer el test</button>
           <button className="secundario" onClick={() => setPantalla('menu')}>Volver al menú</button>
         </div>
       )}
@@ -259,8 +272,12 @@ export default function App() {
           <Mascota estado={puntos * 2 >= leccion.preguntas.length ? 'contenta' : 'animando'} />
           <h1>¡Terminaste!</h1>
           <p>Has acertado {puntos} de {leccion.preguntas.length}</p>
-          <p>Resultados pendientes de enviar al docente: {pendientes}</p>
-          <button onClick={empezar}>Repetir</button>
+          {leccion.id !== ID_REFUERZO && (
+            <>
+              <p>Resultados pendientes de enviar al docente: {pendientes}</p>
+              <button onClick={() => empezar(leccion, 'quiz')}>Repetir</button>
+            </>
+          )}
           <button className="secundario" onClick={() => setPantalla('menu')}>Volver al menú</button>
         </div>
       )}

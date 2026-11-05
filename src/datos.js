@@ -104,6 +104,12 @@ export function cambiarAlias(cuenta, nuevoAlias) {
   ))
   delete cuentas[claveVieja]
   escribir('cuentas', cuentas)
+  const fallos = leer('fallos', {})
+  if (fallos[claveVieja]) {
+    fallos[normalizar(limpio)] = fallos[claveVieja]
+    delete fallos[claveVieja]
+    escribir('fallos', fallos)
+  }
   return { cuenta: abrirSesion({ alias: limpio, pin: cuenta.pin, sincronizada: false }) }
 }
 
@@ -115,6 +121,32 @@ export function guardarResultado(resultado) {
 
 export function contarPendientes(alias) {
   return leer('resultados', []).filter((r) => !r.enviado && normalizar(r.alias) === normalizar(alias)).length
+}
+
+// ---------- Refuerzo: por alumno y tarea, cuántos fallos quedan por compensar con aciertos ----------
+
+export function registrarRespuesta(alias, clave, correcta) {
+  const fallos = leer('fallos', {})
+  const delAlumno = fallos[normalizar(alias)] ?? {}
+  const saldo = (delAlumno[clave] ?? 0) + (correcta ? -1 : 1)
+  if (saldo > 0) delAlumno[clave] = saldo
+  else delete delAlumno[clave]
+  escribir('fallos', { ...fallos, [normalizar(alias)]: delAlumno })
+}
+
+const MAX_REFUERZO = 10
+
+// Las tareas que ya no existen (el profesor las cambió) quedan fuera por no estar en las lecciones.
+export function tareasParaReforzar(alias, lecciones) {
+  const delAlumno = leer('fallos', {})[normalizar(alias)] ?? {}
+  return lecciones
+    .flatMap((l) => l.preguntas.map((p) => {
+      const clave = `${l.id}|${p.pregunta}`
+      return { ...p, clave, asignatura: l.asignatura, saldo: delAlumno[clave] ?? 0 }
+    }))
+    .filter((t) => t.saldo > 0)
+    .sort((a, b) => b.saldo - a.saldo)
+    .slice(0, MAX_REFUERZO)
 }
 
 // ---------- Lecciones: las incluidas en la app más las del servidor, que tienen prioridad ----------
