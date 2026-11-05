@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 
 // Resolución fija: el dibujo no se pierde al plegar la pizarra ni al girar el móvil.
 const ANCHO = 1200
-const ALTO = 800
+const ALTO = 1600
 const GROSOR = 14
 const GROSOR_GOMA = 70
 const BLANCO = '#ffffff'
@@ -67,12 +67,12 @@ export default function Pizarra() {
   }
 
   return (
-    <div className="pizarra">
-      <button className="secundario" aria-expanded={abierta} onClick={() => setAbierta(!abierta)}>
-        Pizarra {abierta ? '▲' : '▼'}
+    <aside className={abierta ? 'pizarra abierta' : 'pizarra'}>
+      <button className="pizarra-pestana" aria-expanded={abierta} onClick={() => setAbierta(!abierta)}>
+        {abierta ? 'Cerrar' : 'Pizarra'}
       </button>
       {/* Se oculta en lugar de desmontarse para conservar el dibujo. */}
-      <div hidden={!abierta}>
+      <div className="pizarra-contenido" inert={!abierta}>
         <div className="pizarra-colores">
           {COLORES.map((c) => (
             <button
@@ -99,6 +99,6 @@ export default function Pizarra() {
         />
         <button className="secundario" onClick={borrarTodo}>Borrar todo</button>
       </div>
-    </div>
+    </aside>
   )
 }

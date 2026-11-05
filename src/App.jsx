@@ -29,6 +29,7 @@ function BarraProgreso({ completadas, total }) {
 
 export default function App() {
   const [portada, setPortada] = useState(true)
+  const [versionNueva, setVersionNueva] = useState(false)
   const [cuenta, setCuenta] = useState(cuentaActual)
   const [pinDocente, setPinDocente] = useState(null)
   const [pantalla, setPantalla] = useState(cuenta ? 'menu' : 'acceso')
@@ -68,6 +69,32 @@ export default function App() {
     const temporizador = setTimeout(() => setPortada(false), DURACION_PORTADA)
     return () => clearTimeout(temporizador)
   }, [])
+
+  // Con cada publicación, el service worker descarga la versión nueva y toma el control.
+  useEffect(() => {
+    if (!('serviceWorker' in navigator)) return
+    const sw = navigator.serviceWorker
+    // Sin controlador previo es la primera instalación: la página ya es la última versión.
+    const habiaVersion = Boolean(sw.controller)
+    const alCambiar = () => {
+      if (habiaVersion) setVersionNueva(true)
+    }
+    // Una app que vuelve del segundo plano no navega, así que hay que pedirle que compruebe.
+    const alVolver = () => {
+      if (document.visibilityState === 'visible') sw.getRegistration().then((r) => r?.update()).catch(() => {})
+    }
+    sw.addEventListener('controllerchange', alCambiar)
+    document.addEventListener('visibilitychange', alVolver)
+    return () => {
+      sw.removeEventListener('controllerchange', alCambiar)
+      document.removeEventListener('visibilitychange', alVolver)
+    }
+  }, [])
+
+  // Solo se recarga en pantallas sin trabajo a medias; en un quiz, al volver al menú.
+  useEffect(() => {
+    if (versionNueva && (pantalla === 'menu' || pantalla === 'acceso')) window.location.reload()
+  }, [versionNueva, pantalla])
 
   function entrarComoAlumno(c) {
     setCuenta(c)
@@ -149,7 +176,7 @@ export default function App() {
   }
 
   return (
-    <div className="app">
+    <div className={pantalla === 'acceso' ? 'app' : 'app con-pizarra'}>
       <div className="barra">
         {!(pantalla === 'acceso' && pasoAcceso === 'inicio') && <img className="logo-mini" src={logo} alt="EduGo" />}
         <div className={online ? 'estado conectado' : 'estado sin-conexion'}>
