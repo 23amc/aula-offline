@@ -7,7 +7,7 @@ import Calendario from './Calendario'
 import { PREGUNTAS_POR_TEST } from '../datos/almacen'
 import { idiomaActual, t } from '../idiomas/i18n'
 import { Anillo, GraficaResultados, MiniBarra } from '../interfaz/Graficos'
-import { Adelante, Atras, Barras, Casa, Cuadricula, FlechaDerecha, Libro, Lista, Persona } from '../interfaz/Iconos'
+import { Adelante, Atras, Barras, CalendarioIcono, Casa, Cuadricula, FlechaDerecha, Libro, Lista, Persona } from '../interfaz/Iconos'
 import logo from '../assets/logo.png'
 
 const SECCIONES = [
@@ -20,6 +20,7 @@ const SECCIONES = [
 const VISTAS = [
   { id: 'inicio', clave: 'navInicio', Icono: Casa },
   { id: 'aprender', clave: 'navAprender', Icono: Libro },
+  { id: 'calendario', clave: 'navCalendario', Icono: CalendarioIcono },
   { id: 'progreso', clave: 'navProgreso', Icono: Barras },
   { id: 'perfil', clave: 'navPerfil', Icono: Persona },
 ]
@@ -100,8 +101,6 @@ function VistaInicio({ cuenta, lecciones, notas, onLeer, onVista }) {
           </button>
         ))}
       </div>
-
-      <Calendario key={cuenta.alias} alias={cuenta.alias} />
     </>
   )
 }
@@ -193,6 +192,15 @@ function VistaProgreso({ lecciones, tests, resultados, notas, onLeer, onTest, on
   )
 }
 
+function VistaCalendario({ cuenta, onVista }) {
+  return (
+    <>
+      <CabeceraLista titulo={t('miCalendario')} onAtras={() => onVista('inicio')} />
+      <Calendario key={cuenta.alias} alias={cuenta.alias} />
+    </>
+  )
+}
+
 function VistaPerfil({ cuenta, online, ajustes, onCambiarAjustes, onCambiarIdioma, onSalir, onVista }) {
   return (
     <>
@@ -233,6 +241,7 @@ export default function MenuAlumno(props) {
     <>
       {vista === 'inicio' && <VistaInicio cuenta={cuenta} lecciones={lecciones} notas={notas} onLeer={onLeer} onVista={onVista} />}
       {vista === 'aprender' && <VistaAprender {...props} notas={notas} />}
+      {vista === 'calendario' && <VistaCalendario cuenta={cuenta} onVista={onVista} />}
       {vista === 'progreso' && <VistaProgreso lecciones={lecciones} tests={tests} resultados={resultados} notas={notas} onLeer={onLeer} onTest={onTest} onVista={onVista} />}
       {vista === 'perfil' && <VistaPerfil cuenta={cuenta} online={online} ajustes={ajustes} onCambiarAjustes={onCambiarAjustes} onCambiarIdioma={onCambiarIdioma} onSalir={onSalir} onVista={onVista} />}
       <BotonMascota flotante onPreguntar={onPreguntar} />

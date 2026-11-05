@@ -178,5 +178,6 @@
   "borrarApunte": "{texto} löschen",
   "apuntado": "Notiert",
   "apunteBorrado": "Gelöscht",
-  "nApuntes": "Notizen: {n}"
+  "nApuntes": "Notizen: {n}",
+  "navCalendario": "Kalender"
 }

@@ -178,5 +178,6 @@
   "borrarApunte": "حذف {texto}",
   "apuntado": "تمت الإضافة",
   "apunteBorrado": "تم الحذف",
-  "nApuntes": "الملاحظات: {n}"
+  "nApuntes": "الملاحظات: {n}",
+  "navCalendario": "التقويم"
 }

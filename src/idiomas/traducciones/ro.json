@@ -178,5 +178,6 @@
   "borrarApunte": "Șterge {texto}",
   "apuntado": "Notat",
   "apunteBorrado": "Șters",
-  "nApuntes": "Notițe: {n}"
+  "nApuntes": "Notițe: {n}",
+  "navCalendario": "Calendar"
 }

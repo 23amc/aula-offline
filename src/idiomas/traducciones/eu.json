@@ -178,5 +178,6 @@
   "borrarApunte": "Ezabatu {texto}",
   "apuntado": "Idatzita",
   "apunteBorrado": "Ezabatuta",
-  "nApuntes": "Oharrak: {n}"
+  "nApuntes": "Oharrak: {n}",
+  "navCalendario": "Egutegia"
 }

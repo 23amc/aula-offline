@@ -178,5 +178,6 @@
   "borrarApunte": "删除 {texto}",
   "apuntado": "已记下",
   "apunteBorrado": "已删除",
-  "nApuntes": "记录：{n}"
+  "nApuntes": "记录：{n}",
+  "navCalendario": "日历"
 }

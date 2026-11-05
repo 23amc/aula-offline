@@ -81,13 +81,12 @@ export default function Calendario({ alias }) {
 
   return (
     <section className="tarjeta calendario">
-      <h2>{t('miCalendario')}</h2>
-      <p className="ayuda">{t('ayudaCalendario')}</p>
+      <p className="ayuda calendario-ayuda">{t('ayudaCalendario')}</p>
       <p className="sr-only" role="status">{anuncio}</p>
 
       <div className="calendario-mes">
         <button className="boton-redondo" aria-label={t('mesAnterior')} onClick={() => cambiarMes(-1)}><Atras /></button>
-        <h3 aria-live="polite">{formato(fechaElegida, { month: 'long', year: 'numeric' })}</h3>
+        <h2 aria-live="polite">{formato(fechaElegida, { month: 'long', year: 'numeric' })}</h2>
         <button className="boton-redondo" aria-label={t('mesSiguiente')} onClick={() => cambiarMes(1)}><Adelante /></button>
       </div>
 
@@ -133,7 +132,7 @@ export default function Calendario({ alias }) {
         </tbody>
       </table>
 
-      <h3 className="calendario-fecha">{formato(fechaElegida, { weekday: 'long', day: 'numeric', month: 'long' })}</h3>
+      <h2 className="calendario-fecha">{formato(fechaElegida, { weekday: 'long', day: 'numeric', month: 'long' })}</h2>
       {delDia(elegido).length === 0 ? <p className="ayuda">{t('nadaEseDia')}</p> : (
         <ul className="calendario-lista">
           {delDia(elegido).map((a) => (

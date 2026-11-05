@@ -178,5 +178,6 @@
   "borrarApunte": "Видалити {texto}",
   "apuntado": "Записано",
   "apunteBorrado": "Видалено",
-  "nApuntes": "Записи: {n}"
+  "nApuntes": "Записи: {n}",
+  "navCalendario": "Календар"
 }
