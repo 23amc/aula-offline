@@ -64,7 +64,7 @@ export async function registrarAlumno(alias, pin) {
   if (errorAlias) return { error: errorAlias }
   if (!/^\d{4,8}$/.test(pin)) return { error: 'El PIN debe tener entre 4 y 8 números.' }
   const limpio = alias.trim()
-  if (leerCuentas()[normalizar(limpio)]) return { error: 'Ese alias ya está registrado en este móvil. Entra con tu PIN.' }
+  if (leerCuentas()[normalizar(limpio)]) return { error: 'Ese alias ya está registrado en este móvil. Inicia sesión con tu PIN.' }
 
   try {
     const r = await llamar('alumno_sincronizar', { p_alias: limpio, p_pin: pin, p_resultados: [], p_crear: true })
@@ -86,7 +86,7 @@ export async function entrarAlumno(alias, pin) {
     if (!r.ok) return { error: mensajeMotivo(r.motivo, 'Alias o PIN incorrectos.') }
     return { cuenta: abrirSesion({ alias: r.alias, pin, sincronizada: true }) }
   } catch {
-    return { error: 'Para entrar por primera vez en este móvil necesitas conexión.' }
+    return { error: 'Para iniciar sesión por primera vez en este móvil necesitas conexión.' }
   }
 }
 

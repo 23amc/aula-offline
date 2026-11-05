@@ -1,7 +1,6 @@
--- Aula Offline: esquema de Supabase.
+-- EduGo: esquema de Supabase.
 -- Ejecútalo entero en el SQL Editor de Supabase. Se puede volver a ejecutar sin perder datos.
--- Al terminar, fija el PIN del profesor (mínimo 6 dígitos) ejecutando aparte:
---   select privado.establecer_pin_docente('TU_PIN');
+-- Al final se fija el PIN del profesor; volver a ejecutarlo lo restablece a ese valor.
 
 create extension if not exists pgcrypto with schema extensions;
 
@@ -88,8 +87,8 @@ $$;
 create or replace function privado.establecer_pin_docente(p_pin text)
 returns void language plpgsql security definer set search_path = '' as $$
 begin
-  if p_pin !~ '^[0-9]{6,12}$' then
-    raise exception 'El PIN del profesor debe tener entre 6 y 12 dígitos';
+  if p_pin !~ '^[0-9]{4,12}$' then
+    raise exception 'El PIN del profesor debe tener entre 4 y 12 dígitos';
   end if;
   insert into privado.docente (pin_hash) values (extensions.crypt(p_pin, extensions.gen_salt('bf', 8)))
   on conflict (unica) do update set pin_hash = excluded.pin_hash;
@@ -224,3 +223,5 @@ grant execute on function public.alumno_sincronizar(text, text, jsonb, boolean) 
 grant execute on function public.docente_entrar(text) to anon, authenticated;
 grant execute on function public.docente_resultados(text) to anon, authenticated;
 grant execute on function public.docente_guardar_leccion(text, jsonb) to anon, authenticated;
+
+select privado.establecer_pin_docente('1234');

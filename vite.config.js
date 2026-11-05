@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'Aula Offline',
-        short_name: 'Aula',
+        name: 'EduGo',
+        short_name: 'EduGo',
         description: 'Aprender sin conexión',
         theme_color: '#2563eb',
         background_color: '#ffffff',

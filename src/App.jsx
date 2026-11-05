@@ -10,9 +10,13 @@ import {
   leerLecciones,
   sincronizar,
 } from './datos'
+import logo from './assets/logo.png'
 import './App.css'
 
+const DURACION_PORTADA = 1500
+
 export default function App() {
+  const [portada, setPortada] = useState(true)
   const [cuenta, setCuenta] = useState(cuentaActual)
   const [pinDocente, setPinDocente] = useState(null)
   const [pantalla, setPantalla] = useState(cuenta ? 'menu' : 'acceso')
@@ -45,6 +49,11 @@ export default function App() {
       window.removeEventListener('offline', desconectar)
     }
   }, [refrescar])
+
+  useEffect(() => {
+    const temporizador = setTimeout(() => setPortada(false), DURACION_PORTADA)
+    return () => clearTimeout(temporizador)
+  }, [])
 
   function entrarComoAlumno(c) {
     setCuenta(c)
@@ -111,10 +120,22 @@ export default function App() {
 
   const pendientes = cuenta ? contarPendientes(cuenta.alias) : 0
 
+  if (portada) {
+    return (
+      <div className="portada">
+        <img src={logo} alt="" />
+        <h1>EduGo</h1>
+      </div>
+    )
+  }
+
   return (
     <div className="app">
-      <div className={online ? 'estado conectado' : 'estado sin-conexion'}>
-        {online ? 'Con conexión' : 'Sin conexión: todo se guarda en tu móvil'}
+      <div className="barra">
+        <img className="logo-mini" src={logo} alt="EduGo" />
+        <div className={online ? 'estado conectado' : 'estado sin-conexion'}>
+          {online ? 'Con conexión' : 'Sin conexión: todo se guarda en tu móvil'}
+        </div>
       </div>
 
       {pantalla === 'acceso' && <Acceso onAlumno={entrarComoAlumno} onDocente={entrarComoDocente} />}

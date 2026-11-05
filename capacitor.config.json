@@ -1,6 +1,6 @@
 {
   "appId": "com.aulaoffline.app",
-  "appName": "Aula Offline",
+  "appName": "EduGo",
   "webDir": "dist",
   "ios": {
     "contentInset": "always"
